@@ -8,6 +8,11 @@
 # DO NOT REMOVE THIS
 theme = "hugo-theme-codex" 
 
+# For github-pages
+publishDir = "docs"
+canonifyurls = true
+
+
 # Override these settings with your own
 title = "codex"
 languageCode = "en-us"
@@ -27,8 +32,8 @@ copyright = "© {year}"
   dateFormat = "Jan 2 2006"
 
   # Links to your social accounts, comment/uncomment as needed. Icons will be displayed for those specified.
-  twitter = "https://twitter.com/<your handle>"
-  github = "https://github.com/<your handle>"
+  # twitter = "https://twitter.com/GoHugoIO"
+  github = "https://github.com/tsumli"
   # email = "mailto:<your email>"
   # mastodon = "https://mastodon.social/@nickname"
   # facebook = "https://facebook.com/<your handle>"
@@ -47,7 +52,7 @@ copyright = "© {year}"
   # twitterAuthor = "@<your handle>"
 
   # Set to true to display page title in table of contents in blog posts.
-  showPageTitleInTOC = false
+  showPageTitleInTOC = true
 
 # This disables Hugo's default syntax highlighting in favor
 # of prismjs. If you wish to use Hugo's default syntax highlighting

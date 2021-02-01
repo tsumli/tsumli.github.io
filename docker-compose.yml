@@ -1,0 +1,28 @@
+version: '3'
+services:
+  server:
+    image:
+      "trenton/hugo-extended"
+    ports:
+      - 1313:1313
+    volumes:
+      - ./:/site
+    tty:
+      true
+    command:
+      hugo server -D -p 1313 --bind 0.0.0.0
+    user: "1000:1000"
+  
+  newpost:
+    image:
+      "trenton/hugo-extended"
+    ports:
+      - 1313:1313
+    user: "1000:1000"
+    volumes:
+      - ./:/site
+    tty:
+      true
+    command:
+      hugo new blog/paper/taskonomy.md
+
