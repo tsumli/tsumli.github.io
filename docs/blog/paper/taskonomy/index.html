@@ -62,11 +62,22 @@
       "datePublished": "2021-02-01 13:55:54 \u002b0000 UTC",
       "dateModified" : "2021-02-01 13:55:54 \u002b0000 UTC",
       "url" : "https:\/\/tsumli.github.io\/blog\/paper\/taskonomy\/",
-      "wordCount" : "43",
+      "wordCount" : "58",
       "keywords" : ["転移学習", "Taskonomy", "transfer-learning", "Blog"]
     }
   
   </script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-188554402-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
 </head>
 
 <body>
@@ -109,47 +120,45 @@
           </header>
           <article class="post__content">
               
-<p><a href="https://arxiv.org/abs/1804.08328" 
+<p>CVPR 2018のBestPaperを取ったTaskonomyという論文を読んでいきます
+(本文中の図は<a href="https://arxiv.org/abs/1804.08328" 
   
    target="_blank" rel="noreferrer noopener" 
->arxiv</a>
-</p>
-<h1 id="method">Method</h1>
+>論文</a>
+より引用) 。</p>
+<h2 id="motivation">Motivation<a class="anchor" href="#motivation">#</a></h2>
+<p>タスク間の転移学習しやすさが分かれば、アノテーションの足りないデータを扱う、または性能を向上させたいときにどのタスクで事前学習を行うべきかが分かる。</p>
+<h2 id="method">Method<a class="anchor" href="#method">#</a></h2>
+<p>手法は「sourceタスク$\rightarrow$targetタスクで転移学習し、誤差を比較する」という流れです。<br>
+用意したsourceタスクの集合を$\mathcal{S}$、targetタスクの集合を$\mathcal{T}$とします。</p>
 <ol>
 <li>
 <p><strong>Task-Specific Modeling</strong><br>
-全てのSourceのタスクにおいて教師あり学習を行う
-ネットワークはエンコーダとデコーダを持つが、<strong>デコーダの構造はタスクによって異なる</strong>。</p>
+Sourceタスクそれぞれで教師あり学習を行います。
+ネットワークはエンコーダとデコーダを持ちます。エンコーダの構造は同一 (ResNet50を修正したもの) ですが、<strong>デコーダの構造はタスクによって異なります</strong>。</p>
 </li>
 <li>
 <p><strong>Transfer Modeling</strong><br>
-$s\in \mathcal{S}$ と $t\in \mathcal{T}$ が与えられる。
-$s$のエンコーダーで変換したものをデコーダーで変換する。
-それと正解ラベルとのロスを最小化するようにデコーダーの$\theta$を学習する。
-$E_s(I)$が$t$を解くのに役立つかどうかの尺度としてデコーダーのパフォーマンスが使われる。</p>
-<ul>
-<li>
-<p><strong>Accesibility</strong>
-転移学習がうまく行くために、Sourceから得られる表現はTargetを解くのに十分な情報をもっていて、かつ情報へのAccesibilityを持ってないといけない。AccesibleなTransferabilityを評価するために少ないデータセットで訓練された小さいアーキテクチャが必要である</p>
-</li>
-<li>
-<p><strong>High-Order Transfers</strong>
-複数のSource taskがTarget taskを解くのに補完的な情報を持っていることがある。しかしすべて実験していると組み合わせ爆発が起こってしまうためTarget taskに良い結果をもたらすであろうSource taskを5つまで選択しすべての組み合わせを検証した</p>
-</li>
-</ul>
+$s\in \mathcal{S}$ と $t\in \mathcal{T}$ が与えられたとき、$s\rightarrow t$と転移学習を行ったときの$t$でのパフォーマンスを求めたいとします。
+このとき、エンコーダは$s$で学習したもので固定し、$t$でデコーダのみ学習させます。</p>
 </li>
 <li>
 <p><strong>Analytic Hierarchy Process (AHP) による正規化</strong><br>
-transferabilityのAffinity Matrix(相性の行列)を計算したい。
-SourceからTaskへ転移させたときのロスをそのまま$[0, 1]$にスケールさせて用いると、ロスに対しての本当のクオリティが変わるスピードが異なる場合が問題となるため、適切なnormalizationを考えなければいけない。
-そこでAHP法を用いる(AHPの中でも固有値を用いる方法<a href="https://core.ac.uk/download/pdf/96975029.pdf" 
+転移学習しやすさのAffinity Matrix (相性の行列) を計算します。
+直感的には、「$s\rightarrow t$に転移学習したときの最終的な$t$でのテスト誤差をそのまま$[0, 1]$にスケールさせて用いる」という方法が考えられますが、そうすると
+テスト誤差に対しての本当のクオリティが変わるスピードが異なる場合に問題となります (例えば、Segmentationでの誤差が1/2になるのと、edge検出での誤差が1/2になるのは同じだけ性能が向上したとは言えません) 。
+つまり、何かしらの方法を用いて<strong>正規化</strong>しなければいけません。
+そこでAHP法 (固有値を用いる方法 <a href="https://core.ac.uk/download/pdf/96975029.pdf" 
   
    target="_blank" rel="noreferrer noopener" 
->[参考]</a>
-)。
-それぞれのtargetに対してすべての可能なssourceからのtransferabilityのpairwise tornament行列Wtを構成する。
-つまり、$(i,j)$は$s_i$が$s_j$よりも優れている確率を表している。これの主固有値に対応する主固有ベクトルを求める。
-最終的な$s_i\rightarrow t$ のtransferabilityは主固有ベクトルのi番目の要素と対応する</p>
+>参考</a>
+) を用います。
+AHP法を用いると、ある$t\in\mathcal{T}$に対してどの$s\in\mathcal{S}$が重要 (効率的) なのかが分かります。つまり、ある$t$に対して、$i$番目が$s_i$の重要性を表すようなベクトル$\mathbf{s}\in \mathbb{R}^{|\mathcal{S}|}$が得られるということです。<br>
+すべての$\mathcal{T}$について重要性を計算したあと、$(i, j)$要素が$t_i$に対する$s_j$の重要性を表すようにベクトルを結合していくと、Affinity Matrixを求めることができます (下図右) 。 ここで、下図左の行列は正規化を行わなかったときのAfinity Matrixを表しており、正規化することで違いが理解しやすくなっていることが分かります。
+<figure>
+    <img src="images/normalize.png"/> 
+</figure>
+</p>
 </li>
 </ol>
 
@@ -174,6 +183,9 @@ SourceからTaskへ転移させたときのロスをそのまま$[0, 1]$にス�
     
     <li class="tag__item">
         <a class="tag__link" href="https://tsumli.github.io/tags/transfer-learning/">transfer-learning</a>
+    </li>
+    <li class="tag__item">
+        <a class="tag__link" href="https://tsumli.github.io/tags/paper/">paper</a>
     </li></ul>
 
  <div class="pagination">
@@ -210,7 +222,12 @@ SourceからTaskへ転移させたときのロスをそのまま$[0, 1]$にス�
       
       <div class="toc-container">
            <div class="toc-post-title">Taskonomyを読む</div> 
-        <nav id="TableOfContents"></nav>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#motivation">Motivation</a></li>
+    <li><a href="#method">Method</a></li>
+  </ul>
+</nav>
       </div>
       
     </div>
