@@ -23,7 +23,7 @@ copyright = "© {year}"
 # disqusShortname = ""
 
 # Add your Google Analytics identifier: UA-XXXXXXXX-X
-# googleAnalytics = "" 
+googleAnalytics = "UA-188554402-1" 
 
 # Optional params
 [params]
@@ -65,6 +65,8 @@ copyright = "© {year}"
   # Set to false to disallow raw HTML in markdown files
   [markup.goldmark.renderer]
       unsafe = true
+      hardWraps = false
+    
 
 # Controls the navigation
 [[menu.main]]
