@@ -14,7 +14,7 @@ canonifyurls = true
 
 
 # Override these settings with your own
-title = "codex"
+title = "tsumli"
 languageCode = "en-us"
 baseURL = "https://tsumli.github.io/"
 copyright = "© {year}"
