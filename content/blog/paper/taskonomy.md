@@ -4,7 +4,7 @@ date: 2021-02-01T13:55:54Z
 slug: "taskonomy"
 description: ""
 keywords: ["転移学習", "Taskonomy", "transfer-learning"]
-draft: true
+draft: false
 tags: ["transfer-learning"]
 math: true
 toc: true
