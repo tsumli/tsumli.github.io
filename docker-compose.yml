@@ -26,3 +26,13 @@ services:
     command:
       hugo new blog/paper/taskonomy.md
 
+  build_site:
+    image:
+      "trenton/hugo-extended"
+    ports:
+      - 1313:1313
+    user: "1000:1000"
+    volumes:
+      - ./:/site
+    command:
+      hugo 
