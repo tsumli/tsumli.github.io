@@ -6,6 +6,16 @@
     <description>Recent content in Tags on tsumli-pages</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>© {year}</copyright><atom:link href="https://tsumli.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>© {year}</copyright>
+    <lastBuildDate>Mon, 01 Feb 2021 13:55:54 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>transfer-learning</title>
+      <link>https://tsumli.github.io/tags/transfer-learning/</link>
+      <pubDate>Mon, 01 Feb 2021 13:55:54 +0000</pubDate>
+      
+      <guid>https://tsumli.github.io/tags/transfer-learning/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

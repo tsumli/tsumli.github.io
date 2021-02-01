@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <title>Taskonomyを読む | tsumli-pages</title>
+
+  <meta charset="UTF-8">
+  <meta name="language" content="en">
+  <meta name="description" content="">
+  <meta name="keywords" content="転移学習 , Taskonomy , transfer-learning">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  
+  
+
+  <link rel="shortcut icon" type="image/png" href="https://tsumli.github.io/favicon.ico" />
+
+
+  
+  
+    
+ 
+  
+  
+  
+  
+  
+  
+    
+    <link type="text/css" rel="stylesheet" href="https://tsumli.github.io/css/post.min.b60e0932fe1c50c3d7c5b4f83ee9e4592363654d0f2abf05bbd0678d5b8a214c.css" integrity="sha256-tg4JMv4cUMPXxbT4PunkWSNjZU0PKr8Fu9BnjVuKIUw="/>
+  
+    
+    <link type="text/css" rel="stylesheet" href="https://tsumli.github.io/css/custom.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css" integrity="sha256-47DEQpj8HBSa&#43;/TImW&#43;5JCeuQeRkm5NMpJWZG3hSuFU="/>
+  
+  
+   
+   
+    
+
+<script type="application/ld+json">
+  
+    {
+      "@context" : "http://schema.org",
+      "@type" : "BlogPosting",
+      "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/tsumli.github.io\/"
+      },
+      "articleSection" : "blog",
+      "name" : "Taskonomyを読む",
+      "headline" : "Taskonomyを読む",
+      "description" : "",
+      "inLanguage" : "en-US",
+      "author" : "",
+      "creator" : "",
+      "publisher": "",
+      "accountablePerson" : "",
+      "copyrightHolder" : "",
+      "copyrightYear" : "2021",
+      "datePublished": "2021-02-01 13:55:54 \u002b0000 UTC",
+      "dateModified" : "2021-02-01 13:55:54 \u002b0000 UTC",
+      "url" : "https:\/\/tsumli.github.io\/blog\/paper\/taskonomy\/",
+      "wordCount" : "43",
+      "keywords" : ["転移学習", "Taskonomy", "transfer-learning", "Blog"]
+    }
+  
+  </script>
+</head>
+
+<body>
+  <div class="burger__container">
+  <div class="burger" aria-controls="navigation" aria-label="Menu">
+    <div class="burger__meat burger__meat--1"></div>
+    <div class="burger__meat burger__meat--2"></div>
+    <div class="burger__meat burger__meat--3"></div>
+  </div>
+</div>
+ 
+
+  <nav class="nav" id="navigation">
+  <ul class="nav__list">
+    
+    
+      <li>
+        <a  href="https://tsumli.github.io/">about</a>
+      </li>
+    
+      <li>
+        <a  class="active"
+         href="https://tsumli.github.io/blog">blog</a>
+      </li>
+    
+  </ul>
+</nav>
+
+
+  <main>
+    
+    
+
+    <div class="flex-wrapper">
+      <div class="post__container">
+        <div class="post">
+          <header class="post__header">
+            <h1 id="post__title">Taskonomyを読む</h1>
+            <time datetime="2021-02-01 13:55:54 &#43;0000 UTC" class="post__date">Feb 1 2021</time> 
+          </header>
+          <article class="post__content">
+              
+<p><a href="https://arxiv.org/abs/1804.08328" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>arxiv</a>
+</p>
+<h1 id="method">Method</h1>
+<ol>
+<li>
+<p><strong>Task-Specific Modeling</strong><br>
+全てのSourceのタスクにおいて教師あり学習を行う
+ネットワークはエンコーダとデコーダを持つが、<strong>デコーダの構造はタスクによって異なる</strong>。</p>
+</li>
+<li>
+<p><strong>Transfer Modeling</strong><br>
+$s\in \mathcal{S}$ と $t\in \mathcal{T}$ が与えられる。
+$s$のエンコーダーで変換したものをデコーダーで変換する。
+それと正解ラベルとのロスを最小化するようにデコーダーの$\theta$を学習する。
+$E_s(I)$が$t$を解くのに役立つかどうかの尺度としてデコーダーのパフォーマンスが使われる。</p>
+<ul>
+<li>
+<p><strong>Accesibility</strong>
+転移学習がうまく行くために、Sourceから得られる表現はTargetを解くのに十分な情報をもっていて、かつ情報へのAccesibilityを持ってないといけない。AccesibleなTransferabilityを評価するために少ないデータセットで訓練された小さいアーキテクチャが必要である</p>
+</li>
+<li>
+<p><strong>High-Order Transfers</strong>
+複数のSource taskがTarget taskを解くのに補完的な情報を持っていることがある。しかしすべて実験していると組み合わせ爆発が起こってしまうためTarget taskに良い結果をもたらすであろうSource taskを5つまで選択しすべての組み合わせを検証した</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Analytic Hierarchy Process (AHP) による正規化</strong><br>
+transferabilityのAffinity Matrix(相性の行列)を計算したい。
+SourceからTaskへ転移させたときのロスをそのまま$[0, 1]$にスケールさせて用いると、ロスに対しての本当のクオリティが変わるスピードが異なる場合が問題となるため、適切なnormalizationを考えなければいけない。
+そこでAHP法を用いる(AHPの中でも固有値を用いる方法<a href="https://core.ac.uk/download/pdf/96975029.pdf" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>[参考]</a>
+)。
+それぞれのtargetに対してすべての可能なssourceからのtransferabilityのpairwise tornament行列Wtを構成する。
+つまり、$(i,j)$は$s_i$が$s_j$よりも優れている確率を表している。これの主固有値に対応する主固有ベクトルを求める。
+最終的な$s_i\rightarrow t$ のtransferabilityは主固有ベクトルのi番目の要素と対応する</p>
+</li>
+</ol>
+
+
+              
+                  
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            showMathMenu: false, //disables context menu
+            tex2jax: {
+            inlineMath: [ ['$','$'], ['\\(','\\)'] ]
+           }
+    });
+</script>
+              
+          </article>
+          
+
+<ul class="tags__list">
+    
+    <li class="tag__item">
+        <a class="tag__link" href="https://tsumli.github.io/tags/transfer-learning/">transfer-learning</a>
+    </li></ul>
+
+ <div class="pagination">
+  
+
+  
+</div>
+
+          
+          <footer class="post__footer">
+            
+
+
+<div class="social-icons">
+  
+     
+    
+  
+     
+    
+      <a class="social-icons__link" rel="me" title="GitHub"
+         href="https://github.com/tsumli"
+         target="_blank" rel="noopener">
+        <div class="social-icons__icon" style="background-image: url('https://tsumli.github.io/svg/github.svg')"></div>
+      </a>
+    
+     
+</div>
+
+            <p>© 2021</p>
+          </footer>
+          </div>
+      </div>
+      
+      <div class="toc-container">
+           <div class="toc-post-title">Taskonomyを読む</div> 
+        <nav id="TableOfContents"></nav>
+      </div>
+      
+    </div>
+    
+
+  </main>
+
+   
+
+  
+  <script src="https://tsumli.github.io/js/index.min.49e4d8a384357d9b445b87371863419937ede9fa77737522ffb633073aebfa44.js" integrity="sha256-SeTYo4Q1fZtEW4c3GGNBmTft6fp3c3Ui/7YzBzrr&#43;kQ=" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://unpkg.com/prismjs@1.20.0/components/prism-core.min.js"></script>
+
+  
+  <script src="https://unpkg.com/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"
+    data-autoloader-path="https://unpkg.com/prismjs@1.20.0/components/"></script>
+
+  
+    <script src="https://tsumli.github.io/js/table-of-contents.js"></script>
+  
+
+
+</body>
+
+</html>
