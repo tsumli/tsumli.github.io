@@ -24,7 +24,7 @@ services:
     tty:
       true
     command:
-      hugo new blog/:main.md
+      hugo new blog/optimal-transport/introduction/main.md
 
   build_site:
     image:
