@@ -1,12 +1,11 @@
 ---
 title: "自分的Singularityの使い方"
-date: 2021-02-02T00:55:54Z
+date: 2021-02-01T15:55:54Z
 slug: "singularity"
 description: ""
 keywords: ["abci", "singularity"]
 draft: false
 tags: ["singularity", "abci"]
-url: /blog/singularity/
 math: true
 toc: true
 ---

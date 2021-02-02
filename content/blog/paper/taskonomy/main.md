@@ -6,7 +6,6 @@ description: ""
 keywords: ["転移学習", "Taskonomy", "transfer-learning"]
 draft: false
 tags: ["transfer-learning", "paper"]
-url: /blog/taskonomy/
 math: true
 toc: true
 ---
@@ -38,7 +37,7 @@ AHP法を用いると、ある$t\in\mathcal{T}$に対してどの$s\in\mathcal{S
 すべての$\mathcal{T}$について重要性を計算したあと、$(i, j)$要素が$t_i$に対する$s_j$の重要性を表すようにベクトルを結合していくと、Affinity Matrixを求めることができます (下図右) 。 ここで、下図左の行列は正規化を行わなかったときのAfinity Matrixを表しており、正規化することで違いが理解しやすくなっていることが分かります。
 {{<figure src="images/normalize.png">}}
     
-4. **Computing the Grobal Taxonomy**
+4. **Computing the Grobal Taxonomy**  
 さて、Affinity Matrixが与えられたとき、$t\in \mathcal{T}$のパフォーマンスを最大化する$\mathcal{S}$の部分集合を考えます。
 これは、与えられた予算の中で目標を最大化させるという問題に帰着し、整数計画法 (Boolean Integer Programming; BIP) を用いて解くことができます。
     
