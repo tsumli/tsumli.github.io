@@ -10,11 +10,11 @@
     <lastBuildDate>Mon, 01 Feb 2021 13:55:54 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/paper/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Taskonomyを読む</title>
-      <link>https://tsumli.github.io/blog/paper/taskonomy/taskonomy/</link>
+      <link>https://tsumli.github.io/blog/paper/taskonomy/</link>
       <pubDate>Mon, 01 Feb 2021 13:55:54 +0000</pubDate>
       
-      <guid>https://tsumli.github.io/blog/paper/taskonomy/taskonomy/</guid>
-      <description>Taskonomy: Disentangling Task Transfer Learning という論文を読んでいきます この論文はCVPR 2018のBestPaperを受賞しています (本文中の図は論文より引用) 。
+      <guid>https://tsumli.github.io/blog/paper/taskonomy/</guid>
+      <description>Taskonomy: Disentangling Task Transfer Learning という論文を読んでいきます。 この論文はCVPR 2018のBestPaperを受賞しています (本文中の図は論文より引用) 。
 Motivation タスク間の転移学習しやすさが分かれば、アノテーションの足りないデータを扱う、または性能を向上させたいときにどのタスクで事前学習を行うべきかが分かる。
 Method 手法は「sourceタスク$\rightarrow$targetタスクで転移学習し、誤差を比較する」という流れです。
 用意したsourceタスクの集合を$\mathcal{S}$、targetタスクの集合を$\mathcal{T}$とします。 今回は$|\mathcal{S}| = 26, |\mathcal{T}|=22$となっています (source-onlyタスクが4種類) 。

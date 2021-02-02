@@ -10,7 +10,7 @@ math: true
 toc: true
 ---
 
-[**Taskonomy: Disentangling Task Transfer Learning**](https://arxiv.org/abs/1804.08328)という論文を読んでいきます
+[**Taskonomy: Disentangling Task Transfer Learning**](https://arxiv.org/abs/1804.08328)という論文を読んでいきます。
 この論文はCVPR 2018のBestPaperを受賞しています (本文中の図は論文より引用) 。
 ## Motivation
 タスク間の転移学習しやすさが分かれば、アノテーションの足りないデータを扱う、または性能を向上させたいときにどのタスクで事前学習を行うべきかが分かる。
