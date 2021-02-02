@@ -13,6 +13,7 @@ publishDir = "docs"
 canonifyurls = true
 
 
+
 # Override these settings with your own
 title = "tsumli-pages"
 languageCode = "en-us"
@@ -84,3 +85,4 @@ googleAnalytics = "UA-188554402-1"
   name = "blog"
   title = "Blog"
   url = "/blog"
+  weight = 3

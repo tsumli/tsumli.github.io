@@ -24,7 +24,7 @@ services:
     tty:
       true
     command:
-      hugo new blog/abc
+      hugo new blog/:main.md
 
   build_site:
     image:

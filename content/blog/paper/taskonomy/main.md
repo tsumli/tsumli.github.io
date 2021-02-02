@@ -6,6 +6,7 @@ description: ""
 keywords: ["転移学習", "Taskonomy", "transfer-learning"]
 draft: false
 tags: ["transfer-learning", "paper"]
+url: /blog/taskonomy/
 math: true
 toc: true
 ---
