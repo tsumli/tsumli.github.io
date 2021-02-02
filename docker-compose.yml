@@ -24,7 +24,7 @@ services:
     tty:
       true
     command:
-      hugo new blog/paper/taskonomy.md
+      hugo new blog/abc
 
   build_site:
     image:

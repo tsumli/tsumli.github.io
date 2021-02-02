@@ -7,7 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© {year}</copyright>
-    <lastBuildDate>Mon, 01 Feb 2021 13:55:54 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 02 Feb 2021 06:55:54 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>自分的Singularityの使い方</title>
+      <link>https://tsumli.github.io/blog/abci/singularity/</link>
+      <pubDate>Tue, 02 Feb 2021 06:55:54 +0000</pubDate>
+      
+      <guid>https://tsumli.github.io/blog/abci/singularity/</guid>
+      <description>abciを使うときにDockerではなくSingularityを使う必要があったのですが、戸惑う部分が多かったので記録しておきます。 今回扱うバージョンはsingularitypro/3.5です。 imageの作成 imageを作成するためのDefinition fileを作成します (詳細は公式ドキュメント ) 。
+ubuntuのimageをもとにdefinition fileを作成しました (docker-compose.ymlを書くときのイメージですね) 。
+Bootstrap: docker From: ubuntu %files requirements.txt %post apt update apt upgrade -y apt install -y python3 apt install -y python3-pip pip3 install -r requirements.txt %environment export LC_ALL=ja_JP.utf-8 export LANG=ja_JP.utf-8  このファイルをfoo.defとして保存し、buildします。
+singularity build --fakeroot foo.sif foo.def  あとは、実行のためのシェルスクリプトを書いて完成です。
+#!/bin/sh #$ -l rt_G.small=1 #$ -j y #$ -o fit/output/ #$ -cwd #$ -l h_rt=12:00:00 source /etc/profile.d/modules.sh module load singularitypro/3.5 singularity run --nv foo.</description>
+    </item>
+    
     <item>
       <title>Taskonomyを読む</title>
       <link>https://tsumli.github.io/blog/paper/taskonomy/</link>
