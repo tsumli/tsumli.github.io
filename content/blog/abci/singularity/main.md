@@ -6,6 +6,7 @@ description: ""
 keywords: ["abci", "singularity"]
 draft: false
 tags: ["singularity", "abci"]
+url: "blog/abci/singularity/"
 math: true
 toc: true
 ---
