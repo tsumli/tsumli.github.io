@@ -41,11 +41,13 @@ googleAnalytics = "UA-188554402-1"
   # instagram = "https://instagram.com/<your handle>"
   # linkedin = "<link to your profile>"
   # youtube = "https://www.youtube.com/channel/<your channel>"
-  
+  medium = "https://medium.com/@tsumli"
   # Titles for your icons (shown as tooltips), and also their display order.
   # Currently, these icons are supported: 
   #   "Twitter", "GitHub", "Email", "Mastodon", "Facebook", "GitLab", "Instagram", "LinkedIn", "YouTube"
-  iconOrder = ["GitHub"]
+  
+
+  iconOrder = ["GitHub", "Medium"]
 
   # Metadata for Twitter cards, defaults to params.twitter
   # twitterSite = "@<your handle>"
