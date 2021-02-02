@@ -62,7 +62,7 @@
       "datePublished": "2021-02-01 13:55:54 \u002b0000 UTC",
       "dateModified" : "2021-02-01 13:55:54 \u002b0000 UTC",
       "url" : "https:\/\/tsumli.github.io\/blog\/paper\/taskonomy\/",
-      "wordCount" : "58",
+      "wordCount" : "89",
       "keywords" : ["転移学習", "Taskonomy", "transfer-learning", "Blog"]
     }
   
@@ -120,17 +120,18 @@ if (!doNotTrack) {
           </header>
           <article class="post__content">
               
-<p>CVPR 2018のBestPaperを取ったTaskonomyという論文を読んでいきます
-(本文中の図は<a href="https://arxiv.org/abs/1804.08328" 
+<p><a href="https://arxiv.org/abs/1804.08328" 
   
    target="_blank" rel="noreferrer noopener" 
->論文</a>
-より引用) 。</p>
+><strong>Taskonomy: Disentangling Task Transfer Learning</strong></a>
+という論文を読んでいきます
+この論文はCVPR 2018のBestPaperを受賞しています (本文中の図は論文より引用) 。</p>
 <h2 id="motivation">Motivation<a class="anchor" href="#motivation">#</a></h2>
 <p>タスク間の転移学習しやすさが分かれば、アノテーションの足りないデータを扱う、または性能を向上させたいときにどのタスクで事前学習を行うべきかが分かる。</p>
 <h2 id="method">Method<a class="anchor" href="#method">#</a></h2>
 <p>手法は「sourceタスク$\rightarrow$targetタスクで転移学習し、誤差を比較する」という流れです。<br>
-用意したsourceタスクの集合を$\mathcal{S}$、targetタスクの集合を$\mathcal{T}$とします。</p>
+用意したsourceタスクの集合を$\mathcal{S}$、targetタスクの集合を$\mathcal{T}$とします。
+今回は$|\mathcal{S}| = 26, |\mathcal{T}|=22$となっています (source-onlyタスクが4種類) 。</p>
 <ol>
 <li>
 <p><strong>Task-Specific Modeling</strong><br>
@@ -153,14 +154,28 @@ $s\in \mathcal{S}$ と $t\in \mathcal{T}$ が与えられたとき、$s\rightarr
    target="_blank" rel="noreferrer noopener" 
 >参考</a>
 ) を用います。
-AHP法を用いると、ある$t\in\mathcal{T}$に対してどの$s\in\mathcal{S}$が重要 (効率的) なのかが分かります。つまり、ある$t$に対して、$i$番目が$s_i$の重要性を表すようなベクトル$\mathbf{s}\in \mathbb{R}^{|\mathcal{S}|}$が得られるということです。<br>
+AHP法を用いると、ある$t\in\mathcal{T}$に対してどの$s\in\mathcal{S}$が重要 (効率的) なのかが分かります。つまり、ある$t$に対して、$i$番目が$s_i$の重要性を表すようなベクトル$\mathbf{s}\in \mathbb{R}^{|\mathcal{S}|}$が得られるということです。
 すべての$\mathcal{T}$について重要性を計算したあと、$(i, j)$要素が$t_i$に対する$s_j$の重要性を表すようにベクトルを結合していくと、Affinity Matrixを求めることができます (下図右) 。 ここで、下図左の行列は正規化を行わなかったときのAfinity Matrixを表しており、正規化することで違いが理解しやすくなっていることが分かります。
 <figure>
     <img src="images/normalize.png"/> 
 </figure>
 </p>
 </li>
+<li>
+<p><strong>Computing the Grobal Taxonomy</strong>
+さて、Affinity Matrixが与えられたとき、$t\in \mathcal{T}$のパフォーマンスを最大化する$\mathcal{S}$の部分集合を考えます。
+これは、与えられた予算の中で目標を最大化させるという問題に帰着し、整数計画法 (Boolean Integer Programming; BIP) を用いて解くことができます。</p>
+</li>
 </ol>
+<h2 id="result">Result<a class="anchor" href="#result">#</a></h2>
+<p>おそらく論文より<a href="http://taskonomy.stanford.edu/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>プロジェクトサイト</a>
+のAPIを見たほうが早いです。
+$\mathcal{S}, \mathcal{T}$、そして予算などを指定してあげると、どのタスクがどのタスクに効率的に転移学習が行えるかが表示されます。</p>
+<h2 id="memo">Memo<a class="anchor" href="#memo">#</a></h2>
+<p>約48000時間GPUで計算したというこの論文。圧倒的な資金力。</p>
 
 
               
@@ -203,9 +218,6 @@ AHP法を用いると、ある$t\in\mathcal{T}$に対してどの$s\in\mathcal{S
   
      
     
-  
-     
-    
       <a class="social-icons__link" rel="me" title="GitHub"
          href="https://github.com/tsumli"
          target="_blank" rel="noopener">
@@ -226,6 +238,8 @@ AHP法を用いると、ある$t\in\mathcal{T}$に対してどの$s\in\mathcal{S
   <ul>
     <li><a href="#motivation">Motivation</a></li>
     <li><a href="#method">Method</a></li>
+    <li><a href="#result">Result</a></li>
+    <li><a href="#memo">Memo</a></li>
   </ul>
 </nav>
       </div>
