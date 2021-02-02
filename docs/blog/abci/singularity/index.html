@@ -62,7 +62,7 @@
       "datePublished": "2021-02-01 15:55:54 \u002b0000 UTC",
       "dateModified" : "2021-02-01 15:55:54 \u002b0000 UTC",
       "url" : "https:\/\/tsumli.github.io\/blog\/abci\/singularity\/",
-      "wordCount" : "73",
+      "wordCount" : "91",
       "keywords" : ["abci", "singularity", "Blog"]
     }
   
@@ -120,10 +120,13 @@ if (!doNotTrack) {
           </header>
           <article class="post__content">
               
-<p>abciを使うときにDockerではなくSingularityを使う必要があったのですが、戸惑う部分が多かったので記録しておきます。
-今回扱うバージョンはsingularitypro/3.5です。
-imageの作成
-imageを作成するためのDefinition fileを作成します (詳細は<a href="https://repo.sylabs.io/c/0f6898986ad0b646b5ce6deba21781ac62cb7e0a86a5153bbb31732ee6593f43/guides/singularitypro35-user-guide/" 
+<h2 id="why-singularity">Why Singularity?<a class="anchor" href="#why-singularity">#</a></h2>
+<p>abciを使うときにdockerではなくsingularityを使う必要があったのですが、戸惑う部分が多かったので記録しておきます。
+dockerはroot権限が奪取される可能性があるため、共用サーバなどではセキュリティの問題から使用できない場面が多いです。</p>
+<h2 id="how-to-use">How to use<a class="anchor" href="#how-to-use">#</a></h2>
+<p>今回扱うバージョンはsingularitypro/3.5です。</p>
+<h3 id="1-def-to-sif">1. .def to .sif<a class="anchor" href="#1-def-to-sif">#</a></h3>
+<p>imageを作成するためのDefinition fileを作成します (詳細は<a href="https://repo.sylabs.io/c/0f6898986ad0b646b5ce6deba21781ac62cb7e0a86a5153bbb31732ee6593f43/guides/singularitypro35-user-guide/" 
   
    target="_blank" rel="noreferrer noopener" 
 >公式ドキュメント</a>
@@ -147,9 +150,11 @@ From: ubuntu
     export LANG=ja_JP.utf-8
 
 </code></pre>
+<h3 id="2-build">2. build<a class="anchor" href="#2-build">#</a></h3>
 <p>このファイルをfoo.defとして保存し、buildします。</p>
 <pre><code class="language-sh">singularity build --fakeroot foo.sif foo.def
 </code></pre>
+<h3 id="3-run">3. run<a class="anchor" href="#3-run">#</a></h3>
 <p>あとは、実行のためのシェルスクリプトを書いて完成です。</p>
 <pre><code class="language-sh">#!/bin/sh
 #$ -l rt_G.small=1
@@ -161,6 +166,10 @@ source /etc/profile.d/modules.sh
 module load singularitypro/3.5
 singularity run --nv foo.sif run.sh
 </code></pre>
+<h2 id="memo">Memo<a class="anchor" href="#memo">#</a></h2>
+<p>一応singularityが使えるようになりました。しかし、正直扱うのが難しいなという印象があります。
+詰まったところで、検索しても情報が少ないです。
+dockerの&ndash;rootlessってどうなんですかね。 GPU対応が弱いなどの噂があるので難しいのでしょうか。</p>
 
 
               
@@ -233,7 +242,19 @@ singularity run --nv foo.sif run.sh
       
       <div class="toc-container">
            <div class="toc-post-title">自分的Singularityの使い方</div> 
-        <nav id="TableOfContents"></nav>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#why-singularity">Why Singularity?</a></li>
+    <li><a href="#how-to-use">How to use</a>
+      <ul>
+        <li><a href="#1-def-to-sif">1. .def to .sif</a></li>
+        <li><a href="#2-build">2. build</a></li>
+        <li><a href="#3-run">3. run</a></li>
+      </ul>
+    </li>
+    <li><a href="#memo">Memo</a></li>
+  </ul>
+</nav>
       </div>
       
     </div>

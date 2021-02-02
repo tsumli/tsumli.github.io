@@ -10,10 +10,12 @@ url: "blog/abci/singularity/"
 math: true
 toc: true
 ---
-
-abciを使うときにDockerではなくSingularityを使う必要があったのですが、戸惑う部分が多かったので記録しておきます。
+## Why Singularity?
+abciを使うときにdockerではなくsingularityを使う必要があったのですが、戸惑う部分が多かったので記録しておきます。
+dockerはroot権限が奪取される可能性があるため、共用サーバなどではセキュリティの問題から使用できない場面が多いです。
+## How to use
 今回扱うバージョンはsingularitypro/3.5です。
-imageの作成
+### 1. .def to .sif
 imageを作成するためのDefinition fileを作成します (詳細は[公式ドキュメント](https://repo.sylabs.io/c/0f6898986ad0b646b5ce6deba21781ac62cb7e0a86a5153bbb31732ee6593f43/guides/singularitypro35-user-guide/)) 。  
 ubuntuのimageをもとにdefinition fileを作成しました (docker-compose.ymlを書くときのイメージですね) 。
 
@@ -36,12 +38,13 @@ From: ubuntu
     export LANG=ja_JP.utf-8
 
 ```
-
+### 2. build
 このファイルをfoo.defとして保存し、buildします。
 ```sh
 singularity build --fakeroot foo.sif foo.def
 ```
 
+### 3. run
 あとは、実行のためのシェルスクリプトを書いて完成です。
 ```sh
 #!/bin/sh
@@ -54,3 +57,8 @@ source /etc/profile.d/modules.sh
 module load singularitypro/3.5
 singularity run --nv foo.sif run.sh
 ```
+
+## Memo
+一応singularityが使えるようになりました。しかし、正直扱うのが難しいなという印象があります。
+詰まったところで、検索しても情報が少ないです。
+dockerの--rootlessってどうなんですかね。 GPU対応が弱いなどの噂があるので難しいのでしょうか。
