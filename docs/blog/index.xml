@@ -1,56 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Blogs on tsumli-pages</title>
-    <link>https://tsumli.github.io/blog/</link>
-    <description>Recent content in Blogs on tsumli-pages</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© {year}</copyright>
-    <lastBuildDate>Tue, 02 Feb 2021 13:55:54 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Optimal Transport 01. はじめ</title>
-      <link>https://tsumli.github.io/blog/optimal-transport/01-introduction/</link>
-      <pubDate>Tue, 02 Feb 2021 13:55:54 +0000</pubDate>
-      
-      <guid>https://tsumli.github.io/blog/optimal-transport/01-introduction/</guid>
-      <description>Optimal Transport とは Optimal Transportは、日本語で最適輸送 (問題) と訳されます。 和訳が表しているように、ある物体をある地点から別の地点に移したときの最小コスト、そしてその輸送方法を求めるという問題です。そこから、確率分布の比較に使われるようになりました。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Blogs on tsumli-pages</title><link>https://tsumli.github.io/blog/</link><description>Recent content in Blogs on tsumli-pages</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>© {year}</copyright><lastBuildDate>Tue, 02 Feb 2021 13:55:54 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>Optimal Transport 01. はじめ</title><link>https://tsumli.github.io/blog/optimal-transport/01-introduction/</link><pubDate>Tue, 02 Feb 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/optimal-transport/01-introduction/</guid><description>Optimal Transport とは Optimal Transportは、日本語で最適輸送 (問題) と訳されます。 和訳が表しているように、ある物体をある地点から別の地点に移したときの最小コスト、そしてその輸送方法を求めるという問題です。そこから、確率分布の比較に使われるようになりました。
 歴史 歴史は古く、1781年にGaspard Mongeが提案しました1。問題の発想は簡単で、 ある場所から別の場所に土砂を運ぶとき、どのように運べばよいのか というものです。
 もっと具体的に考えてみましょう。ある場所 (場所Aとします) には $n$ 地点に土砂があったとします。そして、移動先の場所 (場所Bとします) の $n$ 地点に土砂を移したいとします。 Aの $i$ 地点とBの $j$ 地点の間の距離=コストが $\mathbf C_{i,j}$ と表されるとき、 平均の輸送コストはどのようになるか。という問題です。
 これを数式で表すと次のようになります。 $$ \min_{\sigma \in \mathrm{Perm}(n)} \frac{1}{n} \sum_{i=1}^{n} \mathbf{C}_{i, \sigma(i)} $$ ここで、$\mathrm{Perm}(n)$は$n$の順列の集合。
 では、これを貪欲に解こうと思うと、$O(n!)$ 回計算しなければなりません ($n\geq 10$ だとつらいというイメージ) 。 そこで、この問題をもとに現在に至るまで様々なアルゴリズムが開発されてきました。
-Kantorovichの一般化 Kantorovichはこの輸送問題を確率分布間に適用しました2。 距離を求めたい確率分布を $\mathbf{a}\in \mathbb{R}^n, \mathbf{b}\in \mathbb{R}^m$ とします。 ここで、$\mathbf{a}$ と $\mathbf{b}$ の同時分布 $\mathbf{U}$ を考えます。 $$ \mathbf{U}(\mathbf{a}, \mathbf{b}) \triangleq \lbrace \mathbf{P}\in\mathbb{R}^{n\times m}_+: \mathbf{P}\mathbf{1}_m = \mathbf{a} \mathrm{\ and\ } \mathbf{P}^\mathsf{T}\mathbf{1}_n = \mathbf{b} \rbrace $$ このとき、$\mathbf{1}_n$は$1$が$n$個並んだベクトル。また、$\mathbf{P}$を輸送計画行列と呼び、$(i, j)$ 要素は $i$ 地点から $j$ 地点まで移動させる量を表します。</description>
-    </item>
-    
-    <item>
-      <title>自分的Singularityの使い方</title>
-      <link>https://tsumli.github.io/blog/abci/singularity/</link>
-      <pubDate>Mon, 01 Feb 2021 15:55:54 +0000</pubDate>
-      
-      <guid>https://tsumli.github.io/blog/abci/singularity/</guid>
-      <description>Why Singularity? abciを使うときにdockerではなくsingularityを使う必要があったのですが、戸惑う部分が多かったので記録しておきます。 dockerはroot権限が奪取される可能性があるため、共用サーバなどではセキュリティの問題から使用できない場面が多いです。
+Kantorovichの一般化 Kantorovichはこの輸送問題を確率分布間に適用しました。 距離を求めたい確率分布を $\mathbf{a}\in \mathbb{R}^n, \mathbf{b}\in \mathbb{R}^m$ とします。 ここで、$\mathbf{a}$ と $\mathbf{b}$ の同時分布 $\mathbf{U}$ を考えます。 $$ \mathbf{U}(\mathbf{a}, \mathbf{b}) \triangleq \lbrace \mathbf{P}\in\mathbb{R}^{n\times m}_+: \mathbf{P}\mathbf{1}_m = \mathbf{a} \mathrm{\ and\ } \mathbf{P}^\mathsf{T}\mathbf{1}_n = \mathbf{b} \rbrace $$ このとき、$\mathbf{1}_n$ は $1$ が $n$ 個並んだベクトル。また、$\mathbf{P}$ を輸送計画行列と呼び、$(i, j)$ 要素は $i$ 地点から $j$ 地点まで移動させる量を表します。</description></item><item><title>自分的Singularityの使い方</title><link>https://tsumli.github.io/blog/abci/singularity/</link><pubDate>Mon, 01 Feb 2021 15:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/abci/singularity/</guid><description>Why Singularity? abciを使うときにdockerではなくsingularityを使う必要があったのですが、戸惑う部分が多かったので記録しておきます。 dockerはroot権限が奪取される可能性があるため、共用サーバなどではセキュリティの問題から使用できない場面が多いです。
 How to use 今回扱うバージョンはsingularitypro/3.5です。
 1. .def to .sif imageを作成するためのDefinition fileを作成します (詳細は公式ドキュメント ) 。
 ubuntuのimageをもとにdefinition fileを作成しました (docker-compose.ymlを書くときのイメージですね) 。
-Bootstrap: docker From: ubuntu %files requirements.txt %post apt update apt upgrade -y apt install -y python3 apt install -y python3-pip pip3 install -r requirements.txt %environment export LC_ALL=ja_JP.utf-8 export LANG=ja_JP.utf-8  2. build このファイルをfoo.defとして保存し、buildします。
-singularity build --fakeroot foo.sif foo.def  3. run あとは、実行のためのシェルスクリプトを書いて完成です。
-#!/bin/sh #$ -l rt_G.small=1 #$ -j y #$ -o fit/output/ #$ -cwd #$ -l h_rt=12:00:00 source /etc/profile.</description>
-    </item>
-    
-    <item>
-      <title>Taskonomyを読む</title>
-      <link>https://tsumli.github.io/blog/paper/taskonomy/</link>
-      <pubDate>Mon, 01 Feb 2021 13:55:54 +0000</pubDate>
-      
-      <guid>https://tsumli.github.io/blog/paper/taskonomy/</guid>
-      <description>Taskonomy: Disentangling Task Transfer Learning という論文を読んでいきます。 この論文はCVPR 2018のBestPaperを受賞しています (本文中の図は論文より引用) 。
+Bootstrap: docker From: ubuntu %files requirements.txt %post apt update apt upgrade -y apt install -y python3 apt install -y python3-pip pip3 install -r requirements.txt %environment export LC_ALL=ja_JP.utf-8 export LANG=ja_JP.utf-8 2. build このファイルをfoo.defとして保存し、buildします。
+singularity build --fakeroot foo.sif foo.def 3. run あとは、実行のためのシェルスクリプトを書いて完成です。
+#!/bin/sh #$ -l rt_G.small=1 #$ -j y #$ -o fit/output/ #$ -cwd #$ -l h_rt=12:00:00 source /etc/profile.</description></item><item><title>Taskonomyを読む</title><link>https://tsumli.github.io/blog/paper/taskonomy/</link><pubDate>Mon, 01 Feb 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/taskonomy/</guid><description>Taskonomy: Disentangling Task Transfer Learning という論文を読んでいきます。 この論文はCVPR 2018のBestPaperを受賞しています (本文中の図は論文より引用) 。
 Motivation タスク間の転移学習しやすさが分かれば、アノテーションの足りないデータを扱う、または性能を向上させたいときにどのタスクで事前学習を行うべきかが分かる。
 Method 手法は「sourceタスク$\rightarrow$targetタスクで転移学習し、誤差を比較する」という流れです。
 用意したsourceタスクの集合を$\mathcal{S}$、targetタスクの集合を$\mathcal{T}$とします。 今回は$|\mathcal{S}| = 26, |\mathcal{T}|=22$となっています (source-onlyタスクが4種類) 。
 1. Task-Specific Modeling Sourceタスクそれぞれで教師あり学習を行います。 ネットワークはエンコーダとデコーダを持ちます。エンコーダの構造は同一 (ResNet50を修正したもの) ですが、デコーダの構造はタスクによって異なります。
-2. Transfer Modeling $s\in \mathcal{S}$ と $t\in \mathcal{T}$ が与えられたとき、$s\rightarrow t$と転移学習を行ったときの$t$でのパフォーマンスを求めたいとします。 このとき、エンコーダは$s$で学習したもので固定し、$t$でデコーダのみ学習させます。
-3. Analytic Hierarchy Process (AHP) による正規化 転移学習しやすさのAffinity Matrix (相性の行列) を計算します。 直感的には、「$s\rightarrow t$に転移学習したときの最終的な$t$でのテスト誤差をそのまま$[0, 1]$にスケールさせて用いる」という方法が考えられますが、そうすると テスト誤差に対しての本当のクオリティが変わるスピードが異なる場合に問題となります (例えば、Segmentationでの誤差が1/2になるのと、edge検出での誤差が1/2になるのは同じだけ性能が向上したとは言えません) 。 つまり、何かしらの方法を用いて正規化しなければいけません。 そこでAHP法 (固有値を用いる方法 参考 ) を用います。 AHP法を用いると、ある$t\in\mathcal{T}$に対してどの$s\in\mathcal{S}$が重要 (効率的) なのかが分かります。つまり、ある$t$に対して、$i$番目が$s_i$の重要性を表すようなベクトル$\mathbf{s}\in \mathbb{R}^{|\mathcal{S}|}$が得られるということです。 すべての$\mathcal{T}$について重要性を計算したあと、$(i, j)$要素が$t_i$に対する$s_j$の重要性を表すようにベクトルを結合していくと、Affinity Matrixを求めることができます (下図右) 。 ここで、下図左の行列は正規化を行わなかったときのAffinity Matrixを表しており、正規化することで違いが理解しやすくなっていることが分かります。   4.</description>
-    </item>
-    
-  </channel>
-</rss>
+2. Transfer Modeling $s\in \mathcal{S}$ と $t\in \mathcal{T}$ が与えられたとき、$s\rightarrow t$ と転移学習を行ったときの$t$でのパフォーマンスを求めます。 このとき、エンコーダは $s$ で学習したもので固定し、$t$ でデコーダのみ学習させます。
+3. Analytic Hierarchy Process (AHP) による正規化 転移学習しやすさのAffinity Matrix (相性の行列) を計算します。 直感的には、「 $s\rightarrow t$ に転移学習したときの最終的な$t$でのテスト誤差をそのまま $[0, 1]$ にスケールさせて用いる」という方法が考えられますが、そうすると テスト誤差に対しての本当のクオリティが変わるスピードが異なる場合に問題となります (例えば、Segmentationでの誤差が1/2になるのと、edge検出での誤差が 1/2 になるのは同じだけ性能が向上したとは言えません) 。 つまり、何かしらの方法を用いて正規化しなければいけません。 そこでAHP法 (固有値を用いる方法 参考 ) を用います。 AHP法を用いると、ある$t\in\mathcal{T}$に対してどの$s\in\mathcal{S}$が重要 (効率的) なのかが分かります。つまり、ある$t$に対して、$i$番目が$s_i$の重要性を表すようなベクトル$\mathbf{s}\in \mathbb{R}^{|\mathcal{S}|}$が得られるということです。 すべての$\mathcal{T}$について重要性を計算したあと、$(i, j)$要素が$t_i$に対する$s_j$の重要性を表すようにベクトルを結合していくと、Affinity Matrixを求めることができます (下図右) 。 ここで、下図左の行列は正規化を行わなかったときのAffinity Matrixを表しており、正規化することで違いが理解しやすくなっていることが分かります。 4.</description></item></channel></rss>

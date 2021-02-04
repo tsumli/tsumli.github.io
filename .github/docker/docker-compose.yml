@@ -1,9 +1,0 @@
-version: '3'
-services:
-  build_pages:
-    image:
-      "trenton/hugo-extended"
-    volumes:
-      - $GITHUB_WORKSPACE/:/site
-    command:
-      hugo 
