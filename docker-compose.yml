@@ -26,7 +26,7 @@ services:
     command:
       hugo new blog/optimal-transport/introduction/main.md
 
-  build_site:
+  build_pages:
     image:
       "trenton/hugo-extended"
     ports:

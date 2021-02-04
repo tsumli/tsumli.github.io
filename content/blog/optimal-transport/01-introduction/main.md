@@ -38,7 +38,7 @@ $$
 $$
 このとき、$\mathbf{1}_n$は$1$が$n$個並んだベクトル。また、$\mathbf{P}$を輸送計画行列と呼び、$(i, j)$ 要素は $i$ 地点から $j$ 地点まで移動させる量を表します。  
 この集合の制約条件 ( $\mathbf{P}\mathbf{1}_m = \mathbf{a}$ ) について考えます。
-$\mathbf{P}\mathbf{1}_m$ は、行列 $\mathbf{P}$ に対しdim=0でsumを取ったときと同等の結果になります。
+$\mathbf{P}\mathbf{1}_m$ は、行列 $\mathbf{P}$ に対しdim=0でsumを取ったときと同等の結果になります (shapeが違うという意味です) 。
 つまり、$\mathbf{P}$ の $i$ 行の要素の合計が $\mathbf{a}_i$ と一致するということです。
 同様に、$\mathbf{P}^\mathsf{T} \mathbf{1}_n = \mathbf{b}$ とは、$\mathbf{P}$ の $j$ 列の要素の合計が $\mathbf{b}_j$ と一致するという意味です。
 
@@ -46,7 +46,7 @@ $\mathbf{P}\mathbf{1}_m$ は、行列 $\mathbf{P}$ に対しdim=0でsumを取っ
 $$
 \mathrm{L_{\mathbf{C}}} (\mathbf{a}, \mathbf{b})\triangleq \min_{\mathbf{P}\in\mathbf{U}(\mathbf{a}, \mathbf{b})} \langle \mathbf{C}, \mathbf{P} \rangle \triangleq \min \sum_{i, j} \mathbf{C}_{i,j} \mathbf{P}_{i, j}
 $$
-ここで、$\langle \cdot, \cdot \rangle$はフロベニウス式。
+ここで、$\langle \cdot, \cdot \rangle$はフロベニウス積。
 
 つづく
 
