@@ -30,13 +30,13 @@ $$
 そこで、この問題をもとに現在に至るまで様々なアルゴリズムが開発されてきました。
 
 ## Kantorovichの一般化
-Kantorovichはこの輸送問題を確率分布間に適用しました[^fn2]。
+Kantorovichはこの輸送問題を確率分布間に適用しました。
 距離を求めたい確率分布を $\mathbf{a}\in \mathbb{R}^n, \mathbf{b}\in \mathbb{R}^m$ とします。
 ここで、$\mathbf{a}$ と $\mathbf{b}$ の同時分布 $\mathbf{U}$ を考えます。
 $$
 \mathbf{U}(\mathbf{a}, \mathbf{b}) \triangleq \lbrace \mathbf{P}\in\mathbb{R}^{n\times m}_+: \mathbf{P}\mathbf{1}_m = \mathbf{a} \mathrm{\ and\ } \mathbf{P}^\mathsf{T}\mathbf{1}_n = \mathbf{b} \rbrace
 $$
-このとき、$\mathbf{1}_n$は$1$が$n$個並んだベクトル。また、$\mathbf{P}$を輸送計画行列と呼び、$(i, j)$ 要素は $i$ 地点から $j$ 地点まで移動させる量を表します。  
+このとき、$\mathbf{1}_n$ は $1$ が $n$ 個並んだベクトル。また、$\mathbf{P}$ を輸送計画行列と呼び、$(i, j)$ 要素は $i$ 地点から $j$ 地点まで移動させる量を表します。  
 この集合の制約条件 ( $\mathbf{P}\mathbf{1}_m = \mathbf{a}$ ) について考えます。
 $\mathbf{P}\mathbf{1}_m$ は、行列 $\mathbf{P}$ に対しdim=0でsumを取ったときと同等の結果になります (shapeが違うという意味です) 。
 つまり、$\mathbf{P}$ の $i$ 行の要素の合計が $\mathbf{a}_i$ と一致するということです。
@@ -48,11 +48,20 @@ $$
 $$
 ここで、$\langle \cdot, \cdot \rangle$はフロベニウス積。
 
+<!-- ## 双対化
+制約条件を考えた上での最小化問題を考えるとき、ラグランジュの未定乗数法を用いることが思い浮かびます。
+$$
+\large
+\min_{\mathbf{P}\geq 0}\quad \max_{(\mathbf{f}, \mathbf{g})\in \mathbb{R}^n \times \mathbb{R}^m} \langle \mathbf{C}, \mathbf{P} \rangle + \langle \mathbf{P}\mathbf{1}_m-\mathbf{a}, \mathbf{f} \rangle + \langle \mathbf{P}^\mathsf{T}\mathbf{1}_n-\mathbf{b}, \mathbf{g}\rangle
+$$
+\begin{eqnarray}
+\frac{\partial L}{\partial \mathbf{P}} &=& \mathbf{C} - \lambda_1 \mathbf{1}_m - \lambda_2 \mathbf{1}_n 
+\frac{\partial L}{\partial \mathbf{P}}
+\end{eqnarray} -->
+
 つづく
 
 ## 参考文献  
 - [Computational optimal transport](https://arxiv.org/abs/1803.00567).
 
-
 [^fn1]: Gaspard Monge. Mémoire sur la théorie des déblais et des remblais. De l’Imprimerie Royale, 1781.
-[^fn2]: Leonid Vitalievich Kantorovich. On the translocation of masses. In Dokl. Akad. Nauk. USSR (NS), volume 37, pages 199–201, 1942.

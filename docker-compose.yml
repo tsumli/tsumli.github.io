@@ -26,13 +26,20 @@ services:
     command:
       hugo new blog/optimal-transport/introduction/main.md
 
-  build_pages:
-    image:
-      "trenton/hugo-extended"
-    ports:
-      - 1313:1313
-    user: "1000:1000"
-    volumes:
-      - ./:/site
-    command:
-      hugo 
+  # replace:
+  #   image: "python:3.8-alpine"
+  #   volumes:
+  #     - ./:/workdir/
+  #   command:
+  #     python /workdir/replace_.py
+
+  # build_pages:
+  #   image:
+  #     "trenton/hugo-extended"
+  #   ports:
+  #     - 1313:1313
+  #   user: "1000:1000"
+  #   volumes:
+  #     - ./:/site
+  #   command:
+  #     hugo 
