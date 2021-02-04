@@ -25,3 +25,10 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a build_pages
         run: docker-compose -f $GITHUB_WORKSPACE/.github/docker/docker-compose.yml up
+      
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./doc
+
