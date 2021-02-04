@@ -1,0 +1,12 @@
+version: '3'
+services:
+  build_pages:
+    image:
+      "trenton/hugo-extended"
+    ports:
+      - 1313:1313
+    user: "1000:1000"
+    volumes:
+      - ./:/site
+    command:
+      hugo 
