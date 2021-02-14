@@ -10,6 +10,8 @@ url: "blog/optimal-transport/01-introduction/"
 math: true
 toc: true
 ---
+[01. はじめ]({{< ref"/blog/optimal-transport/01-introduction/main.md">}})  
+[02. エントロピー正則化]({{< ref"/blog/optimal-transport/02-entropy/main.md">}})
 ## Optimal Transport とは
 **Optimal Transport**は、日本語で**最適輸送** (問題) と訳されます。
 和訳が表しているように、ある物体をある地点から別の地点に移したときの最小コスト、そしてその輸送方法を求めるという問題です。そこから、確率分布の比較に使われるようになりました。
@@ -59,9 +61,9 @@ $$
 \frac{\partial L}{\partial \mathbf{P}}
 \end{eqnarray} -->
 
-つづく
+[つづく]({{< ref"/blog/optimal-transport/02-entropy/main.md">}})
 
 ## 参考文献  
-- [Computational optimal transport](https://arxiv.org/abs/1803.00567).
+- [Computational optimal transport](https://arxiv.org/abs/1803.00567)
 
 [^fn1]: Gaspard Monge. Mémoire sur la théorie des déblais et des remblais. De l’Imprimerie Royale, 1781.
