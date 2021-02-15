@@ -4,7 +4,7 @@ date: 2021-02-13T13:55:54Z
 slug: "optimal-transport"
 description: ""
 keywords: ["optimal-transport", "最適輸送理論", "最適輸送問題"]
-draft: true
+draft: false
 tags: ["optimal-transport"]
 url: "blog/optimal-transport/02-entropy/"
 math: true
@@ -13,7 +13,7 @@ toc: true
 [01. はじめ]({{< ref"/blog/optimal-transport/01-introduction/main.md">}})  
 [02. エントロピー正則化]({{< ref"/blog/optimal-transport/02-entropy/main.md">}})
 
-[こちら](https://papers.nips.cc/paper/2013/hash/af21d0c97db2e27e13572cbf59eb343d-Abstract.html)の論文をもとに、Optimal Transportのエントロピー正則化について考えていきましょう。
+Cuturi[^fn1] の論文をもとに、Optimal Transportのエントロピー正則化について考えていきましょう 。
 
 ## 計算量
 $r$ から $c$ へのOptimal Transportは次のようになります
@@ -56,11 +56,45 @@ $$
 \mathbf{P}\mathbf{1}_d = r \mathrm{\quad and\quad } \mathbf{P}^\mathsf{T}\mathbf{1}_d = c
 $$
 つまり、制約の個数は $2d$ 個となり、$\mathbf{P}$ は $0$ でない要素が $2d-1$ 個だけあって、それ以外は $0$ であるようなスパースな行列で制約を満たせるということです。
-そこで、これを防ぐためにエントロピー正則化が必要となってくる。というわけです
+そこで、これを防ぐ (=行列をスムーズにする) ためにエントロピー正則化が必要となってくる。というわけです
 
+## Sinkhorn's Algorithm
+エントロピーで制限されたSinkhorn Distanceを考えます
+$$
+\newcommand{\argmin}{\mathop{\rm arg~min}\limits}
+d_\mathbf{M}^\lambda(r,c) \triangleq \langle \mathbf{P}^\lambda, \mathbf{M} \rangle\ \\\\\\
+\mathrm{where}\ \lambda > 0 ,\ \mathbf{P}^\lambda = \argmin_{\mathbf{P}\in \mathbf{U}(r, c)} \langle \mathbf{P}, \mathbf{M} \rangle - \frac{1}{\lambda} h(\mathbf{P})
+$$
+ここで、それぞれの $\alpha$ はある $\lambda\in [0, \infty]$に対応します。
+$$
+d_{\mathbf{M}, \alpha} (r, c) = d_\mathbf{M}^\lambda (r, c)
+$$
 
+そして、この $d_\mathbf{M}^\lambda$ はもとの問題 ($=d_\mathbf{M}$) よりもはるかに低コストで計算できるのです。
+
+### Computing $d_\mathbf{M}^\lambda$
+$\lambda > 0$ に対して、$\mathbf{P}^\lambda$ はuniqueで、また、次の形式で表されます[^fn2]
+$$
+\mathbf{P}^\lambda = \mathrm{diag}{(u)} \mathbf{K} \mathrm{diag}(v) \\\\\\
+\mathrm{where}\ u, v \in \mathbb{R}^d \mathrm{\ and\ non--negative}\\\\\\
+\mathbf{K} \triangleq \exp(-\lambda \mathbf{M})\quad \mathrm{(element--wise\ calculation)}
+$$
+
+そして、このとき$u, v$は解にiterativeに近づけていくことができます
+$$
+(u, v) \leftarrow (r_\cdot/\mathbf{K}v, c_\cdot/\mathbf{K}'u)
+$$
+
+### Empirical Complexity
+histgramの次元数に対する収束までに必要なiteration数は下図 (画像は元論文[^fn1] 引用)
+{{<figure src="images/empirical.png">}}
+次元数が増えると収束に必要なiteration数が増える。という訳ではなく、$\lambda$ の値がiteration数を決めます。
+傾向として、$\lambda$ が大きくなるほど収束にかかるiterationも増えるようです。
 
 ## 参考文献  
-- [Sinkhorn Distances:
-Lightspeed Computation of Optimal Transport](https://papers.nips.cc/paper/2013/hash/af21d0c97db2e27e13572cbf59eb343d-Abstract.html)
 - [Computational optimal transport](https://arxiv.org/abs/1803.00567)
+
+[^fn1]: [Sinkhorn Distances:
+Lightspeed Computation of Optimal Transport](https://papers.nips.cc/paper/2013/hash/af21d0c97db2e27e13572cbf59eb343d-Abstract.html)
+
+[^fn2]: [Concerning nonnegative matrices and doubly stochastic matrices](https://projecteuclid.org/euclid.pjm/1102992505)
