@@ -1,11 +1,40 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>optimal-transport on tsumli-pages</title><link>https://tsumli.github.io/tags/optimal-transport/</link><description>Recent content in optimal-transport on tsumli-pages</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>© {year}</copyright><lastBuildDate>Sat, 13 Feb 2021 13:55:54 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/optimal-transport/index.xml" rel="self" type="application/rss+xml"/><item><title>Optimal Transport 02. エントロピー正則化</title><link>https://tsumli.github.io/blog/optimal-transport/02-entropy/</link><pubDate>Sat, 13 Feb 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/optimal-transport/02-entropy/</guid><description>01. はじめ 02. エントロピー正則化 Cuturi1 の論文をもとに、Optimal Transportのエントロピー正則化について考えていきましょう 。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>optimal-transport on tsumli-pages</title>
+    <link>https://tsumli.github.io/tags/optimal-transport/</link>
+    <description>Recent content in optimal-transport on tsumli-pages</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© {year}</copyright>
+    <lastBuildDate>Sat, 13 Feb 2021 13:55:54 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/optimal-transport/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Optimal Transport 02. エントロピー正則化</title>
+      <link>https://tsumli.github.io/blog/optimal-transport/02-entropy/</link>
+      <pubDate>Sat, 13 Feb 2021 13:55:54 +0000</pubDate>
+      
+      <guid>https://tsumli.github.io/blog/optimal-transport/02-entropy/</guid>
+      <description>01. はじめ 02. エントロピー正則化 Cuturi1 の論文をもとに、Optimal Transportのエントロピー正則化について考えていきましょう 。
 計算量 $r$ から $c$ へのOptimal Transportは次のようになります $$ \large d_\mathbf{M}(r, c) \triangleq \min_{\mathbf{P}\in\mathbf{U}(r, c)} \langle \mathbf{P}, \mathbf{M} \rangle $$ ここで、$\mathbf{M} \in \mathbb{R}^{d\times d}$ はcost matrixです
 計算量について考えると、どのような行列$\mathbf{M}$に対しても最悪のケースで $O(d^3 \log d)$となります。
 エントロピー正則化 ここで、Optimal Transportにエントロピー正則化を導入します。
 まず、同時確率分布に対する次の不等式が成り立ちます $$ \forall r, c \in \Sigma_d, \forall \mathbf{P} \in \mathbf{U} (r, c), h(\mathbf{P}) \leq h(r) + h(c) $$ また、$h(rc^\mathsf{T}) = h(r) + h(c)$ より次式が成り立ちます
-$$ \begin{eqnarray*} \mathbf{U}_\alpha (r, c) &amp;amp;\triangleq&amp;amp; \lbrace \mathbf{P} \in \mathbf{U} (r, c) \mid \mathrm{\bf KL}(\mathbf{P} \Vert rc^\mathsf{T}) \leq \alpha) \rbrace \\\</description></item><item><title>Optimal Transport 01. はじめ</title><link>https://tsumli.github.io/blog/optimal-transport/01-introduction/</link><pubDate>Tue, 02 Feb 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/optimal-transport/01-introduction/</guid><description>01. はじめ 02. エントロピー正則化 Optimal Transport とは Optimal Transportは、日本語で最適輸送 (問題) と訳されます。 和訳が表しているように、ある物体をある地点から別の地点に移したときの最小コスト、そしてその輸送方法を求めるという問題です。そこから、確率分布の比較に使われるようになりました。
+$$ \begin{eqnarray*} \mathbf{U}_\alpha (r, c) &amp;amp;\triangleq&amp;amp; \lbrace \mathbf{P} \in \mathbf{U} (r, c) \mid \mathrm{\bf KL}(\mathbf{P} \Vert rc^\mathsf{T}) \leq \alpha) \rbrace \\\</description>
+    </item>
+    
+    <item>
+      <title>Optimal Transport 01. はじめ</title>
+      <link>https://tsumli.github.io/blog/optimal-transport/01-introduction/</link>
+      <pubDate>Tue, 02 Feb 2021 13:55:54 +0000</pubDate>
+      
+      <guid>https://tsumli.github.io/blog/optimal-transport/01-introduction/</guid>
+      <description>01. はじめ 02. エントロピー正則化 Optimal Transport とは Optimal Transportは、日本語で最適輸送 (問題) と訳されます。 和訳が表しているように、ある物体をある地点から別の地点に移したときの最小コスト、そしてその輸送方法を求めるという問題です。そこから、確率分布の比較に使われるようになりました。
 歴史 歴史は古く、1781年にGaspard Mongeが提案しました1。問題の発想は簡単で、 ある場所から別の場所に土砂を運ぶとき、どのように運べばよいのか というものです。
 もっと具体的に考えてみましょう。ある場所 (場所Aとします) には $n$ 地点に土砂があったとします。そして、移動先の場所 (場所Bとします) の $n$ 地点に土砂を移したいとします。 Aの $i$ 地点とBの $j$ 地点の間の距離=コストが $\mathbf C_{i,j}$ と表されるとき、 平均の輸送コストはどのようになるか。という問題です。
 これを数式で表すと次のようになります。 $$ \min_{\sigma \in \mathrm{Perm}(n)} \frac{1}{n} \sum_{i=1}^{n} \mathbf{C}_{i, \sigma(i)} $$ ここで、$\mathrm{Perm}(n)$は$n$の順列の集合。
 では、これを貪欲に解こうと思うと、$O(n!)$ 回計算しなければなりません ($n\geq 10$ だとつらいというイメージ) 。 そこで、この問題をもとに現在に至るまで様々なアルゴリズムが開発されてきました。
-Kantorovichの一般化 Kantorovichはこの輸送問題を確率分布間に適用しました。 距離を求めたい確率分布を $\mathbf{a}\in \mathbb{R}^n, \mathbf{b}\in \mathbb{R}^m$ とします。 ここで、$\mathbf{a}$ と $\mathbf{b}$ の同時分布 $\mathbf{U}$ を考えます。 $$ \mathbf{U}(\mathbf{a}, \mathbf{b}) \triangleq \lbrace \mathbf{P}\in\mathbb{R}^{n\times m}_+: \mathbf{P}\mathbf{1}_m = \mathbf{a} \mathrm{\ and\ } \mathbf{P}^\mathsf{T}\mathbf{1}_n = \mathbf{b} \rbrace $$ このとき、$\mathbf{1}_n$ は $1$ が $n$ 個並んだベクトル。また、$\mathbf{P}$ を輸送計画行列と呼び、$(i, j)$ 要素は $i$ 地点から $j$ 地点まで移動させる量を表します。</description></item></channel></rss>
+Kantorovichの一般化 Kantorovichはこの輸送問題を確率分布間に適用しました。 距離を求めたい確率分布を $\mathbf{a}\in \mathbb{R}^n, \mathbf{b}\in \mathbb{R}^m$ とします。 ここで、$\mathbf{a}$ と $\mathbf{b}$ の同時分布 $\mathbf{U}$ を考えます。 $$ \mathbf{U}(\mathbf{a}, \mathbf{b}) \triangleq \lbrace \mathbf{P}\in\mathbb{R}^{n\times m}_+: \mathbf{P}\mathbf{1}_m = \mathbf{a} \mathrm{\ and\ } \mathbf{P}^\mathsf{T}\mathbf{1}_n = \mathbf{b} \rbrace $$ このとき、$\mathbf{1}_n$ は $1$ が $n$ 個並んだベクトル。また、$\mathbf{P}$ を輸送計画行列と呼び、$(i, j)$ 要素は $i$ 地点から $j$ 地点まで移動させる量を表します。</description>
+    </item>
+    
+  </channel>
+</rss>

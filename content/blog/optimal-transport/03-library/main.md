@@ -12,9 +12,8 @@ toc: true
 ---
 
 ## ライブラリ
-近年のGPUの普及により、効率的に最適輸送理論を求められるライブラリが開発されています。
+効率的に最適輸送問題を解くことのできるライブラリが開発されています。
 今回はその中でも **POT** (python optimal transport) と **GeomLoss** について紹介したいと思います。
-
 
 ### POT
 [website](https://pythonot.github.io/)  
@@ -36,6 +35,37 @@ $ pip install geomloss
 依存するパッケージは多く、
 CUDA toolkit (including nvcc), PyTorch, KeOps が必要なようです。
 このパッケージが便利なところは、pytorch用のAPIが用意されていることです。
-いちいちTENSOR.numpy() みたいなことをしなくて良いのと、GPUを効率良く使えるのが良いですね。
+既存のtorchコードにすぐに組み込めるのが嬉しいですね。
 
+SamplesLossについて紹介します (自分も勉強不足のため理解してない部分があります…) 。
+SamplesLossのinitには以下の引数が用意されています。
 
+```python
+from geomloss import SamplesLoss
+
+Loss = SamplesLoss(
+    loss='sinkhorn', 
+    p=2, 
+    blur=0.05, 
+    reach=None, 
+    diameter=None, 
+    scaling=0.5, 
+    truncate=5, 
+    cost=None, 
+    kernel=None, 
+    cluster_scale=None, 
+    debias=True, 
+    potentials=False, 
+    verbose=False, 
+    backend='auto'
+)
+```
+
+このクラスはnn.Moduleを継承しており、lossの値を得るためにforwardする必要があります。
+```python
+loss = Loss(*args)
+```
+*argの個数によって3パターンの入力をすることができます
+- 入力が2つ
+- 入力が4つ
+- 入力が6つ

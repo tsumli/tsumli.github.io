@@ -1,1 +1,57 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tags on tsumli-pages</title><link>https://tsumli.github.io/tags/</link><description>Recent content in Tags on tsumli-pages</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>© {year}</copyright><lastBuildDate>Sat, 13 Feb 2021 13:55:54 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/index.xml" rel="self" type="application/rss+xml"/><item><title>optimal-transport</title><link>https://tsumli.github.io/tags/optimal-transport/</link><pubDate>Sat, 13 Feb 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/tags/optimal-transport/</guid><description/></item><item><title>abci</title><link>https://tsumli.github.io/tags/abci/</link><pubDate>Mon, 01 Feb 2021 15:55:54 +0000</pubDate><guid>https://tsumli.github.io/tags/abci/</guid><description/></item><item><title>singularity</title><link>https://tsumli.github.io/tags/singularity/</link><pubDate>Mon, 01 Feb 2021 15:55:54 +0000</pubDate><guid>https://tsumli.github.io/tags/singularity/</guid><description/></item><item><title>paper</title><link>https://tsumli.github.io/tags/paper/</link><pubDate>Mon, 01 Feb 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/tags/paper/</guid><description/></item><item><title>transfer-learning</title><link>https://tsumli.github.io/tags/transfer-learning/</link><pubDate>Mon, 01 Feb 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/tags/transfer-learning/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on tsumli-pages</title>
+    <link>https://tsumli.github.io/tags/</link>
+    <description>Recent content in Tags on tsumli-pages</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© {year}</copyright>
+    <lastBuildDate>Sat, 13 Feb 2021 13:55:54 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>optimal-transport</title>
+      <link>https://tsumli.github.io/tags/optimal-transport/</link>
+      <pubDate>Sat, 13 Feb 2021 13:55:54 +0000</pubDate>
+      
+      <guid>https://tsumli.github.io/tags/optimal-transport/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>abci</title>
+      <link>https://tsumli.github.io/tags/abci/</link>
+      <pubDate>Mon, 01 Feb 2021 15:55:54 +0000</pubDate>
+      
+      <guid>https://tsumli.github.io/tags/abci/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>singularity</title>
+      <link>https://tsumli.github.io/tags/singularity/</link>
+      <pubDate>Mon, 01 Feb 2021 15:55:54 +0000</pubDate>
+      
+      <guid>https://tsumli.github.io/tags/singularity/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>paper</title>
+      <link>https://tsumli.github.io/tags/paper/</link>
+      <pubDate>Mon, 01 Feb 2021 13:55:54 +0000</pubDate>
+      
+      <guid>https://tsumli.github.io/tags/paper/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>transfer-learning</title>
+      <link>https://tsumli.github.io/tags/transfer-learning/</link>
+      <pubDate>Mon, 01 Feb 2021 13:55:54 +0000</pubDate>
+      
+      <guid>https://tsumli.github.io/tags/transfer-learning/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

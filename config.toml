@@ -16,7 +16,8 @@ canonifyurls = true
 
 # Override these settings with your own
 title = "tsumli-pages"
-languageCode = "en-us"
+languageCode = "ja"
+hasCJKLanguage = "true"
 baseURL = "https://tsumli.github.io/"
 copyright = "© {year}"
 
@@ -26,6 +27,10 @@ copyright = "© {year}"
 # Add your Google Analytics identifier: UA-XXXXXXXX-X
 googleAnalytics = "UA-188554402-1" 
 
+
+# Syntax Highlight
+pygmentsCodefences = true
+pygmentsUseClasses = true
 
 
 # Optional params
