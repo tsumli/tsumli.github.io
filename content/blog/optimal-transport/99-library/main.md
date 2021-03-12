@@ -1,6 +1,6 @@
 ---
-title: "Optimal Transport 03. pythonライブラリ"
-date: 2021-02-14T13:55:54Z
+title: "Optimal Transport 99. pythonライブラリ"
+date: 2021-04-14T13:55:54Z
 slug: "optimal-transport"
 description: ""
 keywords: ["optimal-transport", "python", "最適輸送理論", "最適輸送問題"]
