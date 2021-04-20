@@ -11,7 +11,9 @@ math: true
 toc: true
 ---
 [01. はじめ]({{< ref"/blog/optimal-transport/01-introduction/main.md">}})  
-[02. エントロピー正則化]({{< ref"/blog/optimal-transport/02-entropy/main.md">}})
+[02. エントロピー正則化]({{< ref"/blog/optimal-transport/02-entropy/main.md">}})  
+[03. Unbalanced Optimal Transport]({{< ref"/blog/optimal-transport/03-unbalanced/main.md">}})  
+
 ## Optimal Transport とは
 **Optimal Transport**は、日本語で**最適輸送** (問題) と訳されます。
 和訳が表しているように、ある物体をある地点から別の地点に移したときの最小コスト、そしてその輸送方法を求めるという問題です。そこから、確率分布の比較に使われるようになりました。

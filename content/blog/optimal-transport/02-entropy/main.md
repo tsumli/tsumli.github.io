@@ -11,7 +11,8 @@ math: true
 toc: true
 ---
 [01. はじめ]({{< ref"/blog/optimal-transport/01-introduction/main.md">}})  
-[02. エントロピー正則化]({{< ref"/blog/optimal-transport/02-entropy/main.md">}})
+[02. エントロピー正則化]({{< ref"/blog/optimal-transport/02-entropy/main.md">}})  
+[03. Unbalanced Optimal Transport]({{< ref"/blog/optimal-transport/03-unbalanced/main.md">}})  
 
 Cuturi[^fn1] の論文をもとに、Optimal Transportのエントロピー正則化について考えていきましょう 。
 
