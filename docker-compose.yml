@@ -26,13 +26,6 @@ services:
     command:
       hugo new ${NAME}
 
-  # replace:
-  #   image: "python:3.8-alpine"
-  #   volumes:
-  #     - ./:/workdir/
-  #   command:
-  #     python /workdir/replace_.py
-
   build_pages:
     image:
       "trenton/hugo-extended"
