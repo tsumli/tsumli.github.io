@@ -12,8 +12,8 @@ toc: true
 ---    
 
 
-電子カルテ (EHR) に対するシーケンシャルな深層学習ネットワーク, [BEHRT](https://www.nature.com/articles/s41598-020-62922-y)を読んでいきます(画像は論文より引用).
-過去の病気の経歴を知ると未来の病気の予測の精度も高くなるという
+電子カルテ (EHR) に対するシーケンシャルな深層学習ネットワーク, [BEHRT](https://www.nature.com/articles/s41598-020-62922-y)を読んでいきます (画像は論文より引用).
+
 
 ## Method
 ### architecture
