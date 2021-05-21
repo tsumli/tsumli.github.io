@@ -33,7 +33,8 @@ $$
 $$
 
 Unbalanced OTのイメージは次のようになります．
-{{<figure src="images/unbalancedOT.png">}}
+{{<figure class="floatright" src="images/unbalancedOT.png">}}
+
 左図がClassical OT (通常のoptimal trasnport)
 右図がUnbalanced OTを表しています．
 Classical OTのとき．左側の山が２つに分散し，右側の山と合流して輸送が行われています．
