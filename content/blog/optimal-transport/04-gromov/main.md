@@ -4,7 +4,7 @@ date: 2021-03-12T13:55:54Z
 slug: "optimal-transport"
 description: ""
 keywords: ["optimal-transport", "gromov-wasserstein-distance", "最適輸送理論", "最適輸送問題", "Gromov Wasserstein Dsitance"]
-draft: false
+draft: true
 tags: ["optimal-transport"]
 url: "blog/optimal-transport/04-gromov/"
 math: true
