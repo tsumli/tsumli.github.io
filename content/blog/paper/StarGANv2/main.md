@@ -4,7 +4,7 @@ date: 2021-05-21T19:58:16Z
 slug: "StarGANv2"
 description: ""
 keywords: ["StarGAN", "GAN"]
-draft: ture
+draft: false
 tags: ["GAN", "paper"]
 url: "blog/paper/StarGANv2/"
 math: true
