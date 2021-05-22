@@ -12,6 +12,7 @@
             <h1 id="post__title">{{.Title}}</h1>
             {{ if .Date }}<time datetime="{{ .Date }}" class="post__date">{{ .Date.Format $dateFormat }}</time> {{ end }}
             <link rel="stylesheet" href="{{ .Site.BaseURL }}/css/lightbox.min.css">
+            {{ partial "mathjax_support.html" . }}
           </header>
           <article class="post__content">
               {{ partial "anchored-headings.html" .Content }}
