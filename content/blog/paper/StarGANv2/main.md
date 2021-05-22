@@ -17,8 +17,8 @@ toc: true
 
 {{<figure src="images/Synth_result.png" caption="Synthesis Result">}}
 
-image-to-image translationのタスクにおいて, 異なるドメイン間のマッピングを学習しなければいけません.
-そして, それらは次の要素を満たす必要があります. 
+image-to-image translationのタスクにおいて, 異なるドメイン間のマッピングを学習しなければならない.
+そして, それらは次の要素を満たす必要がある. 
 1. 生成した画像のdiversityが広い
 2. 様々にドメインに対応できる (scalability)
 
