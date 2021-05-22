@@ -11,6 +11,7 @@
   {{ with .Get "class" }}class="{{.}}"{{ end }}
   {{ with .Get "width" }}style="width: {{ . }};"{{ end }}
   {{ with .Get "height" }}style="height: {{ . }};"{{ end }}
+  style='margin:0 auto;text-align:center;'
   >
     <a 
       {{ if .Get "lightbox" }}
