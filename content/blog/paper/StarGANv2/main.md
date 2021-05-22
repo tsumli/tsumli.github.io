@@ -126,20 +126,13 @@ StarGAN v2ではdiverseな画像を生成することがわかる (reference画�
 
 その他結果は論文で...
 
+## References
+- StarGAN v2  
+https://arxiv.org/abs/1912.01865
+[![clovaai/stargan-v2 - GitHub](https://gh-card.dev/repos/clovaai/stargan-v2.svg)](https://github.com/clovaai/stargan-v)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- StarGAN  
+同じfist authorの論文で, StarGAN v2の前モデル.
+https://arxiv.org/abs/1711.09020
+[![yunjey/stargan - GitHub](https://gh-card.dev/repos/yunjey/stargan.svg)](https://github.com/yunjey/stargan)
 
