@@ -65,6 +65,7 @@ pygmentsUseClasses = true
   showPageTitleInTOC = true
 
   # custom_css = ["css/lightbox.min.css"]
+  mathjaxStyle = "mathjax-style.css"
 
 # This disables Hugo's default syntax highlighting in favor
 # of prismjs. If you wish to use Hugo's default syntax highlighting
