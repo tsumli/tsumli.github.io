@@ -113,12 +113,15 @@ Earth Mover Distanceを用いたWGANを参考にする.
 
 
 #### 2. Attention Loss $\mathcal{L}_\mathbf{A}$
+attention maskが1になる (サチる) ことを防ぐためのロス
 {{<figure src="images/loss_2.png" >}}
 
 #### 3. Conditional Expression Loss $\mathcal{L}_y$
+AUのregression headに対するロス
 {{<figure src="images/loss_3.png" >}}
 
 #### 4. Identity Loss $\mathcal{L}_{idt}$
+inputとoutputが同じ人を表すようにするためのロス
 {{<figure src="images/loss_4.png" >}}
 
 #### Full Loss
@@ -128,6 +131,12 @@ Earth Mover Distanceを用いたWGANを参考にする.
 $$
 G^* = \arg \min_{G} \max_{D} \mathcal{L}
 $$
+
+
+## Experimental Evaluation
+{{<figure src="images/res_comparison.png" caption="Qualitative comparison with state-of-the-art">}}
+提案手法がvisual accuracyとspatial resolutionのトレードオフをうまく達成していることがわかる (例えば, StarGANの結果はブラーがかかっている).
+その他結果は元論文で...
 
 ## References
 - GANimation  
