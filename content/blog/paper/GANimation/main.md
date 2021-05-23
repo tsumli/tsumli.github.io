@@ -75,12 +75,11 @@ WGAN-GPを用いた, 生成画像のqualityと表情を評価するもの
 
 ### Network Architecture
 #### Generator
-画像 $\image{o} \in \mathbb{R}^{H\times W \times 3}$ と $N$次元ベクトルにエンコードされた感情 $\mathbf{y}_f$ が与えられたとき,
-concatしたものをgeneratorに対する入力とする
+画像 $\image{o} \in \mathbb{R}^{H\times W \times 3}$ と $N$次元ベクトルにエンコードされた感情 (desired expression) $\mathbf{y}_f$ が与えられたとき,
+generatorに対する入力は次のようになる
 $$
 (\image{o}, \mathbf{y}_o) \in \mathbb{R}^{H\times W \times (N+3)}
 $$
-($\mathbf{y}_o$をbroadcastしたものをconcatしている...?)
 
 下図にgeneratorのアーキテクチャを示す
 {{<figure 
