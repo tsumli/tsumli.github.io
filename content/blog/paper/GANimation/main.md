@@ -45,18 +45,20 @@ AUの数は少ないが, $7000$もの異なる組み合わせがあることが�
 ## Problems Formulation
 任意のfacial expressionのRGB画像は次のように表される: $\image{r} \in \mathbb{R}^{H\times W \times 3}$  
 また, すべてのgesture expressionは $N$ 個のAUにエンコードされる $\mathbf{y}_r = (y_1, \ldots, y_N)^\mathsf{T}$
-(それぞれの要素は$0--1$に正規化される)
+(それぞれの要素は$0--1$に正規化される). 連続的なラベルなので, 異なる表情間の自然なinterpolationが可能となる.
 
 目的は, 画像間のマッピングを行う $\mathcal{M}$ を学習すること.
 \begin{align*}
 \mathcal{M}: (\image{r}, \mathbf{y}_g) \rightarrow \image{g} \quad (\text{conditioned on AU target }\mathbf{y}_g)
 \end{align*}
+つまり, $\image{r}$ を AU label $\mathbf{y}_g$ をもつ画像に変換する.
+
 この学習は $M$個のtriplets: 
 \begin{align*}
 \lbrace \image{r}^m, \mathbf{y}_r^m, \mathbf{y}_g^m \rbrace \quad (m=1, \ldots, M)
 \end{align*}
-を用いてunsupervisedに行われる. ここで, $\mathbf{y}_g^m$ はランダムに生成されたtarget vector.
-そして, この手法では, 同じ人の異なる表情や expected target image $\image{g}$ を必要としない.
+を用いてunsupervisedに行われる. ここで, $\mathbf{y}_g^m$ はランダムに生成されたtarget vector. 
+そして, この手法では, 同じ人の異なる表情や expected target image $\image{g}$ を必要としない. 
 
 ## Approach
 {{<figure 
@@ -80,14 +82,15 @@ generatorに対する入力は次のようになる
 $$
 (\image{o}, \mathbf{y}_o) \in \mathbb{R}^{H\times W \times (N+3)}
 $$
+($\mathbf{y}_o$は$\mathbf{y}_f$のブロードキャストしたもの [Code](https://github.com/albertpumarola/GANimation/blob/40da9ae1a88e6a3c38cd6548be08a61cbd6695ba/networks/generator_wasserstein_gan.py#L48-L54))
 
 下図にgeneratorのアーキテクチャを示す
 {{<figure 
     src="images/gen.png" 
     caption="Attention-based generator."
 >}}
-generatorは2つのmask (color mask $\mathbf{C}$ と attention mask $\mathbf{A}$) を生成する
-そして, 最終的な画像は次のように得られる
+generatorは2つのmask (color mask $\mathbf{C}$ と attention mask $\mathbf{A}$) を生成する.
+そして, 最終的な画像は[次のように得られる](https://github.com/albertpumarola/GANimation/blob/40da9ae1a88e6a3c38cd6548be08a61cbd6695ba/models/ganimation.py#L133)
 $$
 \image{f} = (1-\mathbf{A}) \cdot \mathbf{C} + \mathbf{A} \cdot \image{o}
 $$
@@ -136,6 +139,7 @@ $$
 {{<figure src="images/res_comparison.png" caption="Qualitative comparison with state-of-the-art">}}
 提案手法がvisual accuracyとspatial resolutionのトレードオフをうまく達成していることがわかる (例えば, StarGANの結果はブラーがかかっている).
 その他結果は元論文で...
+
 
 ## References
 - GANimation  
