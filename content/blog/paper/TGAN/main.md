@@ -19,7 +19,7 @@ mathjax: true
 tabular dataに対するGAN (TGAN) についての紹介. 
 様々なデータ (categorical, numericalなど) が混合したようなテーブルに対して用いることができる.
 
-
+## Example
 {{<figure 
     src="images/example.png" 
     caption="Example of using TGAN to generate a simple census table"
@@ -64,8 +64,32 @@ $$
 \end{align}
 - 再び正規化する
 
+### Model and data generation
+#### Generator
+LSTMを使う (ページ上部Fig下部参照)
+- $a_t$ はattentionベースのcontextベクトルで, 前のLSTMの出力 $h_{1:t}$ の加重付き平均となっている
+- 離散的な変数に対してはsoftmaxを利用し生成値とする
+- 最初に使う<G0>は特別なベクトルで, 学習可能なパラメータである
 
+#### Discriminator
+LeakyReLU, BatchNormを用いたFCモデルを使用
+- diversity($\cdot$) は[mini-batch discrimination](https://arxiv.org/abs/1606.03498)ベクトルであり, 2層目からは前段の出力にconcatして入力ベクトルとする.
 
+### Results
+以下のデータセットについて実験を行った
+- The Census-Income dataset  
+年収が$50kを超えるか
+- The KDD Cup 1999 dataset  
+マルウェアの侵入検知
+- The Covertype dataset  
+森林の分類
+
+{{<figure 
+    src="images/res.png" 
+    caption="Result of TGAN, comapring with baselines"
+>}}
+
+他の手法に比べてTGANで生成したデータに対して学習したモデルは, 真のデータで学習したモデルと近い評価値が得られることがわかる. $\rightarrow$ よりリアルなデータを生成できる
 
 ## References
 - arXiv  
