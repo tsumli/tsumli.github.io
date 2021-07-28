@@ -44,3 +44,7 @@ ______
 セキュリティの問題でremoteサーバでdockerが使えず，singularityが推奨されることが多いので，
 このように簡単にimageファイルが作成できるのはうれしいです．
 
+## 追記（2021/07/28）
+公式のgithubレポジトリに同様のものを発見しました （https://github.com/singularityhub/docker2singularity）
+こっちのほうが使うときに楽でいいかもしれません
+
