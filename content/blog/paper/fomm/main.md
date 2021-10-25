@@ -16,3 +16,12 @@ toc: true
 FOMMという名前で知られている手法です。
 
 {{<figure src="images/result.png" caption="example annimation">}}
+
+
+## Method
+source image $\mathbf{S}$ を driving image $\mathcal{D}$ に基づいて動かす。同じ物体が写っているvideoを使うことで、annotationが不必要な訓練ができる。
+
+
+## References
+- official code
+[![AliaksandrSiarohin/first-order-model - GitHub](https://gh-card.dev/repos/AliaksandrSiarohin/first-order-model.svg)](https://github.com/AliaksandrSiarohin/first-order-model)
