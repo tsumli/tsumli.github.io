@@ -1,6 +1,6 @@
 ---
 title: "First Order Motion Model for Image Animation (FOMM) を読む"
-date: 2021-10-24T19:58:16Z
+date: 2022-02-01T19:58:16Z
 slug: "FOMM"
 description: ""
 keywords: ["GAN"]
@@ -140,6 +140,7 @@ $\hat{\mathcal{T}}_{\mathbf{S} \leftarrow \mathbf{D}}$ をもとにwarpさせる
 
 ここで、occlusion mask $\hat{O}_{\mathbf{S} \leftarrow \mathbf{D}} \in [0, 1]^{H' \times W'}$ でinpaintするべき場所を表す。
 つまり、"occluded" された部分に対応した特徴量の影響を削減する効果をもつ。
+こうして変換された特徴量マップは次のようにあらわされる
 
 {{<figure src="images/xi.png">}}
 <!-- $$
