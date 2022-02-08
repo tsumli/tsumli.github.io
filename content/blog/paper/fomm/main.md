@@ -45,24 +45,26 @@ dense motion field を予測することである。
 ここで、抽象的なreference image $\mathbf{R}$ を仮定する。その仮定、
 reference image $\rightarrow$ source image と reference image $\rightarrow$ driving image の変換を独立に予測することで、$\mathbf{D}$ と $\mathbf{S}$ に対して独立に処理することができる。
 
-FIRST
+keypointの
+だけの場合と比べて、局所的なアフィン変換によって多くの種類の変換を扱うことができる。
 
-そして、dense motion network では
-motion field $\hat{\mathcal{T}}_{\mathbf{S} \leftarrow \mathbf{D}}$に加え、
+テイラー展開を用いて、keypointの位置とアフィン変換のセットで $\mathcal{T}_{\mathbf{D} \leftarrow \mathbf{R}}$ を表す。そのため、keypoint detector networkではkeypointの位置とそれぞれのアフィン変換 (のパラメータ) を抽出する。
 
+そして、dense motion network ではmotion fieldに加えて、
 occlusion mask: $\hat{\mathcal{O}}_{\mathbf{S} \leftarrow \mathbf{D}}$ も抽出する。この特徴量は、$\mathbf{D}$ のどの部分が補完 (inpaint) されるべきかをあらわしている。
 
 最後に、image generation moduleで source objectに動きを与える (occlusionで指定された部分をinpaintする) 。
 
 
-### a
-$\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}$ を得る方法について
+### Local Affine Transformations for Approximation
+参照画像 $\mathbf{R}$ から与えられた画像 $\mathbf{X}$ への変換: $\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}$ を得る方法について
 
-変換 $\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}$ が与えられた時、一次のテイラー展開を考えることができる
-
+変換 $\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}$ が与えられた時、K個のkeypoint: $p_1, \ldots, p_K$ それぞれについて一次のテイラー展開を考えることができる。
 {{<figure src="images/tx_r.png">}}
 
-この定式化では $\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}$ はそれぞれのkeypoint $p_k$ 値とその Jacobian で表すことができる。
+ここで、$p_\cdot$ は参照画像 $\mathbf{R}$ の中のkeypointの座標を表す (ここで、$\mathbf{X}, \mathbf{S}, \mathbf{D}$ 内の座標は $z$ と表すこととする)。
+
+以下の定式化では $\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}$ はそれぞれのkeypoint $p_k$ 値とその Jacobian で表すことができる。
 {{<figure src="images/tx_r_sim.png">}}
 
 <!-- $$
@@ -79,14 +81,24 @@ $$ -->
 
 $\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}$がkeypointの近傍に対し局所的に全単射であることを仮定している。
 
+$\mathbf{D}$ のなかのkeypoint $z_k$ の近くの変換 $\mathcal{T}_{\mathbf{S} \leftarrow \mathbf{D}}$ を予測するために
+
+まず、$z_k$ の近くの変換 $\mathcal{T}_{\mathbf{R} \leftarrow \mathbf{D}}$ を予測する。
+
+ここで、$p_k = \mathcal{T}_{\mathbf{S} \leftarrow \mathbf{D}}$ が成立する。
+
+このように考えると、最終的に $\mathcal{T}_{\mathbf{S} \leftarrow \mathbf{D}}$ は次のように得られる。
+<br>
+<br>
 {{<figure src="images/ts_d.png">}}
 <!-- $$
 \mathcal{T}_{\mathbf{S} \leftarrow \mathbf{D}} = \mathcal{T}_{\mathbf{S} \leftarrow \mathbf{R}}
 \circ \mathcal{T}_{\mathbf{R} \leftarrow \mathbf{D}} = \mathcal{T}_{\mathbf{S} \leftarrow \mathbf{R}} \circ
 \mathcal{T}^{-1}_{\mathbf{D} \leftarrow \mathbf{R}}
 $$ -->
-
-
+これは、テイラー展開を使うことで次のように変形できる
+<br>
+<br>
 {{<figure src="images/ts_d_sim.png">}}
 <!-- $$
 \mathcal{T}_{\mathbf{S} \leftarrow \mathbf{D}} (z) \sim \mathcal{T}_{\mathbf{S} \leftarrow \mathbf{R}} (p_k)
@@ -114,13 +126,26 @@ $\frac{d}{dp} \mathcal{T}_{\mathbf{D} \leftarrow \mathbf{R}} (p) \Bigm|p=p_k$
 
 
 
+#### Combining Local Motions
+それぞれのkeypointについて変換をおこなうことで、
+K個のkeypointの近傍についてアラインされた、変換後の画像 $\mathbf{S}^1, \ldots, \mathbf{S}^K$を得ることができる。
 
+また、$\mathbf{S}^0 = \mathbf{S}$ を背景として考慮する。
+
+それぞれのkeypoointに対して、heatmap $\mathbf{H}_k$ を計算することができる。これはどの部分でそれぞれの変換が生じているかを表す特徴量である。
+
+heatmap $\mathbf{H}_k(z)$ は $\mathbf{R} \rightarrow \mathbf{D}, \mathbf{R} \rightarrow \mathbf{S}$ のふたつの変換をもとに求められたふたつのheatmapの差として考えられる。
 
 {{<figure src="images/Hk_z.png">}}
 <!-- $$
 \mathbf{H}_k(z) = \exp\left( \frac{\{\mathcal{T}_{\mathbf{D} \leftarrow \mathbf{R}}(p_k) - z\}^2}{\sigma}\right)
 - \exp\left( \frac{\{\mathcal{T}_{\mathbf{S} \leftarrow \mathbf{R}}(p_k) - z\}^2}{\sigma}\right)
 $$ -->
+
+heatmapとK+1個の変換後 source imageｗｐconcatし、U-Netに入力する。
+K個の部分で物体が構成され、それぞれの部分が変換されて動くというように考え、
+K+1個のmaskを予測する。それぞれは
+最終的なdense motionは次のように導出される
 
 {{<figure src="images/hat_Ts_d.png">}}
 <!-- $$
@@ -140,7 +165,7 @@ $\hat{\mathcal{T}}_{\mathbf{S} \leftarrow \mathbf{D}}$ をもとにwarpさせる
 
 ここで、occlusion mask $\hat{O}_{\mathbf{S} \leftarrow \mathbf{D}} \in [0, 1]^{H' \times W'}$ でinpaintするべき場所を表す。
 つまり、"occluded" された部分に対応した特徴量の影響を削減する効果をもつ。
-こうして変換された特徴量マップは次のようにあらわされる
+こうして変換された特徴量マップ $\xi'$ は次のようにあらわされる
 
 {{<figure src="images/xi.png">}}
 <!-- $$
@@ -149,6 +174,37 @@ $$ -->
 
 ここで、$f_w (\cdot, \cdot)$ はback-warpingを表し、$\odot$ はアダマール積を表す。
 このocclusion maskは次の層に入力され、画像生成に使われる。
+
+### Training Loss
+#### reconstruction loss  
+Perceptual Lossをベースにしたロスで事前学習済みのVGG-19ネットワークを用いる。
+$$
+L_{rec}(\hat{\mathbf{D}}, \mathbf{D}) = \sum_{i=1}^I \left|N_i (\hat{\mathbf{D}}) - N_i (\mathbf{D}) \right|
+$$
+ここで、$N_i(\cdot)$ はVGG-19の特定の層の i-th channel を表す。また、$I$ はその層のchannel数を表している。
+これは、$\mathbf{D}, \hat{\mathbf{D}}$ をdown samplingさせることで複数のロスを取る。
+
+#### Imposing Equivariance Constraint  
+Equivariance loss に Jacobian の制約を加えて拡張する。
+この手法では、
+$\mathbf{Y}$ から $\mathbf{X}$ への変換に対して、参照画像 $\mathbf{R}$ を仮定して
+$\mathbf{R}$ から $\mathbf{X}$ への変換と $\mathbf{R}$ から $\mathbf{Y}$ への変換を導出した。
+このことを用いて、次のequivariance constraintが成り立つ
+
+{{<figure src="images/txrpng">}}
+
+1次のテイラー展開を両辺に行うと、次のふたつの制約を得ることができる。
+{{<figure src="images/txr_pk.png">}}
+
+{{<figure src="images/txr_pk_taylor.png">}}
+1つ目の式は標準的な keypoint に対する equivariance constraint ([Jakab et al. NeurIPS 2018](https://arxiv.org/abs/1806.07823), [Zhang et al. CVPR 2018](https://arxiv.org/abs/1804.04412) と同じ設定のようです) であり、ロスとしてL1 lossが用いられている。
+
+2つ目のこの制約は L1 loss で実装してしまうと、Jacobianの値を0に近づけてしまうという問題点がある。そのため、次のように式を書き換える。
+{{<figure src="images/1_inv.png">}}
+上式で $\mathbf{1}$ は2x2の単位行列。L1 loss はkeypointの場所に対する制約と似たように働く。
+
+予備実験によると、reconstruction lossとeqivariance lossの間の相対的な重みにそこまで敏感でない (あまり重要なパラメータではない) ため、すべての実験で同じ重みを採用している。
+
 
 ### Dataset
 - [VoxCeleb](https://www.robots.ox.ac.uk/~vgg/data/voxceleb/)
@@ -161,6 +217,7 @@ $$ -->
 reconstructionした結果を
 L1 Loss, Average Keypoint Distance (AKD), Missing Keypoint Rate (MKR), Average Euclidean Distance (AED) の4つの指標を用いて比較した結果を上図に示す。
 関連手法に比べ、一貫して良い結果を出していることがわかる。
+その他結果などは元論文で
 
 ## References
 - official code
