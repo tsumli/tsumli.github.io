@@ -159,8 +159,10 @@ $$ -->
 ここで、$M_0z$ は「背景」のような動かない部分として解釈できる。
 
 
+
 ### Occlusion-aware Image Generation
-特徴量マップ $\xi\in \mathbb{R}^{H' \times W'}$ 得て、これを
+特徴
+量マップ $\xi\in \mathbb{R}^{H' \times W'}$ 得て、これを
 $\hat{\mathcal{T}}_{\mathbf{S} \leftarrow \mathbf{D}}$ をもとにwarpさせる。
 
 ここで、occlusion mask $\hat{O}_{\mathbf{S} \leftarrow \mathbf{D}} \in [0, 1]^{H' \times W'}$ でinpaintするべき場所を表す。
@@ -184,6 +186,7 @@ $$
 ここで、$N_i(\cdot)$ はVGG-19の特定の層の i-th channel を表す。また、$I$ はその層のchannel数を表している。
 これは、$\mathbf{D}, \hat{\mathbf{D}}$ をdown samplingさせることで複数のロスを取る。
 
+
 #### Imposing Equivariance Constraint  
 Equivariance loss に Jacobian の制約を加えて拡張する。
 この手法では、
@@ -206,19 +209,23 @@ $\mathbf{R}$ から $\mathbf{X}$ への変換と $\mathbf{R}$ から $\mathbf{Y}
 予備実験によると、reconstruction lossとeqivariance lossの間の相対的な重みにそこまで敏感でない (あまり重要なパラメータではない) ため、すべての実験で同じ重みを採用している。
 
 
-### Dataset
+
+## Dataset
 - [VoxCeleb](https://www.robots.ox.ac.uk/~vgg/data/voxceleb/)
 - [UvA-Nemo](http://www.uva-nemo.org/index.html)
 - [BAIR robot pushing dataset](https://www.tensorflow.org/datasets/catalog/bair_robot_pushing_small)
 - Tai-chi-HD
 
-### Result
+
+## Result
 {{<figure src="images/result-table.png">}}
 reconstructionした結果を
 L1 Loss, Average Keypoint Distance (AKD), Missing Keypoint Rate (MKR), Average Euclidean Distance (AED) の4つの指標を用いて比較した結果を上図に示す。
 関連手法に比べ、一貫して良い結果を出していることがわかる。
 その他結果などは元論文で
 
+
 ## References
 - official code
 [![AliaksandrSiarohin/first-order-model - GitHub](https://gh-card.dev/repos/AliaksandrSiarohin/first-order-model.svg)](https://github.com/AliaksandrSiarohin/first-order-model)
+
