@@ -1,25 +1,217 @@
-<!doctype html><html lang=ja><head><title>FNet: Mixing Tokens with Fourier Transforms を読む | tsumli-pages</title><meta charset=utf-8><meta name=language content="en"><meta name=description content><meta name=keywords content="FNet ,Fourier"><meta name=viewport content="width=device-width,initial-scale=1"><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><link rel="shortcut icon" type=image/png href=https://tsumli.github.io/favicon.ico><link type=text/css rel=stylesheet href=https://tsumli.github.io/css/post.min.b60e0932fe1c50c3d7c5b4f83ee9e4592363654d0f2abf05bbd0678d5b8a214c.css integrity="sha256-tg4JMv4cUMPXxbT4PunkWSNjZU0PKr8Fu9BnjVuKIUw="><link type=text/css rel=stylesheet href=https://tsumli.github.io/css/custom.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css integrity="sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU="><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/tsumli.github.io\/"},"articleSection":"blog","name":"FNet: Mixing Tokens with Fourier Transforms を読む","headline":"FNet: Mixing Tokens with Fourier Transforms を読む","description":"","inLanguage":"en-US","author":"","creator":"","publisher":"","accountablePerson":"","copyrightHolder":"","copyrightYear":"2021","datePublished":"2021-06-03 07:11:44 \u002b0000 UTC","dateModified":"2021-06-03 07:11:44 \u002b0000 UTC","url":"https:\/\/tsumli.github.io\/blog\/paper\/FNet\/","wordCount":"1431","keywords":["FNet","Fourier","Blog"]}</script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-188554402-1','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></head><body><div class=burger__container><div class=burger aria-controls=navigation aria-label=Menu><div class="burger__meat burger__meat--1"></div><div class="burger__meat burger__meat--2"></div><div class="burger__meat burger__meat--3"></div></div></div><nav class=nav id=navigation><ul class=nav__list><li><a href=https://tsumli.github.io/>about</a></li><li><a class=active href=https://tsumli.github.io/blog>blog</a></li></ul></nav><main><div class=flex-wrapper><div class=post__container><div class=post><header class=post__header><h1 id=post__title>FNet: Mixing Tokens with Fourier Transforms を読む</h1><time datetime="2021-06-03 07:11:44 +0000 UTC" class=post__date>Jun 3 2021</time>
-<link rel=stylesheet href=https://tsumli.github.io//css/lightbox.min.css><script type=text/javascript>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],processEscapes:true,tags:"ams",autoload:{color:[],colorV2:['color']},packages:{'[+]':['noerrors']}},chtml:{matchFontHeight:false,displayAlign:"left",displayIndent:"2em"},options:{skipHtmlTags:['script','noscript','style','textarea','pre'],renderActions:{find_script_mathtex:[10,function(doc){for(const node of document.querySelectorAll('script[type^="math/tex"]')){const display=!!node.type.match(/; *mode=display/);const math=new doc.options.MathItem(node.textContent,doc.inputJax[0],display);const text=document.createTextNode('');node.parentNode.replaceChild(text,node);math.start={node:text,delim:'',n:0};math.end={node:text,delim:'',n:0};doc.math.push(math);}},'']}},loader:{load:['[tex]/noerrors']}};</script><script type=text/javascript async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js id=MathJax-script></script><link rel=stylesheet type=text/css href=https://tsumli.github.io/css/mathjax-style.css></header><article class=post__content><p><a href=https://arxiv.org/abs/2105.03824 target=_blank rel="noreferrer noopener"><strong>FNet: Mixing Tokens with Fourier Transforms</strong></a><br>[Thorp et al. arXiv 2020] という論文を読んでいきます. (本文中の図は論文より引用).</p><p>Contributions:</p><ol><li>token &ldquo;mixing&rdquo; 変換がテキストデータにおける多様なsemanticsを十分に捉えられることを示した</li><li>self-attention層をFourier Transform層に置き換えたTransformer-likeな <strong>FNet</strong> というモデルの提案</li><li>学習速度が早く (TPUでは短いシークエンスのときのみ), 精度も良い. また, メモリ使用量も比較的少なくすむ</li></ol><h2 id=model>Model<a class=anchor href=#model>#</a></h2><h3 id=background-discrete-fourier-transforms>Background: discrete Fourier Transforms<a class=anchor href=#background-discrete-fourier-transforms>#</a></h3><p>シークエンス $\lbrace x_n \rbrace$ $\left( n \in [0, N-1] \right)$ が与えられたとき,
-discrete Fourier Transform (DFT) は次のように表される.</p><p>\begin{align*}
+<!doctype html><html lang=ja>
+<head>
+<title>FNet: Mixing Tokens with Fourier Transforms を読む | tsumli-pages</title>
+<meta charset=utf-8>
+<meta name=language content="en">
+<meta name=description content>
+<meta name=keywords content="FNet ,Fourier">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<link rel="shortcut icon" type=image/png href=https://tsumli.github.io/favicon.ico>
+<link type=text/css rel=stylesheet href=https://tsumli.github.io/css/post.min.86d1effd4c412b85ac13db53a90c473a0f256f789b821e131125c9aa25cb6a6d.css integrity="sha256-htHv/UxBK4WsE9tTqQxHOg8lb3ibgh4TESXJqiXLam0=">
+<link type=text/css rel=stylesheet href=https://tsumli.github.io/css/custom.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css integrity="sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=">
+<script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/tsumli.github.io\/"},"articleSection":"blog","name":"FNet: Mixing Tokens with Fourier Transforms を読む","headline":"FNet: Mixing Tokens with Fourier Transforms を読む","description":"","inLanguage":"en-US","author":"","creator":"","publisher":"","accountablePerson":"","copyrightHolder":"","copyrightYear":"2021","datePublished":"2021-06-03 07:11:44 \u002b0000 UTC","dateModified":"2021-06-03 07:11:44 \u002b0000 UTC","url":"https:\/\/tsumli.github.io\/blog\/paper\/FNet\/","wordCount":"1431","keywords":["FNet","Fourier","Blog"]}</script>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-188554402-1','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
+</head>
+<body>
+<div class=burger__container>
+<div class=burger aria-controls=navigation aria-label=Menu>
+<div class="burger__meat burger__meat--1"></div>
+<div class="burger__meat burger__meat--2"></div>
+<div class="burger__meat burger__meat--3"></div>
+</div>
+</div>
+<nav class=nav id=navigation>
+<ul class=nav__list>
+<li>
+<a href=https://tsumli.github.io/>about</a>
+</li>
+<li>
+<a class=active href=https://tsumli.github.io/blog>blog</a>
+</li>
+</ul>
+</nav>
+<main>
+<div class=flex-wrapper>
+<div class=post__container>
+<div class=post>
+<header class=post__header>
+<h1 id=post__title>FNet: Mixing Tokens with Fourier Transforms を読む</h1>
+<time datetime="2021-06-03 07:11:44 +0000 UTC" class=post__date>Jun 3 2021</time>
+<link rel=stylesheet href=https://tsumli.github.io//css/lightbox.min.css>
+<script type=text/javascript>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],processEscapes:!0,tags:"ams",autoload:{color:[],colorV2:['color']},packages:{'[+]':['noerrors']}},chtml:{matchFontHeight:!1,displayAlign:"left",displayIndent:"2em"},options:{skipHtmlTags:['script','noscript','style','textarea','pre'],renderActions:{find_script_mathtex:[10,function(a){for(const b of document.querySelectorAll('script[type^="math/tex"]')){const e=!!b.type.match(/; *mode=display/),c=new a.options.MathItem(b.textContent,a.inputJax[0],e),d=document.createTextNode('');b.parentNode.replaceChild(d,b),c.start={node:d,delim:'',n:0},c.end={node:d,delim:'',n:0},a.math.push(c)}},'']}},loader:{load:['[tex]/noerrors']}}</script>
+<script type=text/javascript async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js id=MathJax-script></script>
+<link rel=stylesheet type=text/css href=https://tsumli.github.io/css/mathjax-style.css>
+</header>
+<article class=post__content>
+<p><a href=https://arxiv.org/abs/2105.03824 target=_blank rel="noreferrer noopener"><strong>FNet: Mixing Tokens with Fourier Transforms</strong></a>
+<br>
+[Thorp et al. arXiv 2020] という論文を読んでいきます. (本文中の図は論文より引用).</p>
+<p>Contributions:</p>
+<ol>
+<li>token &ldquo;mixing&rdquo; 変換がテキストデータにおける多様なsemanticsを十分に捉えられることを示した</li>
+<li>self-attention層をFourier Transform層に置き換えたTransformer-likeな <strong>FNet</strong> というモデルの提案</li>
+<li>学習速度が早く (TPUでは短いシークエンスのときのみ), 精度も良い. また, メモリ使用量も比較的少なくすむ</li>
+</ol>
+<h2 id=model>Model<a class=anchor href=#model>#</a></h2>
+<h3 id=background-discrete-fourier-transforms>Background: discrete Fourier Transforms<a class=anchor href=#background-discrete-fourier-transforms>#</a></h3>
+<p>シークエンス $\lbrace x_n \rbrace$ $\left( n \in [0, N-1] \right)$ が与えられたとき,
+discrete Fourier Transform (DFT) は次のように表される.</p>
+<p>\begin{align*}
 X_k &= \sum_{n=0}^{N-1} x_n \exp\left(-\frac{2\pi i}{N}nk\right), & 0\leq k \leq N-1
-\end{align*}</p><p>DFTを計算する方法は主に2つ</p><ol><li>FFT<br><a href=https://ja.wikipedia.org/wiki/%E9%AB%98%E9%80%9F%E3%83%95%E3%83%BC%E3%83%AA%E3%82%A8%E5%A4%89%E6%8F%9B target=_blank rel="noreferrer noopener">Cooley-Tukeyアルゴリズム</a></li><li>DFT matrixを入力シークエンスに掛ける<br><a href=https://ja.wikipedia.org/wiki/%E3%83%B4%E3%82%A1%E3%83%B3%E3%83%87%E3%83%AB%E3%83%A2%E3%83%B3%E3%83%89%E3%81%AE%E8%A1%8C%E5%88%97%E5%BC%8F target=_blank rel="noreferrer noopener">Vandermonde matrix</a><br>TPUでの, 相対的に短いシークエンスに対するDFTだとFFTより早い (基本的にはFFTのほうが早いみたいです) .</li></ol><h3 id=fnet-architecture>FNet architecture<a class=anchor href=#fnet-architecture>#</a></h3><p>アーキテクチャを下図に示す. FNetは Fourier mixingレイヤーのあとにfeed-forwardレイヤーが続く構成となっている.<figure style="margin:0 auto;text-align:center"><a data-lightbox=image-images/architecture.png href=https://tsumli.github.io/blog/paper/FNet/images/architecture.png><img src=https://tsumli.github.io/blog/paper/FNet/images/architecture.png alt="FNet encoder architecture"></a><figcaption><span class=img--caption>Figure . FNet encoder architecture</span></figcaption></figure></p><p>Transformerのencoderのself-attention層をFourier層に置き換えたもので, Fourier層では 2D Fourier変換を用いる.
-(シークエンス長, 隠れ層の次元数)</p><p>つまり, 1D Fourier変換を隠れ層に対して行い, その後, 1D Fourier変換をシークエンスに対して行う.
+\end{align*}</p>
+<p>DFTを計算する方法は主に2つ</p>
+<ol>
+<li>FFT<br>
+<a href=https://ja.wikipedia.org/wiki/%E9%AB%98%E9%80%9F%E3%83%95%E3%83%BC%E3%83%AA%E3%82%A8%E5%A4%89%E6%8F%9B target=_blank rel="noreferrer noopener">Cooley-Tukeyアルゴリズム</a>
+</li>
+<li>DFT matrixを入力シークエンスに掛ける<br>
+<a href=https://ja.wikipedia.org/wiki/%E3%83%B4%E3%82%A1%E3%83%B3%E3%83%87%E3%83%AB%E3%83%A2%E3%83%B3%E3%83%89%E3%81%AE%E8%A1%8C%E5%88%97%E5%BC%8F target=_blank rel="noreferrer noopener">Vandermonde matrix</a>
+<br>
+TPUでの, 相対的に短いシークエンスに対するDFTだとFFTより早い (基本的にはFFTのほうが早いみたいです) .</li>
+</ol>
+<h3 id=fnet-architecture>FNet architecture<a class=anchor href=#fnet-architecture>#</a></h3>
+<p>アーキテクチャを下図に示す. FNetは Fourier mixingレイヤーのあとにfeed-forwardレイヤーが続く構成となっている.
+<figure style="margin:0 auto;text-align:center">
+<a data-lightbox=image-images/architecture.png href=https://tsumli.github.io/blog/paper/FNet/images/architecture.png>
+<img src=https://tsumli.github.io/blog/paper/FNet/images/architecture.png alt="FNet encoder architecture">
+</a>
+<figcaption>
+<span class=img--caption>
+Figure . FNet encoder architecture
+</span>
+</figcaption>
+</figure>
+</p>
+<p>Transformerのencoderのself-attention層をFourier層に置き換えたもので, Fourier層では 2D Fourier変換を用いる.
+(シークエンス長, 隠れ層の次元数)</p>
+<p>つまり, 1D Fourier変換を隠れ層に対して行い, その後, 1D Fourier変換をシークエンスに対して行う.
 \begin{align*}
 y = \mathfrak{R}(\mathcal{F}_\mathrm{seq} (\mathcal{F}_{\mathrm{hidden}}(x)))
 \end{align*}
-ここで, Fourier変換の結果のうち実部だけ考慮する (虚部は無視する)</p><p>Fourier Transformを利用する意味としては, token を合成するのに有効なメカニズムであることがあげられる.
+ここで, Fourier変換の結果のうち実部だけ考慮する (虚部は無視する)</p>
+<p>Fourier Transformを利用する意味としては, token を合成するのに有効なメカニズムであることがあげられる.
 Fourier変換は双対性があるため, 実空間と周波数空間を交互に行き来できる.
-そして, 実空間での畳み込み演算が, 周波数空間での掛け算になるため, FNetは畳み込みを代替できていると考えられる.</p><h2 id=results>Results<a class=anchor href=#results>#</a></h2><h3 id=transfer-learning>Transfer Learning<a class=anchor href=#transfer-learning>#</a></h3><p>以下のモデルについて検討した</p><ul><li>BERT-Base</li><li>FNet encoder<br>self-attention層をFourier層に置き換える</li><li>Linear encoder<br>self-attention層を2つの学習可能な線形 (dense) 層に置き換える</li><li>Random encoder<br>self-attention層を2つの定数行列に置き換える</li><li>Feed forward-only (FF-only)<br>Transformerからself-attention層を除いたもの (feed forward層のみ残る)</li></ul><h4 id=masked-language-modelling-pre-training>Masked language modelling pre-training</h4><p>結果を下表に示す<figure style="margin:0 auto;text-align:center"><a data-lightbox=image-images/result_tabular.png href=https://tsumli.github.io/blog/paper/FNet/images/result_tabular.png><img src=https://tsumli.github.io/blog/paper/FNet/images/result_tabular.png alt="Prepared Models and Results"></a><figcaption><span class=img--caption>Figure 1. Prepared Models and Results</span></figcaption></figure><figure style="margin:0 auto;text-align:center"><a data-lightbox=image-images/result_speed.png href=https://tsumli.github.io/blog/paper/FNet/images/result_speed.png><img src=https://tsumli.github.io/blog/paper/FNet/images/result_speed.png alt="Milliseconds per training step"></a><figcaption><span class=img--caption>Figure 2. Milliseconds per training step</span></figcaption></figure></p><p>FNetとLinear modelは結果こそBERTに劣るものの, スピードはかなり早く, よいトレードオフを達成している.
+そして, 実空間での畳み込み演算が, 周波数空間での掛け算になるため, FNetは畳み込みを代替できていると考えられる.</p>
+<h2 id=results>Results<a class=anchor href=#results>#</a></h2>
+<h3 id=transfer-learning>Transfer Learning<a class=anchor href=#transfer-learning>#</a></h3>
+<p>以下のモデルについて検討した</p>
+<ul>
+<li>BERT-Base</li>
+<li>FNet encoder<br>
+self-attention層をFourier層に置き換える</li>
+<li>Linear encoder<br>
+self-attention層を2つの学習可能な線形 (dense) 層に置き換える</li>
+<li>Random encoder<br>
+self-attention層を2つの定数行列に置き換える</li>
+<li>Feed forward-only (FF-only)<br>
+Transformerからself-attention層を除いたもの (feed forward層のみ残る)</li>
+</ul>
+<h4 id=masked-language-modelling-pre-training>Masked language modelling pre-training</h4>
+<p>結果を下表に示す
+<figure style="margin:0 auto;text-align:center">
+<a data-lightbox=image-images/result_tabular.png href=https://tsumli.github.io/blog/paper/FNet/images/result_tabular.png>
+<img src=https://tsumli.github.io/blog/paper/FNet/images/result_tabular.png alt="Prepared Models and Results">
+</a>
+<figcaption>
+<span class=img--caption>
+Figure 1. Prepared Models and Results
+</span>
+</figcaption>
+</figure>
+<figure style="margin:0 auto;text-align:center">
+<a data-lightbox=image-images/result_speed.png href=https://tsumli.github.io/blog/paper/FNet/images/result_speed.png>
+<img src=https://tsumli.github.io/blog/paper/FNet/images/result_speed.png alt="Milliseconds per training step">
+</a>
+<figcaption>
+<span class=img--caption>
+Figure 2. Milliseconds per training step
+</span>
+</figcaption>
+</figure>
+</p>
+<p>FNetとLinear modelは結果こそBERTに劣るものの, スピードはかなり早く, よいトレードオフを達成している.
 ここで, FNetで使われる2D-Fourier Transformは2つの複素行列の掛け算で表されるため, Linear modelはFourier Transformを再現することはできないが, Linear encoder modelは十分flexibleに予測できるということが推測される.
-そして, FNetはLinear modelよりパラメータが少なく, 学習速度が早い.</p><p>BERTの性能が良いのは, 他のモデルよりも多くのパラメータを持っているから.といったわけではない (BERT-Base のほうがその2倍のパラメータ数を持つFNet-Largeより性能が良い）.
-これは, BERTのattention weightsがタスクに特化していて, かつ, token dependentであるためと考えられる.</p><p>最後の2つのFourier層をself-attention層に置き換えたhybrid FNet modelを作成したところ, 小さなコストで大きな精度向上を達成した.</p><p>その他結果は元論文で</p><h2 id=references>References<a class=anchor href=#references>#</a></h2><ul><li>arXiv<br><a href=https://arxiv.org/abs/2105.03824>https://arxiv.org/abs/2105.03824</a></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script><script type=text/x-mathjax-config>
+そして, FNetはLinear modelよりパラメータが少なく, 学習速度が早い.</p>
+<p>BERTの性能が良いのは, 他のモデルよりも多くのパラメータを持っているから.といったわけではない (BERT-Base のほうがその2倍のパラメータ数を持つFNet-Largeより性能が良い）.
+これは, BERTのattention weightsがタスクに特化していて, かつ, token dependentであるためと考えられる.</p>
+<p>最後の2つのFourier層をself-attention層に置き換えたhybrid FNet modelを作成したところ, 小さなコストで大きな精度向上を達成した.</p>
+<p>その他結果は元論文で</p>
+<h2 id=references>References<a class=anchor href=#references>#</a></h2>
+<ul>
+<li>arXiv<br>
+<a href=https://arxiv.org/abs/2105.03824 target=_blank rel="noreferrer noopener">https://arxiv.org/abs/2105.03824</a>
+</li>
+</ul>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
+<script type=text/x-mathjax-config>
     MathJax.Hub.Config({
             showMathMenu: false, //disables context menu
             tex2jax: {
             inlineMath: [ ['$','$'], ['\\(','\\)'] ]
            }
     });
-</script></article><ul class=tags__list><li class=tag__item><a class=tag__link href=https://tsumli.github.io/tags/fourier/>Fourier</a></li><li class=tag__item><a class=tag__link href=https://tsumli.github.io/tags/paper/>paper</a></li></ul><div class=pagination><a class=pagination__item href=https://tsumli.github.io/blog/paper/GANimation/><span class=pagination__label>Previous Post</span>
-<span class=pagination__title>GANimation を読む</span></a>
-<a class=pagination__item href=https://tsumli.github.io/blog/paper/TGAN/><span class=pagination__label>Next Post</span>
-<span class=pagination__title>TGAN: Synthesizing Tabular Data using Generative Adversarial Networks を読む</span></a></div><footer class=post__footer><div class=social-icons><a class=social-icons__link rel=me title=GitHub href=https://github.com/tsumli target=_blank rel=noopener><div class=social-icons__icon style=background-image:url(https://tsumli.github.io/svg/github.svg)></div></a><a class=social-icons__link rel=me title=Medium href=https://medium.com/@tsumli target=_blank rel=noopener><div class=social-icons__icon style=background-image:url(https://tsumli.github.io/svg/medium.svg)></div></a></div><p>© 2022</p><script src=https://code.jquery.com/jquery-3.4.1.min.js integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin=anonymous></script><link rel=stylesheet href=https://tsumli.github.io//css/lightbox.min.css><script src=https://tsumli.github.io//js/lightbox.min.js></script></footer></div></div><div class=toc-container><div class=toc-post-title>FNet: Mixing Tokens with Fourier Transforms を読む</div><nav id=TableOfContents><ul><li><a href=#model>Model</a><ul><li><a href=#background-discrete-fourier-transforms>Background: discrete Fourier Transforms</a></li><li><a href=#fnet-architecture>FNet architecture</a></li></ul></li><li><a href=#results>Results</a><ul><li><a href=#transfer-learning>Transfer Learning</a></li></ul></li><li><a href=#references>References</a></li></ul></nav></div></div></main><script src=https://tsumli.github.io/js/index.min.49e4d8a384357d9b445b87371863419937ede9fa77737522ffb633073aebfa44.js integrity="sha256-SeTYo4Q1fZtEW4c3GGNBmTft6fp3c3Ui/7YzBzrr+kQ=" crossorigin=anonymous></script><script src=https://unpkg.com/prismjs@1.20.0/components/prism-core.min.js></script><script src=https://unpkg.com/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js data-autoloader-path=https://unpkg.com/prismjs@1.20.0/components/></script><script src=https://tsumli.github.io/js/table-of-contents.js></script></body></html>
+</script>
+</article>
+<ul class=tags__list>
+<li class=tag__item>
+<a class=tag__link href=https://tsumli.github.io/tags/fourier/>Fourier</a>
+</li>
+<li class=tag__item>
+<a class=tag__link href=https://tsumli.github.io/tags/paper/>paper</a>
+</li></ul>
+<div class=pagination>
+<a class=pagination__item href=https://tsumli.github.io/blog/paper/GANimation/>
+<span class=pagination__label>Previous Post</span>
+<span class=pagination__title>GANimation を読む</span>
+</a>
+<a class=pagination__item href=https://tsumli.github.io/blog/paper/TGAN/>
+<span class=pagination__label>Next Post</span>
+<span class=pagination__title>TGAN: Synthesizing Tabular Data using Generative Adversarial Networks を読む</span>
+</a>
+</div>
+<footer class=post__footer>
+<div class=social-icons>
+<a class=social-icons__link rel=me title=GitHub href=https://github.com/tsumli target=_blank rel=noopener>
+<div class=social-icons__icon style=background-image:url(https://tsumli.github.io/svg/github.svg)></div>
+</a>
+<a class=social-icons__link rel=me title=Medium href=https://medium.com/@tsumli target=_blank rel=noopener>
+<div class=social-icons__icon style=background-image:url(https://tsumli.github.io/svg/medium.svg)></div>
+</a>
+</div>
+<p>© 2022</p>
+<script src=https://code.jquery.com/jquery-3.4.1.min.js integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin=anonymous></script>
+<link rel=stylesheet href=https://tsumli.github.io//css/lightbox.min.css>
+<script src=https://tsumli.github.io//js/lightbox.min.js></script>
+</footer>
+</div>
+</div>
+<div class=toc-container>
+<div class=toc-post-title>FNet: Mixing Tokens with Fourier Transforms を読む</div>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#model>Model</a>
+<ul>
+<li><a href=#background-discrete-fourier-transforms>Background: discrete Fourier Transforms</a></li>
+<li><a href=#fnet-architecture>FNet architecture</a></li>
+</ul>
+</li>
+<li><a href=#results>Results</a>
+<ul>
+<li><a href=#transfer-learning>Transfer Learning</a></li>
+</ul>
+</li>
+<li><a href=#references>References</a></li>
+</ul>
+</nav>
+</div>
+</div>
+</main>
+<script src=https://tsumli.github.io/js/index.min.575dda8d49ee02639942c63564273e6da972ab531dda26a08800bdcb477cbd7f.js integrity="sha256-V13ajUnuAmOZQsY1ZCc+balyq1Md2iagiAC9y0d8vX8=" crossorigin=anonymous></script>
+<script src=https://unpkg.com/prismjs@1.20.0/components/prism-core.min.js></script>
+<script src=https://unpkg.com/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js data-autoloader-path=https://unpkg.com/prismjs@1.20.0/components/></script>
+<script src=https://tsumli.github.io/js/table-of-contents.js></script>
+</body>
+</html>
