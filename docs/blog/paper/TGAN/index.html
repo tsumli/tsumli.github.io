@@ -1,6 +1,71 @@
-<!doctype html><html lang=ja><head><title>TGAN: Synthesizing Tabular Data using Generative Adversarial Networks を読む | tsumli-pages</title><meta charset=utf-8><meta name=language content="en"><meta name=description content><meta name=keywords content="TGAN ,GAN"><meta name=viewport content="width=device-width,initial-scale=1"><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><link rel="shortcut icon" type=image/png href=https://tsumli.github.io/favicon.ico><link type=text/css rel=stylesheet href=https://tsumli.github.io/css/post.min.b60e0932fe1c50c3d7c5b4f83ee9e4592363654d0f2abf05bbd0678d5b8a214c.css integrity="sha256-tg4JMv4cUMPXxbT4PunkWSNjZU0PKr8Fu9BnjVuKIUw="><link type=text/css rel=stylesheet href=https://tsumli.github.io/css/custom.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css integrity="sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU="><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/tsumli.github.io\/"},"articleSection":"blog","name":"TGAN: Synthesizing Tabular Data using Generative Adversarial Networks を読む","headline":"TGAN: Synthesizing Tabular Data using Generative Adversarial Networks を読む","description":"","inLanguage":"en-US","author":"","creator":"","publisher":"","accountablePerson":"","copyrightHolder":"","copyrightYear":"2021","datePublished":"2021-06-14 10:33:39 \u002b0000 UTC","dateModified":"2021-06-14 10:33:39 \u002b0000 UTC","url":"https:\/\/tsumli.github.io\/blog\/paper\/TGAN\/","wordCount":"1240","keywords":["TGAN","GAN","Blog"]}</script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-188554402-1','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></head><body><div class=burger__container><div class=burger aria-controls=navigation aria-label=Menu><div class="burger__meat burger__meat--1"></div><div class="burger__meat burger__meat--2"></div><div class="burger__meat burger__meat--3"></div></div></div><nav class=nav id=navigation><ul class=nav__list><li><a href=https://tsumli.github.io/>about</a></li><li><a class=active href=https://tsumli.github.io/blog>blog</a></li></ul></nav><main><div class=flex-wrapper><div class=post__container><div class=post><header class=post__header><h1 id=post__title>TGAN: Synthesizing Tabular Data using Generative Adversarial Networks を読む</h1><time datetime="2021-06-14 10:33:39 +0000 UTC" class=post__date>Jun 14 2021</time>
-<link rel=stylesheet href=https://tsumli.github.io//css/lightbox.min.css><script type=text/javascript>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],processEscapes:true,tags:"ams",autoload:{color:[],colorV2:['color']},packages:{'[+]':['noerrors']}},chtml:{matchFontHeight:false,displayAlign:"left",displayIndent:"2em"},options:{skipHtmlTags:['script','noscript','style','textarea','pre'],renderActions:{find_script_mathtex:[10,function(doc){for(const node of document.querySelectorAll('script[type^="math/tex"]')){const display=!!node.type.match(/; *mode=display/);const math=new doc.options.MathItem(node.textContent,doc.inputJax[0],display);const text=document.createTextNode('');node.parentNode.replaceChild(text,node);math.start={node:text,delim:'',n:0};math.end={node:text,delim:'',n:0};doc.math.push(math);}},'']}},loader:{load:['[tex]/noerrors']}};</script><script type=text/javascript async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js id=MathJax-script></script><link rel=stylesheet type=text/css href=https://tsumli.github.io/css/mathjax-style.css></header><article class=post__content><p><a href=https://arxiv.org/abs/1811.11264 target=_blank rel="noreferrer noopener"><strong>Synthesizing Tabular Data using Generative Adversarial Networks</strong></a><br>[Xu et al. arXiv 2018] という論文を読んでいきます. (本文中の図は論文より引用).</p><p>tabular dataに対するGAN (TGAN) についての紹介.
-様々なデータ (categorical, numericalなど) が混合したようなテーブルに対して用いることができる.</p><h2 id=example>Example<a class=anchor href=#example>#</a></h2><figure style="margin:0 auto;text-align:center"><a data-lightbox=image-images/example.png href=https://tsumli.github.io/blog/paper/TGAN/images/example.png><img src=https://tsumli.github.io/blog/paper/TGAN/images/example.png alt="Example of using TGAN to generate a simple census table"></a><figcaption><span class=img--caption>Figure . Example of using TGAN to generate a simple census table</span></figcaption></figure><h2 id=gans-for-tabular-data>GANs for tabular data<a class=anchor href=#gans-for-tabular-data>#</a></h2><h3 id=synthetic-table-generation-task>Synthetic table generation task<a class=anchor href=#synthetic-table-generation-task>#</a></h3><p>まず, notationについて<br>テーブル $\mathbf{T}$ の列について $n_c$個のランダムな連続値を持つ列があるとする: $\lbrace C_1, \ldots, C_{n_c} \rbrace$.
+<!doctype html><html lang=ja>
+<head>
+<title>TGAN: Synthesizing Tabular Data using Generative Adversarial Networks を読む | tsumli-pages</title>
+<meta charset=utf-8>
+<meta name=language content="en">
+<meta name=description content>
+<meta name=keywords content="TGAN ,GAN">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<link rel="shortcut icon" type=image/png href=https://tsumli.github.io/favicon.ico>
+<link type=text/css rel=stylesheet href=https://tsumli.github.io/css/post.min.86d1effd4c412b85ac13db53a90c473a0f256f789b821e131125c9aa25cb6a6d.css integrity="sha256-htHv/UxBK4WsE9tTqQxHOg8lb3ibgh4TESXJqiXLam0=">
+<link type=text/css rel=stylesheet href=https://tsumli.github.io/css/custom.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css integrity="sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=">
+<script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/tsumli.github.io\/"},"articleSection":"blog","name":"TGAN: Synthesizing Tabular Data using Generative Adversarial Networks を読む","headline":"TGAN: Synthesizing Tabular Data using Generative Adversarial Networks を読む","description":"","inLanguage":"en-US","author":"","creator":"","publisher":"","accountablePerson":"","copyrightHolder":"","copyrightYear":"2021","datePublished":"2021-06-14 10:33:39 \u002b0000 UTC","dateModified":"2021-06-14 10:33:39 \u002b0000 UTC","url":"https:\/\/tsumli.github.io\/blog\/paper\/TGAN\/","wordCount":"1240","keywords":["TGAN","GAN","Blog"]}</script>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-188554402-1','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
+</head>
+<body>
+<div class=burger__container>
+<div class=burger aria-controls=navigation aria-label=Menu>
+<div class="burger__meat burger__meat--1"></div>
+<div class="burger__meat burger__meat--2"></div>
+<div class="burger__meat burger__meat--3"></div>
+</div>
+</div>
+<nav class=nav id=navigation>
+<ul class=nav__list>
+<li>
+<a href=https://tsumli.github.io/>about</a>
+</li>
+<li>
+<a class=active href=https://tsumli.github.io/blog>blog</a>
+</li>
+</ul>
+</nav>
+<main>
+<div class=flex-wrapper>
+<div class=post__container>
+<div class=post>
+<header class=post__header>
+<h1 id=post__title>TGAN: Synthesizing Tabular Data using Generative Adversarial Networks を読む</h1>
+<time datetime="2021-06-14 10:33:39 +0000 UTC" class=post__date>Jun 14 2021</time>
+<link rel=stylesheet href=https://tsumli.github.io//css/lightbox.min.css>
+<script type=text/javascript>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],processEscapes:!0,tags:"ams",autoload:{color:[],colorV2:['color']},packages:{'[+]':['noerrors']}},chtml:{matchFontHeight:!1,displayAlign:"left",displayIndent:"2em"},options:{skipHtmlTags:['script','noscript','style','textarea','pre'],renderActions:{find_script_mathtex:[10,function(a){for(const b of document.querySelectorAll('script[type^="math/tex"]')){const e=!!b.type.match(/; *mode=display/),c=new a.options.MathItem(b.textContent,a.inputJax[0],e),d=document.createTextNode('');b.parentNode.replaceChild(d,b),c.start={node:d,delim:'',n:0},c.end={node:d,delim:'',n:0},a.math.push(c)}},'']}},loader:{load:['[tex]/noerrors']}}</script>
+<script type=text/javascript async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js id=MathJax-script></script>
+<link rel=stylesheet type=text/css href=https://tsumli.github.io/css/mathjax-style.css>
+</header>
+<article class=post__content>
+<p><a href=https://arxiv.org/abs/1811.11264 target=_blank rel="noreferrer noopener"><strong>Synthesizing Tabular Data using Generative Adversarial Networks</strong></a>
+<br>
+[Xu et al. arXiv 2018] という論文を読んでいきます. (本文中の図は論文より引用).</p>
+<p>tabular dataに対するGAN (TGAN) についての紹介.
+様々なデータ (categorical, numericalなど) が混合したようなテーブルに対して用いることができる.</p>
+<h2 id=example>Example<a class=anchor href=#example>#</a></h2>
+<figure style="margin:0 auto;text-align:center">
+<a data-lightbox=image-images/example.png href=https://tsumli.github.io/blog/paper/TGAN/images/example.png>
+<img src=https://tsumli.github.io/blog/paper/TGAN/images/example.png alt="Example of using TGAN to generate a simple census table">
+</a>
+<figcaption>
+<span class=img--caption>
+Figure . Example of using TGAN to generate a simple census table
+</span>
+</figcaption>
+</figure>
+<h2 id=gans-for-tabular-data>GANs for tabular data<a class=anchor href=#gans-for-tabular-data>#</a></h2>
+<h3 id=synthetic-table-generation-task>Synthetic table generation task<a class=anchor href=#synthetic-table-generation-task>#</a></h3>
+<p>まず, notationについて<br>
+テーブル $\mathbf{T}$ の列について $n_c$個のランダムな連続値を持つ列があるとする: $\lbrace C_1, \ldots, C_{n_c} \rbrace$.
 また, $n_d$個のランダムな離散値を持つ列があるとする: $\lbrace D_1, \ldots, D_{n_d} \rbrace$.
 これらの変数は未知の同時分布 $\mathbb{P} (C_{1:n_c}, D_{1: n_d})$ を持つとする.
 そして, それぞれの行は次のように表される:
@@ -12,12 +77,135 @@ $$
 \def\tsyn{\mathbf{T}_{synth}}
 $$
 次に, 目的は生成モデル $M(C_{1:n_c}\ , D_{1:n_d}\ )$ について学習することである.
-そしてこの生成モデルから生成されたテーブル $\tsyn$ は次の条件を満たす必要がある.</p><ol><li>$\mathbf{T}$ で学習したモデルと $\tsyn$ で学習されたモデルは真のテスト用のテーブル $\mathbf{T}_{test}$ に対して同様の精度を出す</li><li>任意の変数間の相互情報量は $\mathbf{T}$ と $\tsyn$ で似ている</li></ol><h3 id=reversible-data-transformation>Reversible Data Transformation<a class=anchor href=#reversible-data-transformation>#</a></h3><h4 id=mode-specific-normalization-for-numerical-variables>Mode-specific normalization for numerical variables</h4><p>特徴量はmultimodalな分布に従っていることがあるため, 単純に特徴量を$[-1, 1]$に正規化し, tanh関数を用いて生成しようとしてもうまく行かない. そこで, Gaussian Mixture model (GMM) を用いる.</p><ul><li>それぞれの数値の変数 $C_i$ について $m$ 個からなる GMM を訓練する. それぞれの平均と標準偏差をそれぞれ $\eta_i^{(1)}, \ldots, \eta_i^{(m)}$, $\sigma_i^{(1)}, \ldots, \sigma_i^{(m)}$ とする.</li><li>$m$ 個のGaussian分布を使って, $c_{i, j}$ が得られる確率分布 ($u_{i, j}^{(1)}, \ldots, u_{i, j}^{(m)}$) を計算する.
-ここで, $u_{i, j}$ は $m$ 個のGaussian分布に対して正規化された確率分布となる.</li><li>$c_{i, j}$ を正規化する: $v_{i, j} = (c_{i, j} - \eta_i^{(k)}) / 2\sigma_i^{(k)}$.
-ここで, $k=\arg \max_k u_{i, j}^{(k)}$. そして, それぞれの値を $[-0.99, 0.99]$にクリップする.</li></ul><p>そして, $u_i$ と $v_i$ を使って $c_i$ を表す. また, 今回の実験では $m=5$ とした.</p><h4 id=smoothing-for-categorical-variables>Smoothing for categorical variables</h4><p>カテゴリー特徴量にはone-hot encodingを用いる.</p><ul><li>変数 $D_i$ のサンプル $d_{i, j}$ を $|D_i|$次元のone-hotベクトル $\mathbf{d}_{i, j}$ に変換する</li><li>ノイズを加える<br>\begin{align}
+そしてこの生成モデルから生成されたテーブル $\tsyn$ は次の条件を満たす必要がある.</p>
+<ol>
+<li>$\mathbf{T}$ で学習したモデルと $\tsyn$ で学習されたモデルは真のテスト用のテーブル $\mathbf{T}_{test}$ に対して同様の精度を出す</li>
+<li>任意の変数間の相互情報量は $\mathbf{T}$ と $\tsyn$ で似ている</li>
+</ol>
+<h3 id=reversible-data-transformation>Reversible Data Transformation<a class=anchor href=#reversible-data-transformation>#</a></h3>
+<h4 id=mode-specific-normalization-for-numerical-variables>Mode-specific normalization for numerical variables</h4>
+<p>特徴量はmultimodalな分布に従っていることがあるため, 単純に特徴量を$[-1, 1]$に正規化し, tanh関数を用いて生成しようとしてもうまく行かない. そこで, Gaussian Mixture model (GMM) を用いる.</p>
+<ul>
+<li>それぞれの数値の変数 $C_i$ について $m$ 個からなる GMM を訓練する. それぞれの平均と標準偏差をそれぞれ $\eta_i^{(1)}, \ldots, \eta_i^{(m)}$, $\sigma_i^{(1)}, \ldots, \sigma_i^{(m)}$ とする.</li>
+<li>$m$ 個のGaussian分布を使って, $c_{i, j}$ が得られる確率分布 ($u_{i, j}^{(1)}, \ldots, u_{i, j}^{(m)}$) を計算する.
+ここで, $u_{i, j}$ は $m$ 個のGaussian分布に対して正規化された確率分布となる.</li>
+<li>$c_{i, j}$ を正規化する: $v_{i, j} = (c_{i, j} - \eta_i^{(k)}) / 2\sigma_i^{(k)}$.
+ここで, $k=\arg \max_k u_{i, j}^{(k)}$. そして, それぞれの値を $[-0.99, 0.99]$にクリップする.</li>
+</ul>
+<p>そして, $u_i$ と $v_i$ を使って $c_i$ を表す. また, 今回の実験では $m=5$ とした.</p>
+<h4 id=smoothing-for-categorical-variables>Smoothing for categorical variables</h4>
+<p>カテゴリー特徴量にはone-hot encodingを用いる.</p>
+<ul>
+<li>変数 $D_i$ のサンプル $d_{i, j}$ を $|D_i|$次元のone-hotベクトル $\mathbf{d}_{i, j}$ に変換する</li>
+<li>ノイズを加える<br>
+\begin{align}
 \mathbf{d}_{i, j}^{(k)} + \text{Uniform} (0, \gamma) && \text{(in this paper } \gamma = 0.2 )\nonumber
-\end{align}</li><li>再び正規化する</li></ul><h3 id=model-and-data-generation>Model and data generation<a class=anchor href=#model-and-data-generation>#</a></h3><h4 id=generator>Generator</h4><p>LSTMを使う (ページ上部Fig下部参照)</p><ul><li>$a_t$ はattentionベースのcontextベクトルで, 前のLSTMの出力 $h_{1:t}$ の加重付き平均となっている</li><li>離散的な変数に対してはsoftmaxを利用し生成値とする</li><li>最初に使う<g0>は特別なベクトルで, 学習可能なパラメータである</li></ul><h4 id=discriminator>Discriminator</h4><p>LeakyReLU, BatchNormを用いたFCモデルを使用</p><ul><li>diversity($\cdot$) は<a href=https://arxiv.org/abs/1606.03498 target=_blank rel="noreferrer noopener">mini-batch discrimination</a>
-ベクトルであり, 2層目からは前段の出力にconcatして入力ベクトルとする.</li></ul><h3 id=results>Results<a class=anchor href=#results>#</a></h3><p>以下のデータセットについて実験を行った</p><ul><li>The Census-Income dataset<br>年収が$50kを超えるか</li><li>The KDD Cup 1999 dataset<br>マルウェアの侵入検知</li><li>The Covertype dataset<br>森林の分類</li></ul><figure style="margin:0 auto;text-align:center"><a data-lightbox=image-images/res.png href=https://tsumli.github.io/blog/paper/TGAN/images/res.png><img src=https://tsumli.github.io/blog/paper/TGAN/images/res.png alt="Result of TGAN, comapring with baselines"></a><figcaption><span class=img--caption>Figure 1. Result of TGAN, comapring with baselines</span></figcaption></figure><p>他の手法に比べてTGANで生成したデータに対して学習したモデルは, 真のデータで学習したモデルと近い評価値が得られることがわかる. $\rightarrow$ よりリアルなデータを生成できる</p><h2 id=references>References<a class=anchor href=#references>#</a></h2><ul><li>arXiv<br><a href=https://arxiv.org/abs/1811.11264>https://arxiv.org/abs/1811.11264</a></li><li>medium<br><a href=https://towardsdatascience.com/review-of-gans-for-tabular-data-a30a2199342>https://towardsdatascience.com/review-of-gans-for-tabular-data-a30a2199342</a></li><li>Github<br><a href=https://github.com/sdv-dev/TGAN target=_blank rel="noreferrer noopener"><img src=https://gh-card.dev/repos/sdv-dev/TGAN.svg alt="sdv-dev/TGAN - GitHub"></a></li></ul></article><ul class=tags__list><li class=tag__item><a class=tag__link href=https://tsumli.github.io/tags/table/>table</a></li><li class=tag__item><a class=tag__link href=https://tsumli.github.io/tags/paper/>paper</a></li></ul><div class=pagination><a class=pagination__item href=https://tsumli.github.io/blog/paper/FNet/><span class=pagination__label>Previous Post</span>
-<span class=pagination__title>FNet: Mixing Tokens with Fourier Transforms を読む</span></a>
-<a class=pagination__item href=https://tsumli.github.io/blog/paper/one-shot-talking-head/><span class=pagination__label>Next Post</span>
-<span class=pagination__title>One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing を読む</span></a></div><footer class=post__footer><div class=social-icons><a class=social-icons__link rel=me title=GitHub href=https://github.com/tsumli target=_blank rel=noopener><div class=social-icons__icon style=background-image:url(https://tsumli.github.io/svg/github.svg)></div></a><a class=social-icons__link rel=me title=Medium href=https://medium.com/@tsumli target=_blank rel=noopener><div class=social-icons__icon style=background-image:url(https://tsumli.github.io/svg/medium.svg)></div></a></div><p>© 2022</p><script src=https://code.jquery.com/jquery-3.4.1.min.js integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin=anonymous></script><link rel=stylesheet href=https://tsumli.github.io//css/lightbox.min.css><script src=https://tsumli.github.io//js/lightbox.min.js></script></footer></div></div><div class=toc-container><div class=toc-post-title>TGAN: Synthesizing Tabular Data using Generative Adversarial Networks を読む</div><nav id=TableOfContents><ul><li><a href=#example>Example</a></li><li><a href=#gans-for-tabular-data>GANs for tabular data</a><ul><li><a href=#synthetic-table-generation-task>Synthetic table generation task</a></li><li><a href=#reversible-data-transformation>Reversible Data Transformation</a></li><li><a href=#model-and-data-generation>Model and data generation</a></li><li><a href=#results>Results</a></li></ul></li><li><a href=#references>References</a></li></ul></nav></div></div></main><script src=https://tsumli.github.io/js/index.min.49e4d8a384357d9b445b87371863419937ede9fa77737522ffb633073aebfa44.js integrity="sha256-SeTYo4Q1fZtEW4c3GGNBmTft6fp3c3Ui/7YzBzrr+kQ=" crossorigin=anonymous></script><script src=https://unpkg.com/prismjs@1.20.0/components/prism-core.min.js></script><script src=https://unpkg.com/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js data-autoloader-path=https://unpkg.com/prismjs@1.20.0/components/></script><script src=https://tsumli.github.io/js/table-of-contents.js></script></body></html>
+\end{align}</li>
+<li>再び正規化する</li>
+</ul>
+<h3 id=model-and-data-generation>Model and data generation<a class=anchor href=#model-and-data-generation>#</a></h3>
+<h4 id=generator>Generator</h4>
+<p>LSTMを使う (ページ上部Fig下部参照)</p>
+<ul>
+<li>$a_t$ はattentionベースのcontextベクトルで, 前のLSTMの出力 $h_{1:t}$ の加重付き平均となっている</li>
+<li>離散的な変数に対してはsoftmaxを利用し生成値とする</li>
+<li>最初に使う<g0>は特別なベクトルで, 学習可能なパラメータである</li>
+</ul>
+<h4 id=discriminator>Discriminator</h4>
+<p>LeakyReLU, BatchNormを用いたFCモデルを使用</p>
+<ul>
+<li>diversity($\cdot$) は<a href=https://arxiv.org/abs/1606.03498 target=_blank rel="noreferrer noopener">mini-batch discrimination</a>
+ベクトルであり, 2層目からは前段の出力にconcatして入力ベクトルとする.</li>
+</ul>
+<h3 id=results>Results<a class=anchor href=#results>#</a></h3>
+<p>以下のデータセットについて実験を行った</p>
+<ul>
+<li>The Census-Income dataset<br>
+年収が$50kを超えるか</li>
+<li>The KDD Cup 1999 dataset<br>
+マルウェアの侵入検知</li>
+<li>The Covertype dataset<br>
+森林の分類</li>
+</ul>
+<figure style="margin:0 auto;text-align:center">
+<a data-lightbox=image-images/res.png href=https://tsumli.github.io/blog/paper/TGAN/images/res.png>
+<img src=https://tsumli.github.io/blog/paper/TGAN/images/res.png alt="Result of TGAN, comapring with baselines">
+</a>
+<figcaption>
+<span class=img--caption>
+Figure 1. Result of TGAN, comapring with baselines
+</span>
+</figcaption>
+</figure>
+<p>他の手法に比べてTGANで生成したデータに対して学習したモデルは, 真のデータで学習したモデルと近い評価値が得られることがわかる. $\rightarrow$ よりリアルなデータを生成できる</p>
+<h2 id=references>References<a class=anchor href=#references>#</a></h2>
+<ul>
+<li>arXiv<br>
+<a href=https://arxiv.org/abs/1811.11264 target=_blank rel="noreferrer noopener">https://arxiv.org/abs/1811.11264</a>
+</li>
+<li>medium<br>
+<a href=https://towardsdatascience.com/review-of-gans-for-tabular-data-a30a2199342 target=_blank rel="noreferrer noopener">https://towardsdatascience.com/review-of-gans-for-tabular-data-a30a2199342</a>
+</li>
+<li>Github<br>
+<a href=https://github.com/sdv-dev/TGAN target=_blank rel="noreferrer noopener"><img src=https://gh-card.dev/repos/sdv-dev/TGAN.svg alt="sdv-dev/TGAN - GitHub"></a>
+</li>
+</ul>
+</article>
+<ul class=tags__list>
+<li class=tag__item>
+<a class=tag__link href=https://tsumli.github.io/tags/table/>table</a>
+</li>
+<li class=tag__item>
+<a class=tag__link href=https://tsumli.github.io/tags/paper/>paper</a>
+</li></ul>
+<div class=pagination>
+<a class=pagination__item href=https://tsumli.github.io/blog/paper/FNet/>
+<span class=pagination__label>Previous Post</span>
+<span class=pagination__title>FNet: Mixing Tokens with Fourier Transforms を読む</span>
+</a>
+<a class=pagination__item href=https://tsumli.github.io/blog/paper/one-shot-talking-head/>
+<span class=pagination__label>Next Post</span>
+<span class=pagination__title>One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing を読む</span>
+</a>
+</div>
+<footer class=post__footer>
+<div class=social-icons>
+<a class=social-icons__link rel=me title=GitHub href=https://github.com/tsumli target=_blank rel=noopener>
+<div class=social-icons__icon style=background-image:url(https://tsumli.github.io/svg/github.svg)></div>
+</a>
+<a class=social-icons__link rel=me title=Medium href=https://medium.com/@tsumli target=_blank rel=noopener>
+<div class=social-icons__icon style=background-image:url(https://tsumli.github.io/svg/medium.svg)></div>
+</a>
+</div>
+<p>© 2022</p>
+<script src=https://code.jquery.com/jquery-3.4.1.min.js integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin=anonymous></script>
+<link rel=stylesheet href=https://tsumli.github.io//css/lightbox.min.css>
+<script src=https://tsumli.github.io//js/lightbox.min.js></script>
+</footer>
+</div>
+</div>
+<div class=toc-container>
+<div class=toc-post-title>TGAN: Synthesizing Tabular Data using Generative Adversarial Networks を読む</div>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#example>Example</a></li>
+<li><a href=#gans-for-tabular-data>GANs for tabular data</a>
+<ul>
+<li><a href=#synthetic-table-generation-task>Synthetic table generation task</a></li>
+<li><a href=#reversible-data-transformation>Reversible Data Transformation</a></li>
+<li><a href=#model-and-data-generation>Model and data generation</a></li>
+<li><a href=#results>Results</a></li>
+</ul>
+</li>
+<li><a href=#references>References</a></li>
+</ul>
+</nav>
+</div>
+</div>
+</main>
+<script src=https://tsumli.github.io/js/index.min.575dda8d49ee02639942c63564273e6da972ab531dda26a08800bdcb477cbd7f.js integrity="sha256-V13ajUnuAmOZQsY1ZCc+balyq1Md2iagiAC9y0d8vX8=" crossorigin=anonymous></script>
+<script src=https://unpkg.com/prismjs@1.20.0/components/prism-core.min.js></script>
+<script src=https://unpkg.com/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js data-autoloader-path=https://unpkg.com/prismjs@1.20.0/components/></script>
+<script src=https://tsumli.github.io/js/table-of-contents.js></script>
+</body>
+</html>
