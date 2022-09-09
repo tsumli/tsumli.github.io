@@ -11,7 +11,7 @@
 <link rel="shortcut icon" type=image/png href=https://tsumli.github.io/favicon.ico>
 <link type=text/css rel=stylesheet href=https://tsumli.github.io/css/post.min.86d1effd4c412b85ac13db53a90c473a0f256f789b821e131125c9aa25cb6a6d.css integrity="sha256-htHv/UxBK4WsE9tTqQxHOg8lb3ibgh4TESXJqiXLam0=">
 <link type=text/css rel=stylesheet href=https://tsumli.github.io/css/custom.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css integrity="sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=">
-<script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/tsumli.github.io\/"},"articleSection":"blog","name":"BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation を読む","headline":"BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation を読む","description":"","inLanguage":"en-US","author":"","creator":"","publisher":"","accountablePerson":"","copyrightHolder":"","copyrightYear":"2022","datePublished":"2022-09-06 10:33:39 \u002b0000 UTC","dateModified":"2022-09-06 10:33:39 \u002b0000 UTC","url":"https:\/\/tsumli.github.io\/blog\/paper\/bisenet\/","wordCount":"1124","keywords":["BiSeNet","segmentation","Blog"]}</script>
+<script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/tsumli.github.io\/"},"articleSection":"blog","name":"BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation を読む","headline":"BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation を読む","description":"","inLanguage":"en-US","author":"","creator":"","publisher":"","accountablePerson":"","copyrightHolder":"","copyrightYear":"2022","datePublished":"2022-09-06 10:33:39 \u002b0000 UTC","dateModified":"2022-09-06 10:33:39 \u002b0000 UTC","url":"https:\/\/tsumli.github.io\/blog\/paper\/bisenet\/","wordCount":"1254","keywords":["BiSeNet","segmentation","Blog"]}</script>
 <script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-188554402-1','auto'),ga('send','pageview'))</script>
 <script async src=https://www.google-analytics.com/analytics.js></script>
 </head>
@@ -115,6 +115,22 @@ pytorchによる実装は<a href=https://github.com/CoinCheung/BiSeNet/blob/mast
         feat_fuse = self.ffm(feat_sp, feat_cp8)
         feat_out = self.conv_out(feat_fuse)
 </code></pre>
+<h3 id=experiment>Experiment<a class=anchor href=#experiment>#</a></h3>
+<p>このBiSeNetを顔のパーツに応用 (修正) した<a href=https://github.com/zllrunning/face-parsing.PyTorch target=_blank rel="noreferrer noopener">こちら</a>
+のライブラリを使ってその効果を確かめます。
+<a href=https://github.com/switchablenorms/CelebAMask-HQ target=_blank rel="noreferrer noopener">CelebAMask-HQ</a>
+で訓練されていて、19個のパーツに顔を分類することができます。</p>
+<figure style="margin:0 auto;text-align:center">
+<a data-lightbox=image-images/experiment.jpg href=https://tsumli.github.io/blog/paper/bisenet/images/experiment.jpg>
+<img src=https://tsumli.github.io/blog/paper/bisenet/images/experiment.jpg alt="(Left) input image. (Right) output image.">
+</a>
+<figcaption>
+<span class=img--caption>
+Figure 2. (Left) input image. (Right) output image.
+</span>
+</figcaption>
+</figure>
+<p>出力を見ると目、鼻、口、髪など多くのパーツに正しく分けられていることが分かります。</p>
 <h2 id=references>References<a class=anchor href=#references>#</a></h2>
 <ul>
 <li>
@@ -169,6 +185,7 @@ pytorchによる実装は<a href=https://github.com/CoinCheung/BiSeNet/blob/mast
 <li><a href=#context-path>Context path</a></li>
 <li><a href=#feature-fusion-module>Feature Fusion Module</a></li>
 <li><a href=#implementation>Implementation</a></li>
+<li><a href=#experiment>Experiment</a></li>
 </ul>
 </li>
 <li><a href=#references>References</a></li>

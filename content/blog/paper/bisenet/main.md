@@ -79,6 +79,18 @@ class BiSeNetV1(nn.Module):
         feat_out = self.conv_out(feat_fuse)
 ```
 
+### Experiment
+このBiSeNetを顔のパーツに応用 (修正) した[こちら](https://github.com/zllrunning/face-parsing.PyTorch)のライブラリを使ってその効果を確かめます。
+[CelebAMask-HQ](https://github.com/switchablenorms/CelebAMask-HQ)で訓練されていて、19個のパーツに顔を分類することができます。
+
+{{<figure 
+    src="images/experiment.jpg" 
+    caption="(Left) input image. (Right) output image." 
+>}}
+
+出力を見ると目、鼻、口、髪など多くのパーツに正しく分けられていることが分かります。
+
+
 ## References
 - arXiv  
 https://arxiv.org/abs/1808.00897
