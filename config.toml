@@ -6,12 +6,11 @@
 # themesDir = "../../" 
 
 # DO NOT REMOVE THIS
-theme = "hugo-theme-codex" 
+theme = "hugo-theme-codex"
 
 # For github-pages
 publishDir = "docs"
 canonifyurls = true
-
 
 
 # Override these settings with your own
@@ -25,7 +24,7 @@ copyright = "© {year}"
 # disqusShortname = ""
 
 # Add your Google Analytics identifier: UA-XXXXXXXX-X
-googleAnalytics = "UA-188554402-1" 
+googleAnalytics = "UA-188554402-1"
 
 
 # Syntax Highlight
@@ -35,61 +34,62 @@ pygmentsUseClasses = true
 
 # Optional params
 [params]
-  # Follow the Hugo date/time format reference here: 
-  # https://gohugo.io/functions/format/#gos-layout-string
-  dateFormat = "Jan 2 2006"
+# Follow the Hugo date/time format reference here: 
+# https://gohugo.io/functions/format/#gos-layout-string
+dateFormat = "Jan 2 2006"
 
-  # Links to your social accounts, comment/uncomment as needed. Icons will be displayed for those specified.
-  # twitter = "https://twitter.com/GoHugoIO"
-  github = "https://github.com/tsumli"
-  # email = "tsumli.kt (at) gmail.com"
-  # mastodon = "https://mastodon.social/@nickname"
-  # facebook = "https://facebook.com/<your handle>"
-  # gitlab = "https://gitlab.com/<your handle>"
-  # instagram = "https://instagram.com/<your handle>"
-  # linkedin = "<link to your profile>"
-  # youtube = "https://www.youtube.com/channel/<your channel>"
-  medium = "https://medium.com/@tsumli"
-  # Titles for your icons (shown as tooltips), and also their display order.
-  # Currently, these icons are supported: 
-  #   "Twitter", "GitHub", "Email", "Mastodon", "Facebook", "GitLab", "Instagram", "LinkedIn", "YouTube"
-  
+# Links to your social accounts, comment/uncomment as needed. Icons will be displayed for those specified.
+# twitter = "https://twitter.com/GoHugoIO"
+kaggle = "https://www.kaggle.com/tsumli"
+github = "https://github.com/tsumli"
+# email = "tsumli.kt (at) gmail.com"
+# mastodon = "https://mastodon.social/@nickname"
+# facebook = "https://facebook.com/<your handle>"
+# gitlab = "https://gitlab.com/<your handle>"
+# instagram = "https://instagram.com/<your handle>"
+# linkedin = "<link to your profile>"
+# youtube = "https://www.youtube.com/channel/<your channel>"
+medium = "https://medium.com/@tsumli"
+# Titles for your icons (shown as tooltips), and also their display order.
+# Currently, these icons are supported: 
+#   "Twitter", "GitHub", "Email", "Mastodon", "Facebook", "GitLab", "Instagram", "LinkedIn", "YouTube"
 
-  iconOrder = ["GitHub", "Medium"]
 
-  # Metadata for Twitter cards, defaults to params.twitter
-  # twitterSite = "@<your handle>"
-  # twitterAuthor = "@<your handle>"
+iconOrder = ["Kaggle", "GitHub", "Medium"]
 
-  # Set to true to display page title in table of contents in blog posts.
-  showPageTitleInTOC = true
+# Metadata for Twitter cards, defaults to params.twitter
+# twitterSite = "@<your handle>"
+# twitterAuthor = "@<your handle>"
 
-  # custom_css = ["css/lightbox.min.css"]
-  mathjaxStyle = "mathjax-style.css"
+# Set to true to display page title in table of contents in blog posts.
+showPageTitleInTOC = true
+
+# custom_css = ["css/lightbox.min.css"]
+mathjaxStyle = "mathjax-style.css"
 
 # This disables Hugo's default syntax highlighting in favor
 # of prismjs. If you wish to use Hugo's default syntax highlighting
 # over prismjs, remove this. You will also need to remove the prismjs
 # vendor script in layouts/blog/single.html.
 [markup]
-  [markup.highlight]
-    codeFences = false
-    
-  # Set to false to disallow raw HTML in markdown files
-  [markup.goldmark.renderer]
-      unsafe = true
-      hardWraps = false
-    
+[markup.highlight]
+codeFences = false
+
+# Set to false to disallow raw HTML in markdown files
+[markup.goldmark.renderer]
+unsafe = true
+hardWraps = false
+
 
 # Controls the navigation
 [[menu.main]]
-  identifier = "about"
-  name = "about"
-  title = "About"
-  url = "/"
+identifier = "about"
+name = "about"
+title = "About"
+url = "/"
 
 [[menu.main]]
-  identifier = "blog"
-  name = "blog"
-  title = "Blog"
-  url = "/blog"
+identifier = "blog"
+name = "blog"
+title = "Blog"
+url = "/blog"
