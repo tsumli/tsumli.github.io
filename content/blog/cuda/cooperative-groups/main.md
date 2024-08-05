@@ -72,7 +72,7 @@ cg::thread_block block = cg::this_thread_block();
 __syncthreads();
 block.sync();
 cg::synchronize(block);
-this_thread_block().sync();
+cg::this_thread_block().sync();
 cg::synchronize(this_thread_block());
 ```
 `thread_block`は`thread_group`のインターフェースに加えblock特有の関数が追加されています。
@@ -267,7 +267,6 @@ thread block tilesは次のwarp-levelなcollective functionをもつ。
 ```cpp
 __device__ int thread_sum(int *input, int n) {
     int sum = 0;
-
     for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < n / 4; i += blockDim.x * gridDim.x) {
         int4 in = ((int4 *)input)[i];
         sum += in.x + in.y + in.z + in.w;
@@ -337,4 +336,122 @@ __device__ int atomicAggInc(int *ptr) {
 ```
 
 ## 実験
-さて、ここまでブログの記事をざっくりとみていきましたが、実際にコードを書いてみましょう。
+さて、ここまでブログの記事をざっくりとみていきましたが、実際にコードを動かしてみましょう (今までもいくつか動かしていましたが...)
+`cg::thread_block`から取得できる情報をみていきます。一気に出力すると良く分からなくなるのでコメントアウトしながら動かします。
+```cpp
+__global__ void my_kernel() {
+    cg::thread_block block = cg::this_thread_block();
+
+    dim3 dim_threads = block.dim_threads();
+    uint num_threads = block.num_threads();
+    uint get_type = block.get_type();
+    dim3 group_dim = block.group_dim();
+    dim3 group_index = block.group_index();
+    uint thread_rank = block.thread_rank();
+    uint size = block.size();
+
+    printf("dim_threads: (%d, %d, %d)\n", dim_threads.x, dim_threads.y, dim_threads.z);
+    // printf("num_threads: %d\n", num_threads);
+    // printf("get_type: %d\n", get_type);
+    // printf("group_dim: (%d, %d, %d)\n", group_dim.x, group_dim.y, group_dim.z);
+    // printf("group_index: (%d, %d, %d)\n", group_index.x, group_index.y, group_index.z);
+    // printf("thread_index: (%d, %d, %d)\n", thread_index.x, thread_index.y, thread_index.z);
+    // printf("thread_rank: %d\n", thread_rank);
+    // printf("size: %d\n", size);
+}
+
+int main() {
+    my_kernel<<<dim3{2, 3, 4}, dim3{5, 6, 7}>>>();
+    THROW_IF_FAILED(cudaDeviceSynchronize());
+    return 0;
+}
+```
+
+### `dim_threads`
+```
+dim_threads: (5, 6, 7)
+dim_threads: (5, 6, 7)
+dim_threads: (5, 6, 7)
+...
+```
+`dim3{5, 6, 7}`を返していますね
+
+### `num_threads`
+```
+num_threads: 210
+num_threads: 210
+num_threads: 210
+...
+```
+$5 \times 6 \times 7 = 210$個のthreadが実行されています
+
+### `get_type`
+```
+get_type: 4
+get_type: 4
+get_type: 4
+...
+```
+このtypeは以下の値に該当するようです。つまり、このblockのtypeは`thread_block_id`であることがわかります。
+```cpp
+// cooperative_group.h
+namespace details {
+    _CG_CONST_DECL unsigned int coalesced_group_id = 1;
+    _CG_CONST_DECL unsigned int multi_grid_group_id = 2;
+    _CG_CONST_DECL unsigned int grid_group_id = 3;
+    _CG_CONST_DECL unsigned int thread_block_id = 4;
+    _CG_CONST_DECL unsigned int multi_tile_group_id = 5;
+    _CG_CONST_DECL unsigned int cluster_group_id = 6;
+}
+```
+
+### `group_dim`
+```
+group_dim: (5, 6, 7)
+group_dim: (5, 6, 7)
+group_dim: (5, 6, 7)
+...
+```
+これも`dim3{5, 6, 7}`を返しています。
+
+### `group_index`, `thread_idx`
+```
+...
+group_index: (0, 0, 1)
+group_index: (0, 0, 1)
+group_index: (0, 0, 0)
+...
+```
+```
+...
+thread_index: (4, 3, 0)
+thread_index: (0, 4, 0)
+thread_index: (1, 4, 0)
+...
+```
+こちらについては先ほど紹介した通り`blockIdx`/`threadIdx`と同じですね
+
+### `size`
+```
+...
+size: 210
+size: 210
+size: 210
+...
+```
+これは$5 \times 6 \times 7$と一致します。
+
+### `thread_rank`
+```
+...
+thread_rank: 189
+thread_rank: 190
+thread_rank: 191
+thread_rank: 64
+thread_rank: 65
+thread_rank: 66
+...
+```
+この値は0から209まで取るかと思ったのですが、調べてみると0から191までのようです。6つ分のwarpのみ動いているということでしょうか。ここで気がついたのですが、標準出力の行数も4608 ($= 2 * 3 * 4 * 192$) となっていました。192から209番目のthreadは実行されていないのは、今回のコードがただprintfするコードのためcompilerによる最適化がかかったと考えられます。
+
+続きは余力があれば...

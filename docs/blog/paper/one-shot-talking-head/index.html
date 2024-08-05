@@ -1,309 +1,38 @@
-<!doctype html><html lang=ja>
-<head>
-<title>One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing を読む | tsumli-pages</title>
-<meta charset=utf-8>
-<meta name=language content="en">
-<meta name=description content>
-<meta name=keywords content="face ,GAN">
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta charset=utf-8>
-<meta http-equiv=x-ua-compatible content="IE=edge">
-<link rel="shortcut icon" type=image/png href=https://tsumli.github.io/favicon.ico>
-<link type=text/css rel=stylesheet href=https://tsumli.github.io/css/post.min.86d1effd4c412b85ac13db53a90c473a0f256f789b821e131125c9aa25cb6a6d.css integrity="sha256-htHv/UxBK4WsE9tTqQxHOg8lb3ibgh4TESXJqiXLam0=">
-<link type=text/css rel=stylesheet href=https://tsumli.github.io/css/custom.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css integrity="sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=">
-<script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/tsumli.github.io\/"},"articleSection":"blog","name":"One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing を読む","headline":"One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing を読む","description":"","inLanguage":"en-US","author":"","creator":"","publisher":"","accountablePerson":"","copyrightHolder":"","copyrightYear":"2021","datePublished":"2021-10-13 13:55:54 \u002b0000 UTC","dateModified":"2021-10-13 13:55:54 \u002b0000 UTC","url":"https:\/\/tsumli.github.io\/blog\/paper\/one-shot-talking-head\/","wordCount":"2203","keywords":["face","GAN","Blog"]}</script>
-<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-188554402-1','auto'),ga('send','pageview'))</script>
-<script async src=https://www.google-analytics.com/analytics.js></script>
-</head>
-<body>
-<div class=burger__container>
-<div class=burger aria-controls=navigation aria-label=Menu>
-<div class="burger__meat burger__meat--1"></div>
-<div class="burger__meat burger__meat--2"></div>
-<div class="burger__meat burger__meat--3"></div>
-</div>
-</div>
-<nav class=nav id=navigation>
-<ul class=nav__list>
-<li>
-<a href=https://tsumli.github.io/>about</a>
-</li>
-<li>
-<a class=active href=https://tsumli.github.io/blog>blog</a>
-</li>
-</ul>
-</nav>
-<main>
-<div class=flex-wrapper>
-<div class=post__container>
-<div class=post>
-<header class=post__header>
-<h1 id=post__title>One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing を読む</h1>
-<time datetime="2021-10-13 13:55:54 +0000 UTC" class=post__date>Oct 13 2021</time>
-<link rel=stylesheet href=https://tsumli.github.io//css/lightbox.min.css>
-<script type=text/javascript>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],processEscapes:!0,tags:"ams",autoload:{color:[],colorV2:['color']},packages:{'[+]':['noerrors']}},chtml:{matchFontHeight:!1,displayAlign:"left",displayIndent:"2em"},options:{skipHtmlTags:['script','noscript','style','textarea','pre'],renderActions:{find_script_mathtex:[10,function(a){for(const b of document.querySelectorAll('script[type^="math/tex"]')){const e=!!b.type.match(/; *mode=display/),c=new a.options.MathItem(b.textContent,a.inputJax[0],e),d=document.createTextNode('');b.parentNode.replaceChild(d,b),c.start={node:d,delim:'',n:0},c.end={node:d,delim:'',n:0},a.math.push(c)}},'']}},loader:{load:['[tex]/noerrors']}}</script>
-<script type=text/javascript async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js id=MathJax-script></script>
-<link rel=stylesheet type=text/css href=https://tsumli.github.io/css/mathjax-style.css>
-</header>
-<article class=post__content>
-<p><a href=https://arxiv.org/abs/2011.15126 target=_blank rel="noreferrer noopener"><strong>One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing</strong></a>
-という論文を読んでいきます。CVPR 2021にacceptされています (本文中の図は論文より引用) 。</p>
-<figure style="margin:0 auto;text-align:center">
-<a data-lightbox=image-images/overview.png href=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/overview.png>
-<img src=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/overview.png alt=提案手法の結果。H.264より10倍以上効率的にビデオを圧縮できる。また、画像のposeを自由に変更することができる。>
-</a>
-<figcaption>
-<span class=img--caption>
-Figure . 提案手法の結果。H.264より10倍以上効率的にビデオを圧縮できる。また、画像のposeを自由に変更することができる。
-</span>
-</figcaption>
-</figure>
-<h2 id=motivation>Motivation<a class=anchor href=#motivation>#</a></h2>
-<p>Contrubutionは次の通り</p>
-<ol>
-<li>新しいone-shot neural talking-head synthesis手法の提案。ベンチマークよりも良いクオリティの画像を生成できる。</li>
-<li>3Dグラフィックモデルなしで、出力動画のviewの操作ができる。</li>
-<li>ビデオのバンド幅を削減できる。H.264より10倍バンド幅を削減できることがわかった。</li>
-</ol>
-<h2 id=method>Method<a class=anchor href=#method>#</a></h2>
-<p>手法は大きく分けて3つのステップからなる。</p>
-<ol>
-<li>source image feature extraction</li>
-<li>driving video feature extraction</li>
-<li>video generation</li>
-</ol>
-<figure style="margin:0 auto;text-align:center">
-<a data-lightbox=image-images/feature_extraction.png href=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/feature_extraction.png>
-<img src=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/feature_extraction.png alt="Source and driving feature extraction.">
-</a>
-<figcaption>
-<span class=img--caption>
-Figure 1. Source and driving feature extraction.
-</span>
-</figcaption>
-</figure>
-<h3 id=1-source-image-feature-extraction>1. Source image feature extraction<a class=anchor href=#1-source-image-feature-extraction>#</a></h3>
-<p>上の画像 (a) の操作。</p>
-<p>Appearance feature extractor $F$ をつかってappearance feature $f_s$を得る。
-この $f_s$ は3次元のテンソルであり、このようにすることで3Dの操作 (rotationやtranslation) が可能になる。</p>
-<p>canonical 3D keypoint detector $L$ をつかって $s$ から $K$ 個の3D keypoints: $x_{c,k} \in \mathbb{R}^3$ を得る (この論文では $K=20$ ) 。このkeypointは教師なしで学習されるものであり、標準的な顔のランドマークとは異なる。また、取ってきたkeypointはposeやexpressionとは独立である。</p>
-<p>Head pose estimator $H$をつかってRotation行列 $R_s\in\mathbb{R}^{3 \times 3}$ とtranslation行列 $t_s\in\mathbb{R}^3$を得る。</p>
-<p>Expression deformation estimator $\Delta$ をつかって $K$個の3D deformations: $\delta_{s, k}$ を得る。
-deformationはneutral expressionからの変形を表している。</p>
-<p>最終的に、transformation $T$ を通してsource 3D keypoint: $x_{s, k}$を得る。
+<!doctype html><html lang=ja><head><title>One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing を読む | tsumli-pages</title><meta charset=utf-8><meta name=language content="en"><meta name=description content><meta name=keywords content="face ,GAN"><meta name=viewport content="width=device-width,initial-scale=1"><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><link rel="shortcut icon" type=image/png href=https://tsumli.github.io/favicon.ico><link type=text/css rel=stylesheet href=https://tsumli.github.io/css/post.min.b60e0932fe1c50c3d7c5b4f83ee9e4592363654d0f2abf05bbd0678d5b8a214c.css integrity="sha256-tg4JMv4cUMPXxbT4PunkWSNjZU0PKr8Fu9BnjVuKIUw="><link type=text/css rel=stylesheet href=https://tsumli.github.io/css/custom.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css integrity="sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU="><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/tsumli.github.io\/"},"articleSection":"blog","name":"One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing を読む","headline":"One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing を読む","description":"","inLanguage":"en-US","author":"","creator":"","publisher":"","accountablePerson":"","copyrightHolder":"","copyrightYear":"2021","datePublished":"2021-10-13 13:55:54 \u002b0000 UTC","dateModified":"2021-10-13 13:55:54 \u002b0000 UTC","url":"https:\/\/tsumli.github.io\/blog\/paper\/one-shot-talking-head\/","wordCount":"2203","keywords":["face","GAN","Blog"]}</script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-188554402-1','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></head><body><div class=burger__container><div class=burger aria-controls=navigation aria-label=Menu><div class="burger__meat burger__meat--1"></div><div class="burger__meat burger__meat--2"></div><div class="burger__meat burger__meat--3"></div></div></div><nav class=nav id=navigation><ul class=nav__list><li><a href=https://tsumli.github.io/>about</a></li><li><a class=active href=https://tsumli.github.io/blog>blog</a></li></ul></nav><main><div class=flex-wrapper><div class=post__container><div class=post><header class=post__header><h1 id=post__title>One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing を読む</h1><time datetime="2021-10-13 13:55:54 +0000 UTC" class=post__date>Oct 13 2021</time>
+<link rel=stylesheet href=https://tsumli.github.io//css/lightbox.min.css><script type=text/javascript>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],processEscapes:true,tags:"ams",autoload:{color:[],colorV2:['color']},packages:{'[+]':['noerrors']}},chtml:{matchFontHeight:false,displayAlign:"left",displayIndent:"2em"},options:{skipHtmlTags:['script','noscript','style','textarea','pre'],renderActions:{find_script_mathtex:[10,function(doc){for(const node of document.querySelectorAll('script[type^="math/tex"]')){const display=!!node.type.match(/; *mode=display/);const math=new doc.options.MathItem(node.textContent,doc.inputJax[0],display);const text=document.createTextNode('');node.parentNode.replaceChild(text,node);math.start={node:text,delim:'',n:0};math.end={node:text,delim:'',n:0};doc.math.push(math);}},'']}},loader:{load:['[tex]/noerrors']}};</script><script type=text/javascript async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js id=MathJax-script></script><link rel=stylesheet type=text/css href=https://tsumli.github.io/css/mathjax-style.css></header><article class=post__content><p><a href=https://arxiv.org/abs/2011.15126 target=_blank rel="noreferrer noopener"><strong>One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing</strong></a>
+という論文を読んでいきます。CVPR 2021にacceptされています (本文中の図は論文より引用) 。</p><figure style="margin:0 auto;text-align:center"><a data-lightbox=image-images/overview.png href=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/overview.png><img src=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/overview.png alt=提案手法の結果。H.264より10倍以上効率的にビデオを圧縮できる。また、画像のposeを自由に変更することができる。></a><figcaption><span class=img--caption>Figure . 提案手法の結果。H.264より10倍以上効率的にビデオを圧縮できる。また、画像のposeを自由に変更することができる。</span></figcaption></figure><h2 id=motivation>Motivation<a class=anchor href=#motivation>#</a></h2><p>Contrubutionは次の通り</p><ol><li>新しいone-shot neural talking-head synthesis手法の提案。ベンチマークよりも良いクオリティの画像を生成できる。</li><li>3Dグラフィックモデルなしで、出力動画のviewの操作ができる。</li><li>ビデオのバンド幅を削減できる。H.264より10倍バンド幅を削減できることがわかった。</li></ol><h2 id=method>Method<a class=anchor href=#method>#</a></h2><p>手法は大きく分けて3つのステップからなる。</p><ol><li>source image feature extraction</li><li>driving video feature extraction</li><li>video generation</li></ol><figure style="margin:0 auto;text-align:center"><a data-lightbox=image-images/feature_extraction.png href=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/feature_extraction.png><img src=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/feature_extraction.png alt="Source and driving feature extraction."></a><figcaption><span class=img--caption>Figure 1. Source and driving feature extraction.</span></figcaption></figure><h3 id=1-source-image-feature-extraction>1. Source image feature extraction<a class=anchor href=#1-source-image-feature-extraction>#</a></h3><p>上の画像 (a) の操作。</p><p>Appearance feature extractor $F$ をつかってappearance feature $f_s$を得る。
+この $f_s$ は3次元のテンソルであり、このようにすることで3Dの操作 (rotationやtranslation) が可能になる。</p><p>canonical 3D keypoint detector $L$ をつかって $s$ から $K$ 個の3D keypoints: $x_{c,k} \in \mathbb{R}^3$ を得る (この論文では $K=20$ ) 。このkeypointは教師なしで学習されるものであり、標準的な顔のランドマークとは異なる。また、取ってきたkeypointはposeやexpressionとは独立である。</p><p>Head pose estimator $H$をつかってRotation行列 $R_s\in\mathbb{R}^{3 \times 3}$ とtranslation行列 $t_s\in\mathbb{R}^3$を得る。</p><p>Expression deformation estimator $\Delta$ をつかって $K$個の3D deformations: $\delta_{s, k}$ を得る。
+deformationはneutral expressionからの変形を表している。</p><p>最終的に、transformation $T$ を通してsource 3D keypoint: $x_{s, k}$を得る。
 $$
 x_{s, k} = T(x_{c,k}, R_s, t_s, \delta_{s,k}) \triangleq R_sx_{c,k} + t_s, \delta_{s, k}
-$$This decomposition has several benefits:</p>
-<h3 id=2-driving-video-feature-extraction>2. Driving video feature extraction<a class=anchor href=#2-driving-video-feature-extraction>#</a></h3>
-<p>上の画像 (b) の操作。</p>
-<p>$d$ は動画 $\lbrace d_1, d_2, \ldots, d_N\rbrace$ の中の1つのフレームを表すこととする。
+$$This decomposition has several benefits:</p><h3 id=2-driving-video-feature-extraction>2. Driving video feature extraction<a class=anchor href=#2-driving-video-feature-extraction>#</a></h3><p>上の画像 (b) の操作。</p><p>$d$ は動画 $\lbrace d_1, d_2, \ldots, d_N\rbrace$ の中の1つのフレームを表すこととする。
 Source image feature extractionと同様に
 Head pose estimator $H$ をつかって $R_d$ と $t_d$ を得る。
-また、expression deformation estimator $\Delta$ をつかって $\delta_{d,k}$ を得る。<br>
-これと、先ほど導出した $x_{c,k}$ をつかってdriving keypointを得る。
+また、expression deformation estimator $\Delta$ をつかって $\delta_{d,k}$ を得る。<br>これと、先ほど導出した $x_{c,k}$ をつかってdriving keypointを得る。
 $$This decomposition has several benefits:angleq R_d x_{c,k} + t_d, \delta_{d, k}
 $$
-出力画像はsource画像と同じidentityを持つという前提があるため $x_{c, k}$ はsource imageで抽出したものをそのまま使用できる。</p>
-<p>ここで、ユーザはRotationとtranlationを操作することができる。
+出力画像はsource画像と同じidentityを持つという前提があるため $x_{c, k}$ はsource imageで抽出したものをそのまま使用できる。</p><p>ここで、ユーザはRotationとtranlationを操作することができる。
 $$
 R_d \leftarrow R_u R_d, \ t_d \leftarrow t_u + t_d
-$$</p>
-<h3 id=3-video-generation>3. Video generation<a class=anchor href=#3-video-generation>#</a></h3>
-<p>
-<figure style="margin:0 auto;text-align:center">
-<a data-lightbox=image-images/video_generation.png href=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/video_generation.png>
-<img src=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/video_generation.png alt="Video generation.">
-</a>
-<figcaption>
-<span class=img--caption>
-Figure 2. Video generation.
-</span>
-</figcaption>
-</figure>
-$w_k$は $k$ 個目のkeypointによって引き起こされたwarping flowを表す。
+$$</p><h3 id=3-video-generation>3. Video generation<a class=anchor href=#3-video-generation>#</a></h3><p><figure style="margin:0 auto;text-align:center"><a data-lightbox=image-images/video_generation.png href=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/video_generation.png><img src=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/video_generation.png alt="Video generation."></a><figcaption><span class=img--caption>Figure 2. Video generation.</span></figcaption></figure>$w_k$は $k$ 個目のkeypointによって引き起こされたwarping flowを表す。
 すべての ($K$個の) warping flowを得たあと、それをfeature volume $f_s$ に適用する。
 そして、$K$ 個のwarped featuresをconcatして、Motion field estimator $M$ に入れ、flow composition mask $m$ を得る。
-このmaskは $K$ 個のflowsからどのflowを使うべきかを示していて、$K$ 個のflowsをまとめ、最終的なflow $w$ を導出する。</p>
-<h2 id=training>Training<a class=anchor href=#training>#</a></h2>
-<h3 id=perceptual-loss-mathcall_p-and-gan-loss-mathcall_g>Perceptual loss $\mathcal{L}_p$ and GAN loss $\mathcal{L}_G$<a class=anchor href=#perceptual-loss-mathcall_p-and-gan-loss-mathcall_g>#</a></h3>
-<p>outputとdriving imageの間のloss。GAN lossはpatch levelで行われる。</p>
-<h3 id=equivariance-loss-mathcall_e>Equivariance loss $\mathcal{L}_E$<a class=anchor href=#equivariance-loss-mathcall_e>#</a></h3>
-<p>導出されたkeypointが良いkeypointならば、imageに2D transformationを加えると、そのkeypointがそのtransformationに従って変わるだけという前提に基づいている。</p>
-<h3 id=keypoint-prior-loss-mathcall_l>Keypoint prior loss $\mathcal{L}_L$<a class=anchor href=#keypoint-prior-loss-mathcall_l>#</a></h3>
-<p>$x_{d, k}$ が顔の範囲中に広がるようにするためのloss。
-それぞれのkeypoint間の距離を計算し、準備したしきい値よりも小さいと損失が与えられる。</p>
-<h3 id=head-pose-loss-mathcall_h>Head pose loss $\mathcal{L}_H$<a class=anchor href=#head-pose-loss-mathcall_h>#</a></h3>
-<p>予測したHead poseと正解値のHead poseの間のloss。
-正解値はpretrainedのモデルで導出する。</p>
-<h3 id=deformation-prior-loss-mathcall_delta>Deformation prior loss $\mathcal{L}_\Delta$<a class=anchor href=#deformation-prior-loss-mathcall_delta>#</a></h3>
-<p>Deformation $\delta_{d, k}$ はexpressionの変化を表すパラメータなので、大きくならないようにlossが設計されている。</p>
-<p>これらのlossを足したものが最小化されるように設計する。</p>
-<h2 id=experiments>Experiments<a class=anchor href=#experiments>#</a></h2>
-<h3 id=optimization>Optimization<a class=anchor href=#optimization>#</a></h3>
-<p>ADAMでlossの最小化を測る ($\beta_1 = 0.5, \beta_2 = 0.999$)。
+このmaskは $K$ 個のflowsからどのflowを使うべきかを示していて、$K$ 個のflowsをまとめ、最終的なflow $w$ を導出する。</p><h2 id=training>Training<a class=anchor href=#training>#</a></h2><h3 id=perceptual-loss-mathcall_p-and-gan-loss-mathcall_g>Perceptual loss $\mathcal{L}_p$ and GAN loss $\mathcal{L}_G$<a class=anchor href=#perceptual-loss-mathcall_p-and-gan-loss-mathcall_g>#</a></h3><p>outputとdriving imageの間のloss。GAN lossはpatch levelで行われる。</p><h3 id=equivariance-loss-mathcall_e>Equivariance loss $\mathcal{L}_E$<a class=anchor href=#equivariance-loss-mathcall_e>#</a></h3><p>導出されたkeypointが良いkeypointならば、imageに2D transformationを加えると、そのkeypointがそのtransformationに従って変わるだけという前提に基づいている。</p><h3 id=keypoint-prior-loss-mathcall_l>Keypoint prior loss $\mathcal{L}_L$<a class=anchor href=#keypoint-prior-loss-mathcall_l>#</a></h3><p>$x_{d, k}$ が顔の範囲中に広がるようにするためのloss。
+それぞれのkeypoint間の距離を計算し、準備したしきい値よりも小さいと損失が与えられる。</p><h3 id=head-pose-loss-mathcall_h>Head pose loss $\mathcal{L}_H$<a class=anchor href=#head-pose-loss-mathcall_h>#</a></h3><p>予測したHead poseと正解値のHead poseの間のloss。
+正解値はpretrainedのモデルで導出する。</p><h3 id=deformation-prior-loss-mathcall_delta>Deformation prior loss $\mathcal{L}_\Delta$<a class=anchor href=#deformation-prior-loss-mathcall_delta>#</a></h3><p>Deformation $\delta_{d, k}$ はexpressionの変化を表すパラメータなので、大きくならないようにlossが設計されている。</p><p>これらのlossを足したものが最小化されるように設計する。</p><h2 id=experiments>Experiments<a class=anchor href=#experiments>#</a></h2><h3 id=optimization>Optimization<a class=anchor href=#optimization>#</a></h3><p>ADAMでlossの最小化を測る ($\beta_1 = 0.5, \beta_2 = 0.999$)。
 learning rate = 0.0002で、generatorとdiscriminatorのレイヤー全てにSpectral Normを適用する。
 また、synchronized BatchNormをgeneratorに適用する。
-最初に256x256の画像で100 epoch学習したあと、512x512の画像で10 epoch学習する。</p>
-<h3 id=datasets>Datasets<a class=anchor href=#datasets>#</a></h3>
-<ul>
-<li><a href=https://www.robots.ox.ac.uk/~vgg/data/voxceleb/ target=_blank rel="noreferrer noopener">VoxCeleb2</a>
-</li>
-<li>TalkingHead-1KH<br>
-新しく集められたデータセット。VoxCeleb2に比べて高品質で高い解像度をもつ。</li>
-</ul>
-<h2 id=result>Result<a class=anchor href=#result>#</a></h2>
-<p>
-<figure style="margin:0 auto;text-align:center">
-<a data-lightbox=image-images/tabular.png href=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/tabular.png>
-<img src=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/tabular.png alt=Results.>
-</a>
-<figcaption>
-<span class=img--caption>
-Figure 3. Results.
-</span>
-</figcaption>
-</figure>
-ベースライン手法との比較。reconstructionのタスクについて、L1, PSNR, SSIM, MS-SSIM, FID, AKDすべてが良い結果になっていることを示している。また、Qualitative comparisonは以下の通り。</p>
-<p>
-<figure style="margin:0 auto;text-align:center">
-<a data-lightbox=image-images/result_vox.png href=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/result_vox.png>
-<img src=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/result_vox.png alt="Comparison on VoxCeleb2.">
-</a>
-<figcaption>
-<span class=img--caption>
-Figure 4. Comparison on VoxCeleb2.
-</span>
-</figcaption>
-</figure>
-<figure style="margin:0 auto;text-align:center">
-<a data-lightbox=image-images/result_1kh.png href=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/result_1kh.png>
-<img src=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/result_1kh.png alt="Comparison on TalkingHead-1KH.">
-</a>
-<figcaption>
-<span class=img--caption>
-Figure 5. Comparison on TalkingHead-1KH.
-</span>
-</figcaption>
-</figure>
-</p>
-<p>また、他の人物にmotion-transferさせたときや、顔の方向を変えたときの結果を以下に示す。
-<figure style="margin:0 auto;text-align:center">
-<a data-lightbox=image-images/cross_ex.png href=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/cross_ex.png>
-<img src=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/cross_ex.png alt="Cross-identity motion transfer.">
-</a>
-<figcaption>
-<span class=img--caption>
-Figure 6. Cross-identity motion transfer.
-</span>
-</figcaption>
-</figure>
-<figure style="margin:0 auto;text-align:center">
-<a data-lightbox=image-images/front_ex.png href=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/front_ex.png>
-<img src=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/front_ex.png alt="Face redirection (face frontalization).">
-</a>
-<figcaption>
-<span class=img--caption>
-Figure 7. Face redirection (face frontalization).
-</span>
-</figcaption>
-</figure>
-また、これらのタスクにおいてもベースラインと比べてFIDなどの評価指標が良くなっている。</p>
-<h2 id=references>References<a class=anchor href=#references>#</a></h2>
-<ul>
-<li><a href=https://nvlabs.github.io/face-vid2vid/ target=_blank rel="noreferrer noopener">project page</a>
-</li>
-<li>unofficial implementation
-<a href=https://github.com/zhengkw18/face-vid2vid target=_blank rel="noreferrer noopener"><img src=https://gh-card.dev/repos/zhengkw18/face-vid2vid.svg alt="zhengkw18/face-vid2vid - GitHub"></a>
-</li>
-</ul>
-<h2 id=memo>Memo<a class=anchor href=#memo>#</a></h2>
-<p>発想が独特で、facial landmark (のようなもの) を教師なし学習で学習するなど、凝っている手法である。
+最初に256x256の画像で100 epoch学習したあと、512x512の画像で10 epoch学習する。</p><h3 id=datasets>Datasets<a class=anchor href=#datasets>#</a></h3><ul><li><a href=https://www.robots.ox.ac.uk/~vgg/data/voxceleb/ target=_blank rel="noreferrer noopener">VoxCeleb2</a></li><li>TalkingHead-1KH<br>新しく集められたデータセット。VoxCeleb2に比べて高品質で高い解像度をもつ。</li></ul><h2 id=result>Result<a class=anchor href=#result>#</a></h2><p><figure style="margin:0 auto;text-align:center"><a data-lightbox=image-images/tabular.png href=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/tabular.png><img src=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/tabular.png alt=Results.></a><figcaption><span class=img--caption>Figure 3. Results.</span></figcaption></figure>ベースライン手法との比較。reconstructionのタスクについて、L1, PSNR, SSIM, MS-SSIM, FID, AKDすべてが良い結果になっていることを示している。また、Qualitative comparisonは以下の通り。</p><p><figure style="margin:0 auto;text-align:center"><a data-lightbox=image-images/result_vox.png href=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/result_vox.png><img src=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/result_vox.png alt="Comparison on VoxCeleb2."></a><figcaption><span class=img--caption>Figure 4. Comparison on VoxCeleb2.</span></figcaption></figure><figure style="margin:0 auto;text-align:center"><a data-lightbox=image-images/result_1kh.png href=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/result_1kh.png><img src=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/result_1kh.png alt="Comparison on TalkingHead-1KH."></a><figcaption><span class=img--caption>Figure 5. Comparison on TalkingHead-1KH.</span></figcaption></figure></p><p>また、他の人物にmotion-transferさせたときや、顔の方向を変えたときの結果を以下に示す。<figure style="margin:0 auto;text-align:center"><a data-lightbox=image-images/cross_ex.png href=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/cross_ex.png><img src=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/cross_ex.png alt="Cross-identity motion transfer."></a><figcaption><span class=img--caption>Figure 6. Cross-identity motion transfer.</span></figcaption></figure><figure style="margin:0 auto;text-align:center"><a data-lightbox=image-images/front_ex.png href=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/front_ex.png><img src=https://tsumli.github.io/blog/paper/one-shot-talking-head/images/front_ex.png alt="Face redirection (face frontalization)."></a><figcaption><span class=img--caption>Figure 7. Face redirection (face frontalization).</span></figcaption></figure>また、これらのタスクにおいてもベースラインと比べてFIDなどの評価指標が良くなっている。</p><h2 id=references>References<a class=anchor href=#references>#</a></h2><ul><li><a href=https://nvlabs.github.io/face-vid2vid/ target=_blank rel="noreferrer noopener">project page</a></li><li>unofficial implementation
+<a href=https://github.com/zhengkw18/face-vid2vid target=_blank rel="noreferrer noopener"><img src=https://gh-card.dev/repos/zhengkw18/face-vid2vid.svg alt="zhengkw18/face-vid2vid - GitHub"></a></li></ul><h2 id=memo>Memo<a class=anchor href=#memo>#</a></h2><p>発想が独特で、facial landmark (のようなもの) を教師なし学習で学習するなど、凝っている手法である。
 また、省略したが、顔の向きや表情などがパラメータ化されるので少ないデータ量で顔を再現できるというのも面白い。
-公式にコードは公開されていないがunofficial repositoryが存在するため、コードレベルで実装を確認することができる。</p>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
-<script type=text/x-mathjax-config>
+公式にコードは公開されていないがunofficial repositoryが存在するため、コードレベルで実装を確認することができる。</p><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script><script type=text/x-mathjax-config>
     MathJax.Hub.Config({
             showMathMenu: false, //disables context menu
             tex2jax: {
             inlineMath: [ ['$','$'], ['\\(','\\)'] ]
            }
     });
-</script>
-</article>
-<ul class=tags__list>
-<li class=tag__item>
-<a class=tag__link href=https://tsumli.github.io/tags/gan/>GAN</a>
-</li>
-<li class=tag__item>
-<a class=tag__link href=https://tsumli.github.io/tags/paper/>paper</a>
-</li></ul>
-<div class=pagination>
-<a class=pagination__item href=https://tsumli.github.io/blog/paper/TGAN/>
-<span class=pagination__label>Previous Post</span>
-<span class=pagination__title>TGAN: Synthesizing Tabular Data using Generative Adversarial Networks を読む</span>
-</a>
-<a class=pagination__item href=https://tsumli.github.io/blog/paper/swin-transformer/>
-<span class=pagination__label>Next Post</span>
-<span class=pagination__title>Swin Transformer: Hierarchical Vision Transformer using Shifted Windows を読む</span>
-</a>
-</div>
-<footer class=post__footer>
-<div class=social-icons>
-<a class=social-icons__link rel=me title=Kaggle href=https://www.kaggle.com/tsumli target=_blank rel=noopener>
-<div class=social-icons__icon style=background-image:url(https://tsumli.github.io/svg/kaggle.svg)></div>
-</a>
-<a class=social-icons__link rel=me title=GitHub href=https://github.com/tsumli target=_blank rel=noopener>
-<div class=social-icons__icon style=background-image:url(https://tsumli.github.io/svg/github.svg)></div>
-</a>
-<a class=social-icons__link rel=me title=Medium href=https://medium.com/@tsumli target=_blank rel=noopener>
-<div class=social-icons__icon style=background-image:url(https://tsumli.github.io/svg/medium.svg)></div>
-</a>
-</div>
-<p>© 2023</p>
-<script src=https://code.jquery.com/jquery-3.4.1.min.js integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin=anonymous></script>
-<link rel=stylesheet href=https://tsumli.github.io//css/lightbox.min.css>
-<script src=https://tsumli.github.io//js/lightbox.min.js></script>
-</footer>
-</div>
-</div>
-<div class=toc-container>
-<div class=toc-post-title>One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing を読む</div>
-<nav id=TableOfContents>
-<ul>
-<li><a href=#motivation>Motivation</a></li>
-<li><a href=#method>Method</a>
-<ul>
-<li><a href=#1-source-image-feature-extraction>1. Source image feature extraction</a></li>
-<li><a href=#2-driving-video-feature-extraction>2. Driving video feature extraction</a></li>
-<li><a href=#3-video-generation>3. Video generation</a></li>
-</ul>
-</li>
-<li><a href=#training>Training</a>
-<ul>
-<li><a href=#perceptual-loss-mathcall_p-and-gan-loss-mathcall_g>Perceptual loss $\mathcal{L}_p$ and GAN loss $\mathcal{L}_G$</a></li>
-<li><a href=#equivariance-loss-mathcall_e>Equivariance loss $\mathcal{L}_E$</a></li>
-<li><a href=#keypoint-prior-loss-mathcall_l>Keypoint prior loss $\mathcal{L}_L$</a></li>
-<li><a href=#head-pose-loss-mathcall_h>Head pose loss $\mathcal{L}_H$</a></li>
-<li><a href=#deformation-prior-loss-mathcall_delta>Deformation prior loss $\mathcal{L}_\Delta$</a></li>
-</ul>
-</li>
-<li><a href=#experiments>Experiments</a>
-<ul>
-<li><a href=#optimization>Optimization</a></li>
-<li><a href=#datasets>Datasets</a></li>
-</ul>
-</li>
-<li><a href=#result>Result</a></li>
-<li><a href=#references>References</a></li>
-<li><a href=#memo>Memo</a></li>
-</ul>
-</nav>
-</div>
-</div>
-</main>
-<script src=https://tsumli.github.io/js/index.min.575dda8d49ee02639942c63564273e6da972ab531dda26a08800bdcb477cbd7f.js integrity="sha256-V13ajUnuAmOZQsY1ZCc+balyq1Md2iagiAC9y0d8vX8=" crossorigin=anonymous></script>
-<script src=https://unpkg.com/prismjs@1.20.0/components/prism-core.min.js></script>
-<script src=https://unpkg.com/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js data-autoloader-path=https://unpkg.com/prismjs@1.20.0/components/></script>
-<script src=https://tsumli.github.io/js/table-of-contents.js></script>
-</body>
-</html>
+</script></article><ul class=tags__list><li class=tag__item><a class=tag__link href=https://tsumli.github.io/tags/gan/>GAN</a></li><li class=tag__item><a class=tag__link href=https://tsumli.github.io/tags/paper/>paper</a></li></ul><div class=pagination><a class=pagination__item href=https://tsumli.github.io/blog/paper/TGAN/><span class=pagination__label>Previous Post</span>
+<span class=pagination__title>TGAN: Synthesizing Tabular Data using Generative Adversarial Networks を読む</span></a>
+<a class=pagination__item href=https://tsumli.github.io/blog/paper/swin-transformer/><span class=pagination__label>Next Post</span>
+<span class=pagination__title>Swin Transformer: Hierarchical Vision Transformer using Shifted Windows を読む</span></a></div><footer class=post__footer><div class=social-icons><a class=social-icons__link rel=me title=Kaggle href=https://www.kaggle.com/tsumli target=_blank rel=noopener><div class=social-icons__icon style=background-image:url(https://tsumli.github.io/svg/kaggle.svg)></div></a><a class=social-icons__link rel=me title=GitHub href=https://github.com/tsumli target=_blank rel=noopener><div class=social-icons__icon style=background-image:url(https://tsumli.github.io/svg/github.svg)></div></a><a class=social-icons__link rel=me title=Medium href=https://medium.com/@tsumli target=_blank rel=noopener><div class=social-icons__icon style=background-image:url(https://tsumli.github.io/svg/medium.svg)></div></a></div><p>© 2024</p><script src=https://code.jquery.com/jquery-3.4.1.min.js integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin=anonymous></script><link rel=stylesheet href=https://tsumli.github.io//css/lightbox.min.css><script src=https://tsumli.github.io//js/lightbox.min.js></script></footer></div></div><div class=toc-container><div class=toc-post-title>One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing を読む</div><nav id=TableOfContents><ul><li><a href=#motivation>Motivation</a></li><li><a href=#method>Method</a><ul><li><a href=#1-source-image-feature-extraction>1. Source image feature extraction</a></li><li><a href=#2-driving-video-feature-extraction>2. Driving video feature extraction</a></li><li><a href=#3-video-generation>3. Video generation</a></li></ul></li><li><a href=#training>Training</a><ul><li><a href=#perceptual-loss-mathcall_p-and-gan-loss-mathcall_g>Perceptual loss $\mathcal{L}_p$ and GAN loss $\mathcal{L}_G$</a></li><li><a href=#equivariance-loss-mathcall_e>Equivariance loss $\mathcal{L}_E$</a></li><li><a href=#keypoint-prior-loss-mathcall_l>Keypoint prior loss $\mathcal{L}_L$</a></li><li><a href=#head-pose-loss-mathcall_h>Head pose loss $\mathcal{L}_H$</a></li><li><a href=#deformation-prior-loss-mathcall_delta>Deformation prior loss $\mathcal{L}_\Delta$</a></li></ul></li><li><a href=#experiments>Experiments</a><ul><li><a href=#optimization>Optimization</a></li><li><a href=#datasets>Datasets</a></li></ul></li><li><a href=#result>Result</a></li><li><a href=#references>References</a></li><li><a href=#memo>Memo</a></li></ul></nav></div></div></main><script src=https://tsumli.github.io/js/index.min.49e4d8a384357d9b445b87371863419937ede9fa77737522ffb633073aebfa44.js integrity="sha256-SeTYo4Q1fZtEW4c3GGNBmTft6fp3c3Ui/7YzBzrr+kQ=" crossorigin=anonymous></script><script src=https://unpkg.com/prismjs@1.20.0/components/prism-core.min.js></script><script src=https://unpkg.com/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js data-autoloader-path=https://unpkg.com/prismjs@1.20.0/components/></script><script src=https://tsumli.github.io/js/table-of-contents.js></script></body></html>
