@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <title>
+  SlangとVulkanでのRaytracing · tsumli&#39;s blog
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="description" content="
+  はじめに
+  
+    
+    見出しへのリンク
+  
+
+SlangとVulkanを用いてRaytracingを行う記事があまりなかったので書きます
+
+  Slangとは
+  
+    
+    見出しへのリンク
+  
+
+Sascha WillemsのVulkanレポジトリで、GLSL/HLSLに加えて採用されたりと、個人的に気になっているシェーディング言語です。
+
+  References
+  
+    
+    見出しへのリンク
+  
+
+
+
+
+Slang User’s Guide
+
+HLSL, GLSLからの移行ガイドなど
+
+
+">
+<meta name="keywords" content="raytracing, graphics">
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="SlangとVulkanでのRaytracing">
+  <meta name="twitter:description" content="はじめに 見出しへのリンク SlangとVulkanを用いてRaytracingを行う記事があまりなかったので書きます
+Slangとは 見出しへのリンク Sascha WillemsのVulkanレポジトリで、GLSL/HLSLに加えて採用されたりと、個人的に気になっているシェーディング言語です。
+References 見出しへのリンク Slang User’s Guide
+HLSL, GLSLからの移行ガイドなど">
+
+<meta property="og:url" content="http://localhost:1313/blog/graphics/raytracing/vulkan_slang/">
+  <meta property="og:site_name" content="tsumli&#39;s blog">
+  <meta property="og:title" content="SlangとVulkanでのRaytracing">
+  <meta property="og:description" content="はじめに 見出しへのリンク SlangとVulkanを用いてRaytracingを行う記事があまりなかったので書きます
+Slangとは 見出しへのリンク Sascha WillemsのVulkanレポジトリで、GLSL/HLSLに加えて採用されたりと、個人的に気になっているシェーディング言語です。
+References 見出しへのリンク Slang User’s Guide
+HLSL, GLSLからの移行ガイドなど">
+  <meta property="og:locale" content="ja">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="blog">
+    <meta property="article:published_time" content="2025-06-16T00:01:52+00:00">
+    <meta property="article:modified_time" content="2025-06-16T00:01:52+00:00">
+    <meta property="article:tag" content="Raytracing">
+    <meta property="article:tag" content="Graphics">
+
+
+
+
+<link rel="canonical" href="http://localhost:1313/blog/graphics/raytracing/vulkan_slang/">
+
+
+<link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.css" media="screen">
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.css" media="screen">
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="/img/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="/img/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/img/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="http://localhost:1313/">
+      tsumli&#39;s blog
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/posts/">Blog</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container page">
+  <article>
+    <header>
+      <h1 class="title">
+        <a class="title-link" href="http://localhost:1313/blog/graphics/raytracing/vulkan_slang/">
+          SlangとVulkanでのRaytracing
+        </a>
+      </h1>
+    </header>
+
+    <h2 id="はじめに">
+  はじめに
+  <a class="heading-link" href="#%e3%81%af%e3%81%98%e3%82%81%e3%81%ab">
+    <i class="fa-solid fa-link" aria-hidden="true" title="見出しへのリンク"></i>
+    <span class="sr-only">見出しへのリンク</span>
+  </a>
+</h2>
+<p>SlangとVulkanを用いてRaytracingを行う記事があまりなかったので書きます</p>
+<h3 id="slangとは">
+  Slangとは
+  <a class="heading-link" href="#slang%e3%81%a8%e3%81%af">
+    <i class="fa-solid fa-link" aria-hidden="true" title="見出しへのリンク"></i>
+    <span class="sr-only">見出しへのリンク</span>
+  </a>
+</h3>
+<p>Sascha Willemsの<a href="https://github.com/SaschaWillems/Vulkan"  class="external-link" target="_blank" rel="noopener">Vulkan</a>レポジトリで、GLSL/HLSLに加えて<a href="https://www.saschawillems.de/blog/2025/06/03/shaders-for-vulkan-samples-now-also-available-in-slang/"  class="external-link" target="_blank" rel="noopener">採用</a>されたりと、個人的に気になっているシェーディング言語です。</p>
+<h2 id="references">
+  References
+  <a class="heading-link" href="#references">
+    <i class="fa-solid fa-link" aria-hidden="true" title="見出しへのリンク"></i>
+    <span class="sr-only">見出しへのリンク</span>
+  </a>
+</h2>
+<ul>
+<li></li>
+<li>
+<p><a href="https://docs.shader-slang.org/en/latest/external/slang/docs/user-guide/"  class="external-link" target="_blank" rel="noopener">Slang User’s Guide</a></p>
+<ul>
+<li>HLSL, GLSLからの移行ガイドなど</li>
+</ul>
+</li>
+</ul>
+
+  </article>
+</section>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css"
+    integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"
+    integrity="sha384-PwRUT/YqbnEjkZO0zZxNqcxACrXe+j766U2amXcgMg5457rve2Y7I6ZJSm2A0mS4" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js"
+    integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,
+      {
+        delimiters: [
+          {left: '$$', right: '$$', display:true},
+          {left: '$', right: '$', display:false},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '\\[', right: '\\]', display: true}
+        ]
+      }
+    );"></script>
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2025
+    
+    ·
+    
+    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.js"></script>
+  
+
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

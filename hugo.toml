@@ -1,0 +1,55 @@
+baseurl = "https://tsumli.github.io"
+title = "tsumli pages"
+theme = "hugo-coder"
+languagecode = "en"
+defaultcontentlanguage = "en"
+
+[pagination]
+pagerSize = 20
+
+[services]
+[services.disqus]
+shortname = "tsumli"
+
+[markup.highlight]
+style = "github-dark"
+
+[params]
+faviconSVG = "/img/favicon.svg"
+favicon_32 = "/img/favicon-32x32.png"
+favicon_16 = "/img/favicon-16x16.png"
+
+since = 2019
+
+enableTwemoji = true
+
+colorScheme = "auto"
+hidecolorschemetoggle = true
+
+# customCSS = ["css/custom.css"]
+# customSCSS = ["scss/custom.scss"]
+# customJS = ["js/custom.js"]
+
+[taxonomies]
+category = "categories"
+series = "series"
+tag = "tags"
+author = "authors"
+
+# Social links
+[[params.social]]
+name = "kaggle"
+icon = "fa-brands fa-kaggle fa-2x"
+weight = 1
+url = "https://www.kaggle.com/tsumli"
+[[params.social]]
+name = "github"
+icon = "fa-brands fa-github fa-2x"
+weight = 2
+url = "https://github.com/tsumli"
+
+# Menu links
+[[menu.main]]
+name = "Blog"
+weight = 1
+url = "posts/"
