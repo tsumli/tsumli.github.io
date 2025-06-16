@@ -1,21 +1,234 @@
-<!doctype html><html lang=ja><head><title>Lagrangian Fluid Simulation With Continuous Convolutions を読む | tsumli-pages</title><meta charset=UTF-8><meta name=language content="en"><meta name=description content><meta name=keywords content="fluid ,simulation"><meta name=viewport content="width=device-width,initial-scale=1"><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><link rel="shortcut icon" type=image/png href=https://tsumli.github.io/favicon.ico><link type=text/css rel=stylesheet href=https://tsumli.github.io/css/post.min.56c8810b0f07bc4b6fe3dd802a8194d08a2ed5a4903bdf2a4859c17f3860a7e7.css integrity="sha256-VsiBCw8HvEtv492AKoGU0Iou1aSQO98qSFnBfzhgp+c="><link type=text/css rel=stylesheet href=https://tsumli.github.io/css/custom.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css integrity="sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU="><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/tsumli.github.io\/"},"articleSection":"blog","name":"Lagrangian Fluid Simulation With Continuous Convolutions を読む","headline":"Lagrangian Fluid Simulation With Continuous Convolutions を読む","description":"","inLanguage":"en-US","author":"","creator":"","publisher":"","accountablePerson":"","copyrightHolder":"","copyrightYear":"2022","datePublished":"2022-07-08 15:55:54 \u002b0000 UTC","dateModified":"2022-07-08 15:55:54 \u002b0000 UTC","url":"https:\/\/tsumli.github.io\/blog\/paper\/deeplagrangianfluids\/","wordCount":"1855","keywords":["fluid","simulation","Blog"]}</script></head><body><div class=burger__container><div class=burger aria-controls=navigation aria-label=Menu><div class="burger__meat burger__meat--1"></div><div class="burger__meat burger__meat--2"></div><div class="burger__meat burger__meat--3"></div></div></div><nav class=nav id=navigation><ul class=nav__list><li><a href=https://tsumli.github.io/>about</a></li><li><a class=active href=https://tsumli.github.io/blog>blog</a></li></ul></nav><main><div class=flex-wrapper><div class=post__container><div class=post><header class=post__header><h1 id=post__title>Lagrangian Fluid Simulation With Continuous Convolutions を読む</h1><time datetime="2022-07-08 15:55:54 +0000 UTC" class=post__date>Jul 8 2022</time>
-<link rel=stylesheet href=https://tsumli.github.io//css/lightbox.min.css><script type=text/javascript>MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],processEscapes:!0,tags:"ams",autoload:{color:[],colorV2:["color"]},packages:{"[+]":["noerrors"]}},chtml:{matchFontHeight:!1,displayAlign:"left",displayIndent:"2em"},options:{skipHtmlTags:["script","noscript","style","textarea","pre"],renderActions:{find_script_mathtex:[10,function(e){for(const t of document.querySelectorAll('script[type^="math/tex"]')){const o=!!t.type.match(/; *mode=display/),n=new e.options.MathItem(t.textContent,e.inputJax[0],o),s=document.createTextNode("");t.parentNode.replaceChild(s,t),n.start={node:s,delim:"",n:0},n.end={node:s,delim:"",n:0},e.math.push(n)}},""]}},loader:{load:["[tex]/noerrors"]}}</script><script type=text/javascript async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js id=MathJax-script></script><link rel=stylesheet type=text/css href=https://tsumli.github.io/css/mathjax-style.css></header><article class=post__content><p><a href="https://openreview.net/pdf?id=B1lDoJSYDH" target=_blank rel="noreferrer noopener"><strong>Lagrangian Fluid Simulation
+<!DOCTYPE html>
+<html lang="ja">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <title>Lagrangian Fluid Simulation With Continuous Convolutions を読む | tsumli-pages</title>
+
+  <meta charset="UTF-8">
+  <meta name="language" content="en">
+  <meta name="description" content="">
+  <meta name="keywords" content="fluid , simulation">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  
+  
+
+  <link rel="shortcut icon" type="image/png" href="http://localhost:1313/favicon.ico" />
+
+
+  
+  
+    
+ 
+  
+  
+  
+  
+  
+  
+    
+    <link type="text/css" rel="stylesheet" href="http://localhost:1313/css/post.min.56c8810b0f07bc4b6fe3dd802a8194d08a2ed5a4903bdf2a4859c17f3860a7e7.css" integrity="sha256-VsiBCw8HvEtv492AKoGU0Iou1aSQO98qSFnBfzhgp&#43;c="/>
+  
+    
+    <link type="text/css" rel="stylesheet" href="http://localhost:1313/css/custom.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css" integrity="sha256-47DEQpj8HBSa&#43;/TImW&#43;5JCeuQeRkm5NMpJWZG3hSuFU="/>
+  
+  
+   
+   
+    
+
+<script type="application/ld+json">
+  
+    {
+      "@context" : "http://schema.org",
+      "@type" : "BlogPosting",
+      "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/"
+      },
+      "articleSection" : "blog",
+      "name" : "Lagrangian Fluid Simulation With Continuous Convolutions を読む",
+      "headline" : "Lagrangian Fluid Simulation With Continuous Convolutions を読む",
+      "description" : "",
+      "inLanguage" : "en-US",
+      "author" : "",
+      "creator" : "",
+      "publisher": "",
+      "accountablePerson" : "",
+      "copyrightHolder" : "",
+      "copyrightYear" : "2022",
+      "datePublished": "2022-07-08 15:55:54 \u002b0000 UTC",
+      "dateModified" : "2022-07-08 15:55:54 \u002b0000 UTC",
+      "url" : "http:\/\/localhost:1313\/blog\/paper\/deeplagrangianfluids\/",
+      "wordCount" : "1855",
+      "keywords" : ["fluid", "simulation", "Blog"]
+    }
+  
+  </script>
+
+</head>
+
+<body>
+  <div class="burger__container">
+  <div class="burger" aria-controls="navigation" aria-label="Menu">
+    <div class="burger__meat burger__meat--1"></div>
+    <div class="burger__meat burger__meat--2"></div>
+    <div class="burger__meat burger__meat--3"></div>
+  </div>
+</div>
+ 
+
+  <nav class="nav" id="navigation">
+  <ul class="nav__list">
+    
+    
+      <li>
+        <a  href="http://localhost:1313/">about</a>
+      </li>
+    
+      <li>
+        <a  class="active"
+         href="http://localhost:1313/blog">blog</a>
+      </li>
+    
+  </ul>
+</nav>
+
+
+  <main>
+    
+    
+
+    <div class="flex-wrapper">
+      <div class="post__container">
+        <div class="post">
+          <header class="post__header">
+            <h1 id="post__title">Lagrangian Fluid Simulation With Continuous Convolutions を読む</h1>
+            <time datetime="2022-07-08 15:55:54 &#43;0000 UTC" class="post__date">Jul 8 2022</time> 
+            <link rel="stylesheet" href="http://localhost:1313//css/lightbox.min.css">
+            <script type="text/javascript">
+ MathJax = {
+   tex: {
+     inlineMath: [['$','$'], ['\\(','\\)']],
+     processEscapes: true,
+     tags: "ams",
+     autoload: {
+       color: [],
+       colorV2: ['color']
+     },
+     packages: {'[+]': ['noerrors']}
+   },
+   chtml: {
+     matchFontHeight: false,
+     displayAlign: "left", 
+     displayIndent: "2em"
+   },
+   options: {
+     skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+     renderActions: {
+        
+       find_script_mathtex: [10, function (doc) {
+         for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+           const display = !!node.type.match(/; *mode=display/);
+           const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+           const text = document.createTextNode('');
+           node.parentNode.replaceChild(text, node);
+           math.start = {node: text, delim: '', n: 0};
+           math.end = {node: text, delim: '', n: 0};
+           doc.math.push(math);
+         }
+       }, '']
+     }
+   },
+   loader: {
+     load: ['[tex]/noerrors']
+   }
+ };
+</script>
+<script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script"></script>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:1313/css/mathjax-style.css">
+
+          </header>
+          <article class="post__content">
+              
+<p><a href="https://openreview.net/pdf?id=B1lDoJSYDH" 
+  
+   target="_blank" rel="noreferrer noopener" 
+><strong>Lagrangian Fluid Simulation
 With Continuous Convolutions</strong></a>
-という論文を読んでいきます (本文中の図は論文より引用) 。
-この論文では液体をグラフとして扱う&mldr;のではなくspatial convolutionを使って近傍の粒子との関係を計算します。</p><h2 id=continuous-convolution>Continuous Convolution<a class=anchor href=#continuous-convolution>#</a></h2><p>この手法では (連続的な) 畳み込み演算を点群に適用した<a href=http://www.open3d.org/docs/release/python_api/open3d.ml.torch.layers.ContinuousConv.html target=_blank rel="noreferrer noopener">Continuous Convolution</a>
+ という論文を読んでいきます (本文中の図は論文より引用) 。
+この論文では液体をグラフとして扱う&hellip;のではなくspatial convolutionを使って近傍の粒子との関係を計算します。</p>
+<h2 id="continuous-convolution">Continuous Convolution<a class="anchor" href="#continuous-convolution">#</a></h2>
+<p>この手法では (連続的な) 畳み込み演算を点群に適用した<a href="http://www.open3d.org/docs/release/python_api/open3d.ml.torch.layers.ContinuousConv.html" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>Continuous Convolution</a>
 を使用する。
 $f_i$ という値を持つ位置 $x_i$ の点群 ($i = 1, \ldots, N$) について、次のように畳み込みを定義する。
 $$
 (f * g) (x) = \frac{1}{\psi (x)} \sum_{i \in \mathcal{N}(x, R)} a(x_i, x) f_i g (\Lambda(x_i - x))
-$$</p><p>$\mathcal{N}(x, R)$ は $x$ の周りの半径 $R$ 内にある点の集合である。
+$$</p>
+<p>$\mathcal{N}(x, R)$ は $x$ の周りの半径 $R$ 内にある点の集合である。
 また、$a$ は密度を正規化するためのスカラー関数で、次のように定義する。
 $$
 a(x_i, x) = \left(1 - \frac{||x_i - x||^2_2}{R^2} \right)^3
 $$
-$\psi(x)$ も正規化を行うためのスカラー関数で、今回は$\psi (x) = 1$ とする。</p><p>$g$ はフィルター関数で、regular gridに線形補間を掛けて連続関数にしたものである。
-加えて、マッピング$\Lambda(r)$によってunit ballからunit cubeに変換する。</p><p>以下にマッピング$\Lambda(r)$の図を示す。
+$\psi(x)$ も正規化を行うためのスカラー関数で、今回は$\psi (x) = 1$ とする。</p>
+<p>$g$ はフィルター関数で、regular gridに線形補間を掛けて連続関数にしたものである。
+加えて、マッピング$\Lambda(r)$によってunit ballからunit cubeに変換する。</p>
+<p>以下にマッピング$\Lambda(r)$の図を示す。
 左側は半径$R$のspherical regionと中心に対して相対的に定義される点$r$を表している。
-この点$r$をマッピング関数$\Lambda$によってregular gridに落とし込む。<figure style='margin:0 auto;text-align:center'><a data-lightbox=image-images/spherical.png href=https://tsumli.github.io/blog/paper/deeplagrangianfluids/images/spherical.png><img src=https://tsumli.github.io/blog/paper/deeplagrangianfluids/images/spherical.png alt="Spherical filter."></a><figcaption><span class=img--caption>Figure . Spherical filter.</span></figcaption></figure></p><h2 id=method>Method<a class=anchor href=#method>#</a></h2><p>input: $(x_i^n, [1, v_i^n, \nu_i])$
+この点$r$をマッピング関数$\Lambda$によってregular gridに落とし込む。
+
+  
+
+
+
+
+
+<figure
+  
+  
+  
+  style='margin:0 auto;text-align:center;'
+  >
+    <a 
+      
+        data-lightbox="image-images/spherical.png"
+      
+      
+        href="http://localhost:1313/blog/paper/deeplagrangianfluids/images/spherical.png"
+      
+    
+    >
+  <img
+      
+        src="http://localhost:1313/blog/paper/deeplagrangianfluids/images/spherical.png"
+      
+        alt="Spherical filter."
+        
+        
+         />
+    </a>
+  
+  
+    <figcaption>
+      <span class="img--caption">
+        Figure . Spherical filter.
+        
+      </span>
+    </figcaption>
+  
+</figure>
+
+
+
+</p>
+<h2 id="method">Method<a class="anchor" href="#method">#</a></h2>
+<p>input: $(x_i^n, [1, v_i^n, \nu_i])$
 ここで、$x_i^n$は$v$はベロシティ、$\nu$は粘度を表す。
 Heun法をつかって中間時 (timestep=n) の位置とベロシティを計算できる。
 $$
@@ -24,90 +237,327 @@ $$
 $$
 x_i^{n*} = x_i^n + \Delta t \frac{v_i^n + v_i^{n*}}{2}
 $$
-ここで、$a_{\text{ext}}$ は加速度を表す係数である。</p><p>次に、粒子の位置、ベロシティ、粘度とオブジェクト (static particles) の情報を畳み込み層に入力することで近傍の粒子間やオブジェクトとの衝突を考えることができ、補正のための変数 $\Delta x$ を求めることができる。
+ここで、$a_{\text{ext}}$ は加速度を表す係数である。</p>
+<p>次に、粒子の位置、ベロシティ、粘度とオブジェクト (static particles) の情報を畳み込み層に入力することで近傍の粒子間やオブジェクトとの衝突を考えることができ、補正のための変数 $\Delta x$ を求めることができる。
 最終的にtimestep=n+1のときの位置とベロシティは次のように計算 (補正) される
 $$
 x_i^{n+1} = x_i^{n*} + \Delta x_i
 $$
 $$
 v_i^{n+1} = \frac{x_i^{n+1} - x_i^n}{\Delta t}
-$$</p><p>(ここらへんの流れは後で実装を見ながら確認します)</p><h2 id=network-architecture>Network Architecture<a class=anchor href=#network-architecture>#</a></h2><p>ネットワークは4層の簡単な畳み込み層で形成されている。以下にネットワークの概要を示す。
+$$</p>
+<p>(ここらへんの流れは後で実装を見ながら確認します)</p>
+<h2 id="network-architecture">Network Architecture<a class="anchor" href="#network-architecture">#</a></h2>
+<p>ネットワークは4層の簡単な畳み込み層で形成されている。以下にネットワークの概要を示す。
 最初の層だけ特殊で、粒子の周りの特徴量をContinuous Convolution (CConv) で計算、同様にstatic particles (=obstacle) についてもCConvで計算を行う。さらに、それぞれの粒子の特徴量を線形層を使って導出する。
-それぞれをconcatした後、CConv層とFC層を使って処理していき、最終的に$\Delta x$ を求める。</p><figure style='margin:0 auto;text-align:center'><a data-lightbox=image-images/schematic.png href=https://tsumli.github.io/blog/paper/deeplagrangianfluids/images/schematic.png><img src=https://tsumli.github.io/blog/paper/deeplagrangianfluids/images/schematic.png alt="Schematic of our network with a depth of four."></a><figcaption><span class=img--caption>Figure 1. Schematic of our network with a depth of four.</span></figcaption></figure><h2 id=training-procedure>Training Procedure<a class=anchor href=#training-procedure>#</a></h2><p>$$
+それぞれをconcatした後、CConv層とFC層を使って処理していき、最終的に$\Delta x$ を求める。</p>
+
+  
+
+
+
+
+
+<figure
+  
+  
+  
+  style='margin:0 auto;text-align:center;'
+  >
+    <a 
+      
+        data-lightbox="image-images/schematic.png"
+      
+      
+        href="http://localhost:1313/blog/paper/deeplagrangianfluids/images/schematic.png"
+      
+    
+    >
+  <img
+      
+        src="http://localhost:1313/blog/paper/deeplagrangianfluids/images/schematic.png"
+      
+        alt="Schematic of our network with a depth of four."
+        
+        
+         />
+    </a>
+  
+  
+    <figcaption>
+      <span class="img--caption">
+        Figure 1. Schematic of our network with a depth of four.
+        
+      </span>
+    </figcaption>
+  
+</figure>
+
+
+
+
+<!-- 
+$x_i^{n*}$ の特徴量 $f_i$ はCConvを使って次のように求められる。
+
+$$
+[f_1, \ldots, f_N] = \text{CConv}(\lbrace s_1, \ldots, s_M \rbrace, [x_1^{n*}, \ldots, x_N^{n*}], G, R)
+$$
+ここで、$s_i$ はstatic particles (動かないオブジェクト)を表し、また、$G$ はフィルター、$R$ は半径である。 -->
+<h2 id="training-procedure">Training Procedure<a class="anchor" href="#training-procedure">#</a></h2>
+<p>$$
 \mathcal{L}^{n+1} = \sum^N_{i=1}\phi_i | x_i^{n+1} - \hat{x}_i^{n+1}|^\gamma_2
 $$
 ここで、$\phi_i$ はそれぞれの重みを表していて、$\phi_i = \exp(-\frac{1}{c}|\mathcal{N}(x_i^{n*})|)$ と表される (今回の実験では $c=40, \gamma=0.5$ としている) 。
 このtimestep=n+1, n+2のときの損失を合わせて最終的な損失とする。
 $$
 \mathcal{L} = \mathcal{L}^{n+1} + \mathcal{L}^{n+2}
-$$</p><h2 id=results>Results<a class=anchor href=#results>#</a></h2><figure style='margin:0 auto;text-align:center'><a data-lightbox=image-images/comp.png href=https://tsumli.github.io/blog/paper/deeplagrangianfluids/images/comp.png><img src=https://tsumli.github.io/blog/paper/deeplagrangianfluids/images/comp.png alt="Comparison to ground-truth physics simulation."></a><figcaption><span class=img--caption>Figure 2. Comparison to ground-truth physics simulation.</span></figcaption></figure><p><a href=http://dpi.csail.mit.edu/ target=_blank rel="noreferrer noopener">DPI-Nets</a>
-との比較を示す。2つの流体がコンテナの中で衝突するというシチュエーションである。
+$$</p>
+<h2 id="results">Results<a class="anchor" href="#results">#</a></h2>
+
+  
+
+
+
+
+
+<figure
+  
+  
+  
+  style='margin:0 auto;text-align:center;'
+  >
+    <a 
+      
+        data-lightbox="image-images/comp.png"
+      
+      
+        href="http://localhost:1313/blog/paper/deeplagrangianfluids/images/comp.png"
+      
+    
+    >
+  <img
+      
+        src="http://localhost:1313/blog/paper/deeplagrangianfluids/images/comp.png"
+      
+        alt="Comparison to ground-truth physics simulation."
+        
+        
+         />
+    </a>
+  
+  
+    <figcaption>
+      <span class="img--caption">
+        Figure 2. Comparison to ground-truth physics simulation.
+        
+      </span>
+    </figcaption>
+  
+</figure>
+
+
+
+
+<p><a href="http://dpi.csail.mit.edu/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>DPI-Nets</a>
+ との比較を示す。2つの流体がコンテナの中で衝突するというシチュエーションである。
 と比べても匹敵する精度の結果が得られていることがわかる。DPI-Netsはそれぞれの粒子の運動が激しい時にあまりうまく行かない (流体がboxに衝突した時など)。
-それに比べてこの手法では全体を通して安定した精度の予測が出来ている。</p><h2 id=implements>Implements<a class=anchor href=#implements>#</a></h2><p><a href=https://github.com/isl-org/DeepLagrangianFluids target=_blank rel="noreferrer noopener">github</a>
-に実装が挙げられています。</p><p><a href=https://github.com/isl-org/DeepLagrangianFluids/blob/master/models/default_torch.py target=_blank rel="noreferrer noopener">MyParticleNetwork</a>
-を取り上げて見てみます。このクラスの中のforward関数は次のように定義されます。
-この関数では1 timestepでの処理が示されていて、位置とベロシティを計算した後にそれを補正する変数pos_correctionを推測、それらを使って最終的な位置とベロシティを導出するという流れになっています。<div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=k>def</span> <span class=nf>forward</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=o>...</span><span class=p>):</span>
-</span></span><span class=line><span class=cl>    <span class=p>(</span><span class=o>...</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>    <span class=n>pos2</span><span class=p>,</span> <span class=n>vel2</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>integrate_pos_vel</span><span class=p>(</span><span class=n>pos</span><span class=p>,</span> <span class=n>vel</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>    <span class=n>pos_correction</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>compute_correction</span><span class=p>(</span>
-</span></span><span class=line><span class=cl>        <span class=n>pos2</span><span class=p>,</span> <span class=n>vel2</span><span class=p>,</span> <span class=n>feats</span><span class=p>,</span> <span class=n>box</span><span class=p>,</span> <span class=n>box_feats</span><span class=p>,</span> <span class=n>fixed_radius_search_hash_table</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>    <span class=n>pos2_corrected</span><span class=p>,</span> <span class=n>vel2_corrected</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>compute_new_pos_vel</span><span class=p>(</span>
-</span></span><span class=line><span class=cl>        <span class=n>pos</span><span class=p>,</span> <span class=n>vel</span><span class=p>,</span> <span class=n>pos2</span><span class=p>,</span> <span class=n>vel2</span><span class=p>,</span> <span class=n>pos_correction</span><span class=p>)</span></span></span></code></pre></div></p><p>まず、位置とベロシティの更新 (Heun法を使用した近似) です。<div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=k>def</span> <span class=nf>integrate_pos_vel</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>pos1</span><span class=p>,</span> <span class=n>vel1</span><span class=p>):</span>
-</span></span><span class=line><span class=cl>    <span class=n>dt</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>timestep</span>
-</span></span><span class=line><span class=cl>    <span class=n>vel2</span> <span class=o>=</span> <span class=n>vel1</span> <span class=o>+</span> <span class=n>dt</span> <span class=o>*</span> <span class=bp>self</span><span class=o>.</span><span class=n>gravity</span>
-</span></span><span class=line><span class=cl>    <span class=n>pos2</span> <span class=o>=</span> <span class=n>pos1</span> <span class=o>+</span> <span class=n>dt</span> <span class=o>*</span> <span class=p>(</span><span class=n>vel2</span> <span class=o>+</span> <span class=n>vel1</span><span class=p>)</span> <span class=o>/</span> <span class=mi>2</span>
-</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>pos2</span><span class=p>,</span> <span class=n>vel2</span></span></span></code></pre></div></p><p>次に、compute_correctionを使って位置を推測します (若干改変を加えています) 。
-ここで使われている convolution層は <a href=http://www.open3d.org/docs/release/python_api/open3d.ml.torch.layers.ContinuousConv.html target=_blank rel="noreferrer noopener">Continuous Convolution</a>
-、dense層は<a href=https://pytorch.org/docs/stable/generated/torch.nn.Linear.html target=_blank rel="noreferrer noopener">torch.nn.Linear</a>
-です。
-また、2層目以降の処理にはresidual connectionが追加されていることがわかります。<div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=k>def</span> <span class=nf>compute_correction</span><span class=p>(</span>
-</span></span><span class=line><span class=cl>    <span class=bp>self</span><span class=p>,</span> <span class=o>...</span>
-</span></span><span class=line><span class=cl><span class=p>):</span>
-</span></span><span class=line><span class=cl>    <span class=n>filter_extent</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>tensor</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>filter_extent</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>    <span class=n>fluid_feats</span> <span class=o>=</span> <span class=p>[</span><span class=n>torch</span><span class=o>.</span><span class=n>ones_like</span><span class=p>(</span><span class=n>pos</span><span class=p>[:,</span> <span class=mi>0</span><span class=p>:</span><span class=mi>1</span><span class=p>]),</span> <span class=n>vel</span><span class=p>]</span>
-</span></span><span class=line><span class=cl>    <span class=p>(</span><span class=o>...</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=bp>self</span><span class=o>.</span><span class=n>ans_conv0_fluid</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>conv0_fluid</span><span class=p>(</span>
-</span></span><span class=line><span class=cl>        <span class=n>fluid_feats</span><span class=p>,</span> <span class=n>pos</span><span class=p>,</span> <span class=n>pos</span><span class=p>,</span> <span class=n>filter_extent</span>
-</span></span><span class=line><span class=cl>    <span class=p>)</span>
-</span></span><span class=line><span class=cl>    <span class=bp>self</span><span class=o>.</span><span class=n>ans_dense0_fluid</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>dense0_fluid</span><span class=p>(</span>
-</span></span><span class=line><span class=cl>        <span class=n>fluid_feats</span>
-</span></span><span class=line><span class=cl>    <span class=p>)</span>
-</span></span><span class=line><span class=cl>    <span class=bp>self</span><span class=o>.</span><span class=n>ans_conv0_obstacle</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>conv0_obstacle</span><span class=p>(</span>
-</span></span><span class=line><span class=cl>        <span class=n>box_feats</span><span class=p>,</span> <span class=n>box</span><span class=p>,</span> <span class=n>pos</span><span class=p>,</span> <span class=n>filter_extent</span>
-</span></span><span class=line><span class=cl>    <span class=p>)</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=n>feats</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>cat</span><span class=p>(</span>
-</span></span><span class=line><span class=cl>        <span class=p>[</span>
-</span></span><span class=line><span class=cl>            <span class=bp>self</span><span class=o>.</span><span class=n>ans_conv0_obstacle</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>ans_conv0_fluid</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>ans_dense0_fluid</span>
-</span></span><span class=line><span class=cl>        <span class=p>],</span>
-</span></span><span class=line><span class=cl>        <span class=n>axis</span><span class=o>=-</span><span class=mi>1</span>
-</span></span><span class=line><span class=cl>    <span class=p>)</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=bp>self</span><span class=o>.</span><span class=n>ans_convs</span> <span class=o>=</span> <span class=p>[</span><span class=n>feats</span><span class=p>]</span>
-</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>conv</span><span class=p>,</span> <span class=n>dense</span> <span class=ow>in</span> <span class=nb>zip</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>convs</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>denses</span><span class=p>):</span>
-</span></span><span class=line><span class=cl>        <span class=n>inp_feats</span> <span class=o>=</span> <span class=n>F</span><span class=o>.</span><span class=n>relu</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>ans_convs</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>])</span>
-</span></span><span class=line><span class=cl>        <span class=n>ans_conv</span> <span class=o>=</span> <span class=n>conv</span><span class=p>(</span><span class=n>inp_feats</span><span class=p>,</span> <span class=n>pos</span><span class=p>,</span> <span class=n>pos</span><span class=p>,</span> <span class=n>filter_extent</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>        <span class=n>ans_dense</span> <span class=o>=</span> <span class=n>dense</span><span class=p>(</span><span class=n>inp_feats</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>ans_dense</span><span class=o>.</span><span class=n>shape</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span> <span class=o>==</span> <span class=bp>self</span><span class=o>.</span><span class=n>ans_convs</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span><span class=o>.</span><span class=n>shape</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]:</span>
-</span></span><span class=line><span class=cl>            <span class=n>ans</span> <span class=o>=</span> <span class=n>ans_conv</span> <span class=o>+</span> <span class=n>ans_dense</span> <span class=o>+</span> <span class=bp>self</span><span class=o>.</span><span class=n>ans_convs</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span>
-</span></span><span class=line><span class=cl>        <span class=k>else</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>            <span class=n>ans</span> <span class=o>=</span> <span class=n>ans_conv</span> <span class=o>+</span> <span class=n>ans_dense</span>
-</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>ans_convs</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>ans</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>    <span class=p>(</span><span class=o>...</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=bp>self</span><span class=o>.</span><span class=n>ans_convs</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span></span></span></code></pre></div></p><p>最後に、これまで計算した位置に対して補正を行い最終的な位置とベロシティを計算します。<div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=k>def</span> <span class=nf>compute_new_pos_vel</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>pos1</span><span class=p>,</span> <span class=n>vel1</span><span class=p>,</span> <span class=n>pos2</span><span class=p>,</span> <span class=n>vel2</span><span class=p>,</span> <span class=n>pos_correction</span><span class=p>):</span>
-</span></span><span class=line><span class=cl>    <span class=n>dt</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>timestep</span>
-</span></span><span class=line><span class=cl>    <span class=n>pos</span> <span class=o>=</span> <span class=n>pos2</span> <span class=o>+</span> <span class=n>pos_correction</span>
-</span></span><span class=line><span class=cl>    <span class=n>vel</span> <span class=o>=</span> <span class=p>(</span><span class=n>pos</span> <span class=o>-</span> <span class=n>pos1</span><span class=p>)</span> <span class=o>/</span> <span class=n>dt</span>
-</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>pos</span><span class=p>,</span> <span class=n>vel</span></span></span></code></pre></div></p><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script><script type=text/x-mathjax-config>
+それに比べてこの手法では全体を通して安定した精度の予測が出来ている。</p>
+<h2 id="implements">Implements<a class="anchor" href="#implements">#</a></h2>
+<p><a href="https://github.com/isl-org/DeepLagrangianFluids" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>github</a>
+ に実装が挙げられています。</p>
+<p><a href="https://github.com/isl-org/DeepLagrangianFluids/blob/master/models/default_torch.py" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>MyParticleNetwork</a>
+ を取り上げて見てみます。このクラスの中のforward関数は次のように定義されます。
+この関数では1 timestepでの処理が示されていて、位置とベロシティを計算した後にそれを補正する変数pos_correctionを推測、それらを使って最終的な位置とベロシティを導出するという流れになっています。
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">...</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pos2</span><span class="p">,</span> <span class="n">vel2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">integrate_pos_vel</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">vel</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pos_correction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_correction</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pos2</span><span class="p">,</span> <span class="n">vel2</span><span class="p">,</span> <span class="n">feats</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">box_feats</span><span class="p">,</span> <span class="n">fixed_radius_search_hash_table</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pos2_corrected</span><span class="p">,</span> <span class="n">vel2_corrected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_new_pos_vel</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pos</span><span class="p">,</span> <span class="n">vel</span><span class="p">,</span> <span class="n">pos2</span><span class="p">,</span> <span class="n">vel2</span><span class="p">,</span> <span class="n">pos_correction</span><span class="p">)</span></span></span></code></pre></div></p>
+<p>まず、位置とベロシティの更新 (Heun法を使用した近似) です。
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">integrate_pos_vel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos1</span><span class="p">,</span> <span class="n">vel1</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vel2</span> <span class="o">=</span> <span class="n">vel1</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">gravity</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pos2</span> <span class="o">=</span> <span class="n">pos1</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="p">(</span><span class="n">vel2</span> <span class="o">+</span> <span class="n">vel1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">pos2</span><span class="p">,</span> <span class="n">vel2</span></span></span></code></pre></div></p>
+<p>次に、compute_correctionを使って位置を推測します (若干改変を加えています) 。
+ここで使われている convolution層は <a href="http://www.open3d.org/docs/release/python_api/open3d.ml.torch.layers.ContinuousConv.html" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>Continuous Convolution</a>
+ 、dense層は<a href="https://pytorch.org/docs/stable/generated/torch.nn.Linear.html" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>torch.nn.Linear</a>
+ です。
+また、2層目以降の処理にはresidual connectionが追加されていることがわかります。
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">compute_correction</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="bp">self</span><span class="p">,</span> <span class="o">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">filter_extent</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filter_extent</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fluid_feats</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">pos</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]),</span> <span class="n">vel</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="bp">self</span><span class="o">.</span><span class="n">ans_conv0_fluid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv0_fluid</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fluid_feats</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">filter_extent</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="bp">self</span><span class="o">.</span><span class="n">ans_dense0_fluid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dense0_fluid</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fluid_feats</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="bp">self</span><span class="o">.</span><span class="n">ans_conv0_obstacle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv0_obstacle</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">box_feats</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">filter_extent</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">feats</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="p">[</span>
+</span></span><span class="line"><span class="cl">            <span class="bp">self</span><span class="o">.</span><span class="n">ans_conv0_obstacle</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ans_conv0_fluid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ans_dense0_fluid</span>
+</span></span><span class="line"><span class="cl">        <span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="bp">self</span><span class="o">.</span><span class="n">ans_convs</span> <span class="o">=</span> <span class="p">[</span><span class="n">feats</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">conv</span><span class="p">,</span> <span class="n">dense</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">denses</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">inp_feats</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ans_convs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ans_conv</span> <span class="o">=</span> <span class="n">conv</span><span class="p">(</span><span class="n">inp_feats</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">filter_extent</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ans_dense</span> <span class="o">=</span> <span class="n">dense</span><span class="p">(</span><span class="n">inp_feats</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">ans_dense</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ans_convs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ans</span> <span class="o">=</span> <span class="n">ans_conv</span> <span class="o">+</span> <span class="n">ans_dense</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ans_convs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ans</span> <span class="o">=</span> <span class="n">ans_conv</span> <span class="o">+</span> <span class="n">ans_dense</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">ans_convs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ans</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ans_convs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></span></span></code></pre></div></p>
+<p>最後に、これまで計算した位置に対して補正を行い最終的な位置とベロシティを計算します。
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">compute_new_pos_vel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos1</span><span class="p">,</span> <span class="n">vel1</span><span class="p">,</span> <span class="n">pos2</span><span class="p">,</span> <span class="n">vel2</span><span class="p">,</span> <span class="n">pos_correction</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pos</span> <span class="o">=</span> <span class="n">pos2</span> <span class="o">+</span> <span class="n">pos_correction</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vel</span> <span class="o">=</span> <span class="p">(</span><span class="n">pos</span> <span class="o">-</span> <span class="n">pos1</span><span class="p">)</span> <span class="o">/</span> <span class="n">dt</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">pos</span><span class="p">,</span> <span class="n">vel</span></span></span></code></pre></div></p>
+
+
+              
+                  
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
+<script type="text/x-mathjax-config">
     MathJax.Hub.Config({
             showMathMenu: false, //disables context menu
             tex2jax: {
             inlineMath: [ ['$','$'], ['\\(','\\)'] ]
            }
     });
-</script></article><ul class=tags__list><li class=tag__item><a class=tag__link href=https://tsumli.github.io/tags/simulation/>simulation</a></li><li class=tag__item><a class=tag__link href=https://tsumli.github.io/tags/paper/>paper</a></li></ul><div class=pagination><a class=pagination__item href=https://tsumli.github.io/blog/paper/fomm/><span class=pagination__label>Previous Post</span>
-<span class=pagination__title>First Order Motion Model for Image Animation (FOMM) を読む</span>
-</a><a class=pagination__item href=https://tsumli.github.io/blog/paper/bisenet/><span class=pagination__label>Next Post</span>
-<span class=pagination__title>BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation を読む</span></a></div><footer class=post__footer><div class=social-icons><a class=social-icons__link rel=me title=Kaggle href=https://www.kaggle.com/tsumli target=_blank rel=noopener><div class=social-icons__icon style=background-image:url(https://tsumli.github.io/svg/kaggle.svg)></div></a><a class=social-icons__link rel=me title=GitHub href=https://github.com/tsumli target=_blank rel=noopener><div class=social-icons__icon style=background-image:url(https://tsumli.github.io/svg/github.svg)></div></a></div><p>© 2025</p><script src=https://code.jquery.com/jquery-3.4.1.min.js integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin=anonymous></script><link rel=stylesheet href=https://tsumli.github.io//css/lightbox.min.css><script src=https://tsumli.github.io//js/lightbox.min.js></script></footer></div></div><div class=toc-container><div class=toc-post-title>Lagrangian Fluid Simulation With Continuous Convolutions を読む</div><nav id=TableOfContents><ul><li><a href=#continuous-convolution>Continuous Convolution</a></li><li><a href=#method>Method</a></li><li><a href=#network-architecture>Network Architecture</a></li><li><a href=#training-procedure>Training Procedure</a></li><li><a href=#results>Results</a></li><li><a href=#implements>Implements</a></li></ul></nav></div></div></main><script src=https://tsumli.github.io/js/index.min.301a8b0870381bf76b3b5182e8966d363a0474281183439beb024d8b8228fc66.js integrity="sha256-MBqLCHA4G/drO1GC6JZtNjoEdCgRg0Ob6wJNi4Io/GY=" crossorigin=anonymous></script><script src=https://unpkg.com/prismjs@1.20.0/components/prism-core.min.js></script><script src=https://unpkg.com/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js data-autoloader-path=https://unpkg.com/prismjs@1.20.0/components/></script><script src=https://tsumli.github.io/js/table-of-contents.js></script></body></html>
+</script>
+              
+          </article>
+          
+
+<ul class="tags__list">
+    
+    <li class="tag__item">
+        <a class="tag__link" href="http://localhost:1313/tags/simulation/">simulation</a>
+    </li>
+    <li class="tag__item">
+        <a class="tag__link" href="http://localhost:1313/tags/paper/">paper</a>
+    </li></ul>
+
+ <div class="pagination">
+  
+    <a class="pagination__item" href="http://localhost:1313/blog/paper/fomm/">
+        <span class="pagination__label">Previous Post</span>
+        <span class="pagination__title">First Order Motion Model for Image Animation (FOMM) を読む</span>
+    </a>
+  
+
+  
+    <a class="pagination__item" href="http://localhost:1313/blog/paper/bisenet/">
+      <span class="pagination__label">Next Post</span>
+      <span class="pagination__title" >BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation を読む</span>
+    </a>
+  
+</div>
+
+          
+          <footer class="post__footer">
+            
+
+
+<div class="social-icons">
+  
+     
+    
+      <a class="social-icons__link" rel="me" title="Kaggle"
+         href="https://www.kaggle.com/tsumli"
+         target="_blank" rel="noopener">
+        <div class="social-icons__icon" style="background-image: url('http://localhost:1313/svg/kaggle.svg')"></div>
+      </a>
+    
+  
+     
+    
+      <a class="social-icons__link" rel="me" title="GitHub"
+         href="https://github.com/tsumli"
+         target="_blank" rel="noopener">
+        <div class="social-icons__icon" style="background-image: url('http://localhost:1313/svg/github.svg')"></div>
+      </a>
+    
+     
+</div>
+
+            <p>© 2025</p>
+            <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+            <link rel="stylesheet" href="http://localhost:1313//css/lightbox.min.css">
+            <script src="http://localhost:1313//js/lightbox.min.js"></script>
+          </footer>
+          </div>
+      </div>
+      
+      <div class="toc-container">
+           <div class="toc-post-title">Lagrangian Fluid Simulation With Continuous Convolutions を読む</div> 
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#continuous-convolution">Continuous Convolution</a></li>
+    <li><a href="#method">Method</a></li>
+    <li><a href="#network-architecture">Network Architecture</a></li>
+    <li><a href="#training-procedure">Training Procedure</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#implements">Implements</a></li>
+  </ul>
+</nav>
+      </div>
+      
+    </div>
+    
+
+  </main>
+
+   
+
+  
+  <script src="http://localhost:1313/js/index.min.301a8b0870381bf76b3b5182e8966d363a0474281183439beb024d8b8228fc66.js" integrity="sha256-MBqLCHA4G/drO1GC6JZtNjoEdCgRg0Ob6wJNi4Io/GY=" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://unpkg.com/prismjs@1.20.0/components/prism-core.min.js"></script>
+
+  
+  <script src="https://unpkg.com/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"
+    data-autoloader-path="https://unpkg.com/prismjs@1.20.0/components/"></script>
+
+  
+    <script src="http://localhost:1313/js/table-of-contents.js"></script>
+  
+
+
+</body>
+
+</html>

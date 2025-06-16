@@ -1,8 +1,20 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Table on tsumli-pages</title><link>https://tsumli.github.io/tags/table/</link><description>Recent content in Table on tsumli-pages</description><generator>Hugo</generator><language>ja</language><copyright>© {year}</copyright><lastBuildDate>Mon, 14 Jun 2021 10:33:39 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/table/index.xml" rel="self" type="application/rss+xml"/><item><title>TGAN: Synthesizing Tabular Data using Generative Adversarial Networks を読む</title><link>https://tsumli.github.io/blog/paper/TGAN/</link><pubDate>Mon, 14 Jun 2021 10:33:39 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/TGAN/</guid><description>&lt;p>&lt;a href="https://arxiv.org/abs/1811.11264" 
- 
- target="_blank" rel="noreferrer noopener" 
->&lt;strong>Synthesizing Tabular Data using Generative Adversarial Networks&lt;/strong>&lt;/a>
-&lt;br>
-[Xu et al. arXiv 2018] という論文を読んでいきます. (本文中の図は論文より引用).&lt;/p>
-&lt;p>tabular dataに対するGAN (TGAN) についての紹介.
-様々なデータ (categorical, numericalなど) が混合したようなテーブルに対して用いることができる.&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Table on tsumli-pages</title>
+    <link>http://localhost:1313/tags/table/</link>
+    <description>Recent content in Table on tsumli-pages</description>
+    <generator>Hugo</generator>
+    <language>ja</language>
+    <copyright>© {year}</copyright>
+    <lastBuildDate>Mon, 14 Jun 2021 10:33:39 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/table/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TGAN: Synthesizing Tabular Data using Generative Adversarial Networks を読む</title>
+      <link>http://localhost:1313/blog/paper/TGAN/</link>
+      <pubDate>Mon, 14 Jun 2021 10:33:39 +0000</pubDate>
+      <guid>http://localhost:1313/blog/paper/TGAN/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://arxiv.org/abs/1811.11264&#34; &#xA;  &#xA;   target=&#34;_blank&#34; rel=&#34;noreferrer noopener&#34; &#xA;&gt;&lt;strong&gt;Synthesizing Tabular Data using Generative Adversarial Networks&lt;/strong&gt;&lt;/a&gt;&#xA;&lt;br&gt;&#xA;[Xu et al. arXiv 2018] という論文を読んでいきます. (本文中の図は論文より引用).&lt;/p&gt;&#xA;&lt;p&gt;tabular dataに対するGAN (TGAN) についての紹介.&#xA;様々なデータ (categorical, numericalなど) が混合したようなテーブルに対して用いることができる.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
