@@ -1,8 +1,20 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Segmentation on tsumli-pages</title><link>https://tsumli.github.io/tags/segmentation/</link><description>Recent content in Segmentation on tsumli-pages</description><generator>Hugo</generator><language>ja</language><copyright>© {year}</copyright><lastBuildDate>Tue, 06 Sep 2022 10:33:39 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/segmentation/index.xml" rel="self" type="application/rss+xml"/><item><title>BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation を読む</title><link>https://tsumli.github.io/blog/paper/bisenet/</link><pubDate>Tue, 06 Sep 2022 10:33:39 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/bisenet/</guid><description>&lt;p>&lt;a href="https://arxiv.org/abs/1808.00897" 
- 
- target="_blank" rel="noreferrer noopener" 
->&lt;strong>BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation&lt;/strong>&lt;/a>
-&lt;br>
-[Yu et al. ECCV 2018] という論文を読んでいきます。 (本文中の図は論文より引用) 。
-semantic segmentationの課題である、リアルタイム性 (推論速度) と精度のトレードオフ
-を解決する新たなネットワークBilateral Segmentation Network (BiSeNet) の提案。&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Segmentation on tsumli-pages</title>
+    <link>http://localhost:1313/tags/segmentation/</link>
+    <description>Recent content in Segmentation on tsumli-pages</description>
+    <generator>Hugo</generator>
+    <language>ja</language>
+    <copyright>© {year}</copyright>
+    <lastBuildDate>Tue, 06 Sep 2022 10:33:39 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/segmentation/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation を読む</title>
+      <link>http://localhost:1313/blog/paper/bisenet/</link>
+      <pubDate>Tue, 06 Sep 2022 10:33:39 +0000</pubDate>
+      <guid>http://localhost:1313/blog/paper/bisenet/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://arxiv.org/abs/1808.00897&#34; &#xA;  &#xA;   target=&#34;_blank&#34; rel=&#34;noreferrer noopener&#34; &#xA;&gt;&lt;strong&gt;BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation&lt;/strong&gt;&lt;/a&gt;&#xA;&lt;br&gt;&#xA;[Yu et al. ECCV 2018] という論文を読んでいきます。 (本文中の図は論文より引用) 。&#xA;semantic segmentationの課題である、リアルタイム性 (推論速度) と精度のトレードオフ&#xA;を解決する新たなネットワークBilateral Segmentation Network (BiSeNet) の提案。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

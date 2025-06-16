@@ -1,44 +1,997 @@
-<!doctype html><html lang=ja><head><title>First Order Motion Model for Image Animation (FOMM) を読む | tsumli-pages</title><meta charset=UTF-8><meta name=language content="en"><meta name=description content><meta name=keywords content="GAN"><meta name=viewport content="width=device-width,initial-scale=1"><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><link rel="shortcut icon" type=image/png href=https://tsumli.github.io/favicon.ico><link type=text/css rel=stylesheet href=https://tsumli.github.io/css/post.min.56c8810b0f07bc4b6fe3dd802a8194d08a2ed5a4903bdf2a4859c17f3860a7e7.css integrity="sha256-VsiBCw8HvEtv492AKoGU0Iou1aSQO98qSFnBfzhgp+c="><link type=text/css rel=stylesheet href=https://tsumli.github.io/css/custom.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css integrity="sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU="><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/tsumli.github.io\/"},"articleSection":"blog","name":"First Order Motion Model for Image Animation (FOMM) を読む","headline":"First Order Motion Model for Image Animation (FOMM) を読む","description":"","inLanguage":"en-US","author":"","creator":"","publisher":"","accountablePerson":"","copyrightHolder":"","copyrightYear":"2022","datePublished":"2022-02-01 19:58:16 \u002b0000 UTC","dateModified":"2022-02-01 19:58:16 \u002b0000 UTC","url":"https:\/\/tsumli.github.io\/blog\/paper\/fomm\/","wordCount":"2776","keywords":["GAN","Blog"]}</script></head><body><div class=burger__container><div class=burger aria-controls=navigation aria-label=Menu><div class="burger__meat burger__meat--1"></div><div class="burger__meat burger__meat--2"></div><div class="burger__meat burger__meat--3"></div></div></div><nav class=nav id=navigation><ul class=nav__list><li><a href=https://tsumli.github.io/>about</a></li><li><a class=active href=https://tsumli.github.io/blog>blog</a></li></ul></nav><main><div class=flex-wrapper><div class=post__container><div class=post><header class=post__header><h1 id=post__title>First Order Motion Model for Image Animation (FOMM) を読む</h1><time datetime="2022-02-01 19:58:16 +0000 UTC" class=post__date>Feb 1 2022</time>
-<link rel=stylesheet href=https://tsumli.github.io//css/lightbox.min.css><script type=text/javascript>MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],processEscapes:!0,tags:"ams",autoload:{color:[],colorV2:["color"]},packages:{"[+]":["noerrors"]}},chtml:{matchFontHeight:!1,displayAlign:"left",displayIndent:"2em"},options:{skipHtmlTags:["script","noscript","style","textarea","pre"],renderActions:{find_script_mathtex:[10,function(e){for(const t of document.querySelectorAll('script[type^="math/tex"]')){const o=!!t.type.match(/; *mode=display/),n=new e.options.MathItem(t.textContent,e.inputJax[0],o),s=document.createTextNode("");t.parentNode.replaceChild(s,t),n.start={node:s,delim:"",n:0},n.end={node:s,delim:"",n:0},e.math.push(n)}},""]}},loader:{load:["[tex]/noerrors"]}}</script><script type=text/javascript async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js id=MathJax-script></script><link rel=stylesheet type=text/css href=https://tsumli.github.io/css/mathjax-style.css></header><article class=post__content><p><a href=https://proceedings.neurips.cc/paper/2019/file/31c0b36aef265d9221af80872ceb62f9-Paper.pdf target=_blank rel="noreferrer noopener"><strong>First Order Motion Model for Image Animation</strong></a><br>[A. Siarohin et al. NeurIPS 2019] という論文を読んでいきます (本文中の図は論文より引用)。
-FOMMという名前で知られている手法です。</p><figure style='margin:0 auto;text-align:center'><a data-lightbox=image-images/result.png href=https://tsumli.github.io/blog/paper/fomm/images/result.png><img src=https://tsumli.github.io/blog/paper/fomm/images/result.png alt="example animation"></a><figcaption><span class=img--caption>Figure . example animation</span></figcaption></figure><h2 id=method>Method<a class=anchor href=#method>#</a></h2><h3 id=目的>目的<a class=anchor href=#目的>#</a></h3><p><strong>source image $\mathbf{S}$ と deiving video $\mathcal{D}$ の動きを表す潜在表現を組み合わせて、 driving video を再構成する</strong></p><p>このとき、driving videoを同じような物体が写っている映像とすることで、教師なし訓練ができる。</p><h3 id=概観>概観<a class=anchor href=#概観>#</a></h3><figure style='margin:0 auto;text-align:center'><a data-lightbox=image-images/overview.png href=https://tsumli.github.io/blog/paper/fomm/images/overview.png><img src=https://tsumli.github.io/blog/paper/fomm/images/overview.png alt="Overview of the method."></a><figcaption><span class=img--caption>Figure 1. Overview of the method.</span></figcaption></figure><p>上図に本手法のoverviewを示す。inputは source image $\mathbf{S}$ と deiving video のフレーム $\mathbf{D}$ である。
+<!DOCTYPE html>
+<html lang="ja">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <title>First Order Motion Model for Image Animation (FOMM) を読む | tsumli-pages</title>
+
+  <meta charset="UTF-8">
+  <meta name="language" content="en">
+  <meta name="description" content="">
+  <meta name="keywords" content="GAN">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  
+  
+
+  <link rel="shortcut icon" type="image/png" href="http://localhost:1313/favicon.ico" />
+
+
+  
+  
+    
+ 
+  
+  
+  
+  
+  
+  
+    
+    <link type="text/css" rel="stylesheet" href="http://localhost:1313/css/post.min.56c8810b0f07bc4b6fe3dd802a8194d08a2ed5a4903bdf2a4859c17f3860a7e7.css" integrity="sha256-VsiBCw8HvEtv492AKoGU0Iou1aSQO98qSFnBfzhgp&#43;c="/>
+  
+    
+    <link type="text/css" rel="stylesheet" href="http://localhost:1313/css/custom.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css" integrity="sha256-47DEQpj8HBSa&#43;/TImW&#43;5JCeuQeRkm5NMpJWZG3hSuFU="/>
+  
+  
+   
+   
+    
+
+<script type="application/ld+json">
+  
+    {
+      "@context" : "http://schema.org",
+      "@type" : "BlogPosting",
+      "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/"
+      },
+      "articleSection" : "blog",
+      "name" : "First Order Motion Model for Image Animation (FOMM) を読む",
+      "headline" : "First Order Motion Model for Image Animation (FOMM) を読む",
+      "description" : "",
+      "inLanguage" : "en-US",
+      "author" : "",
+      "creator" : "",
+      "publisher": "",
+      "accountablePerson" : "",
+      "copyrightHolder" : "",
+      "copyrightYear" : "2022",
+      "datePublished": "2022-02-01 19:58:16 \u002b0000 UTC",
+      "dateModified" : "2022-02-01 19:58:16 \u002b0000 UTC",
+      "url" : "http:\/\/localhost:1313\/blog\/paper\/fomm\/",
+      "wordCount" : "2776",
+      "keywords" : ["GAN", "Blog"]
+    }
+  
+  </script>
+
+</head>
+
+<body>
+  <div class="burger__container">
+  <div class="burger" aria-controls="navigation" aria-label="Menu">
+    <div class="burger__meat burger__meat--1"></div>
+    <div class="burger__meat burger__meat--2"></div>
+    <div class="burger__meat burger__meat--3"></div>
+  </div>
+</div>
+ 
+
+  <nav class="nav" id="navigation">
+  <ul class="nav__list">
+    
+    
+      <li>
+        <a  href="http://localhost:1313/">about</a>
+      </li>
+    
+      <li>
+        <a  class="active"
+         href="http://localhost:1313/blog">blog</a>
+      </li>
+    
+  </ul>
+</nav>
+
+
+  <main>
+    
+    
+
+    <div class="flex-wrapper">
+      <div class="post__container">
+        <div class="post">
+          <header class="post__header">
+            <h1 id="post__title">First Order Motion Model for Image Animation (FOMM) を読む</h1>
+            <time datetime="2022-02-01 19:58:16 &#43;0000 UTC" class="post__date">Feb 1 2022</time> 
+            <link rel="stylesheet" href="http://localhost:1313//css/lightbox.min.css">
+            <script type="text/javascript">
+ MathJax = {
+   tex: {
+     inlineMath: [['$','$'], ['\\(','\\)']],
+     processEscapes: true,
+     tags: "ams",
+     autoload: {
+       color: [],
+       colorV2: ['color']
+     },
+     packages: {'[+]': ['noerrors']}
+   },
+   chtml: {
+     matchFontHeight: false,
+     displayAlign: "left", 
+     displayIndent: "2em"
+   },
+   options: {
+     skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+     renderActions: {
+        
+       find_script_mathtex: [10, function (doc) {
+         for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+           const display = !!node.type.match(/; *mode=display/);
+           const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+           const text = document.createTextNode('');
+           node.parentNode.replaceChild(text, node);
+           math.start = {node: text, delim: '', n: 0};
+           math.end = {node: text, delim: '', n: 0};
+           doc.math.push(math);
+         }
+       }, '']
+     }
+   },
+   loader: {
+     load: ['[tex]/noerrors']
+   }
+ };
+</script>
+<script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script"></script>
+
+<link rel="stylesheet" type="text/css" href="http://localhost:1313/css/mathjax-style.css">
+
+          </header>
+          <article class="post__content">
+              
+<p><a href="https://proceedings.neurips.cc/paper/2019/file/31c0b36aef265d9221af80872ceb62f9-Paper.pdf" 
+  
+   target="_blank" rel="noreferrer noopener" 
+><strong>First Order Motion Model for Image Animation</strong></a>
+<br>
+[A. Siarohin et al. NeurIPS 2019] という論文を読んでいきます (本文中の図は論文より引用)。
+FOMMという名前で知られている手法です。</p>
+
+  
+
+
+
+
+
+<figure
+  
+  
+  
+  style='margin:0 auto;text-align:center;'
+  >
+    <a 
+      
+        data-lightbox="image-images/result.png"
+      
+      
+        href="http://localhost:1313/blog/paper/fomm/images/result.png"
+      
+    
+    >
+  <img
+      
+        src="http://localhost:1313/blog/paper/fomm/images/result.png"
+      
+        alt="example animation"
+        
+        
+         />
+    </a>
+  
+  
+    <figcaption>
+      <span class="img--caption">
+        Figure . example animation
+        
+      </span>
+    </figcaption>
+  
+</figure>
+
+
+
+
+<h2 id="method">Method<a class="anchor" href="#method">#</a></h2>
+<h3 id="目的">目的<a class="anchor" href="#目的">#</a></h3>
+<p><strong>source image $\mathbf{S}$ と deiving video $\mathcal{D}$ の動きを表す潜在表現を組み合わせて、 driving video を再構成する</strong></p>
+<p>このとき、driving videoを同じような物体が写っている映像とすることで、教師なし訓練ができる。</p>
+<h3 id="概観">概観<a class="anchor" href="#概観">#</a></h3>
+
+  
+
+
+
+
+
+<figure
+  
+  
+  
+  style='margin:0 auto;text-align:center;'
+  >
+    <a 
+      
+        data-lightbox="image-images/overview.png"
+      
+      
+        href="http://localhost:1313/blog/paper/fomm/images/overview.png"
+      
+    
+    >
+  <img
+      
+        src="http://localhost:1313/blog/paper/fomm/images/overview.png"
+      
+        alt="Overview of the method."
+        
+        
+         />
+    </a>
+  
+  
+    <figcaption>
+      <span class="img--caption">
+        Figure 1. Overview of the method.
+        
+      </span>
+    </figcaption>
+  
+</figure>
+
+
+
+
+<p>上図に本手法のoverviewを示す。inputは source image $\mathbf{S}$ と deiving video のフレーム $\mathbf{D}$ である。
 それぞれに対し Keypoint Detector が 疎なキーポイント (sparse keypoints) と 局所的なアフィン変換 (local affine transformation) を抽出する。
-そして、dense motionネットワークが動き (motion) の表現をつかって、以下の2つの特徴量を持ってくる</p><ol><li>dense optical flow: $\hat{\mathcal{T}}_{\mathbf{S} \leftarrow \mathbf{D}}$</li><li>occlusion map: $\hat{\mathcal{O}}_{\mathbf{S} \leftarrow \mathbf{D}}$</li></ol><p>そして、最後にGeneration moduleに通して最終的な画像が生成される。</p><h3 id=具体的な手法>具体的な手法<a class=anchor href=#具体的な手法>#</a></h3><p>この手法は主に2つのモジュール: Motion estimation module と image generation module からなる</p><p>motion estimation module の役割は、driving videoから取ってきたフレーム $\mathbf{D} \in \mathbb{R}^{3\times H \times W}$ から source image $\mathbf{S}\in \mathbb{R}^{3\times H \times W}$ への
-dense motion field を予測することである。</p><p>この motion field は $\mathcal{T}_{\mathbf{S} \leftarrow \mathbf{D}}: \mathbb{R}^2 \leftarrow \mathbb{R}^2$ と定式化される。これを一般的に backward optical flow という。</p><p>ここで、抽象的なreference image $\mathbf{R}$ を仮定する。その仮定、
-reference image $\rightarrow$ source image と reference image $\rightarrow$ driving image の変換を独立に予測することで、$\mathbf{D}$ と $\mathbf{S}$ に対して独立に処理することができる。</p><p>keypointの
-だけの場合と比べて、局所的なアフィン変換によって多くの種類の変換を扱うことができる。</p><p>テイラー展開を用いて、keypointの位置とアフィン変換のセットで $\mathcal{T}_{\mathbf{D} \leftarrow \mathbf{R}}$ を表す。そのため、keypoint detector networkではkeypointの位置とそれぞれのアフィン変換 (のパラメータ) を抽出する。</p><p>そして、dense motion network ではmotion fieldに加えて、
-occlusion mask: $\hat{\mathcal{O}}_{\mathbf{S} \leftarrow \mathbf{D}}$ も抽出する。この特徴量は、$\mathbf{D}$ のどの部分が補完 (inpaint) されるべきかをあらわしている。</p><p>最後に、image generation moduleで source objectに動きを与える (occlusionで指定された部分をinpaintする) 。</p><h3 id=local-affine-transformations-for-approximation>Local Affine Transformations for Approximation<a class=anchor href=#local-affine-transformations-for-approximation>#</a></h3><p>参照画像 $\mathbf{R}$ から与えられた画像 $\mathbf{X}$ への変換: $\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}$ を得る方法について</p><p>変換 $\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}$ が与えられた時、K個のkeypoint: $p_1, \ldots, p_K$ それぞれについて一次のテイラー展開を考えることができる。<figure style='margin:0 auto;text-align:center'><a data-lightbox=image-images/tx_r.png href=https://tsumli.github.io/blog/paper/fomm/images/tx_r.png><img src=https://tsumli.github.io/blog/paper/fomm/images/tx_r.png></a></figure></p><p>ここで、$p_\cdot$ は参照画像 $\mathbf{R}$ の中のkeypointの座標を表す (ここで、$\mathbf{X}, \mathbf{S}, \mathbf{D}$ 内の座標は $z$ と表すこととする)。</p><p>以下の定式化では $\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}$ はそれぞれのkeypoint $p_k$ 値とその Jacobian で表すことができる。<figure style='margin:0 auto;text-align:center'><a data-lightbox=image-images/tx_r_sim.png href=https://tsumli.github.io/blog/paper/fomm/images/tx_r_sim.png><img src=https://tsumli.github.io/blog/paper/fomm/images/tx_r_sim.png></a></figure></p><hr><p>さらに、$\mathcal{T}_{\mathbf{R} \leftarrow \mathbf{X}}$ ($\mathbf{X}$ から $\mathbf{R}$ への変換の逆変換) を求めるために、</p><p>$\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}$がkeypointの近傍に対し局所的に全単射であることを仮定している。</p><p>$\mathbf{D}$ のなかのkeypoint $z_k$ の近くの変換 $\mathcal{T}_{\mathbf{S} \leftarrow \mathbf{D}}$ を予測するために</p><p>まず、$z_k$ の近くの変換 $\mathcal{T}_{\mathbf{R} \leftarrow \mathbf{D}}$ を予測する。</p><p>ここで、$p_k = \mathcal{T}_{\mathbf{S} \leftarrow \mathbf{D}}$ が成立する。</p><p>このように考えると、最終的に $\mathcal{T}_{\mathbf{S} \leftarrow \mathbf{D}}$ は次のように得られる。<br><br><figure style='margin:0 auto;text-align:center'><a data-lightbox=image-images/ts_d.png href=https://tsumli.github.io/blog/paper/fomm/images/ts_d.png><img src=https://tsumli.github.io/blog/paper/fomm/images/ts_d.png></a></figure></p><p>これは、テイラー展開を使うことで次のように変形できる<br><br><figure style='margin:0 auto;text-align:center'><a data-lightbox=image-images/ts_d_sim.png href=https://tsumli.github.io/blog/paper/fomm/images/ts_d_sim.png><img src=https://tsumli.github.io/blog/paper/fomm/images/ts_d_sim.png></a></figure></p><p>ここで、Jacobian $J_k$ は次のように表される</p><figure style='margin:0 auto;text-align:center'><a data-lightbox=image-images/J_k.png href=https://tsumli.github.io/blog/paper/fomm/images/J_k.png><img src=https://tsumli.github.io/blog/paper/fomm/images/J_k.png></a></figure><p>source, driving imageに対してkeypoint predictorは4つchannelを多く出力する。
-これらの特徴用を用いて、対応するkeypointのconfidence mapを重みとした重み付き平均を計算することによって上の式 ($J_k$) の中の</p><p>$\frac{d}{dp} \mathcal{T}_{\mathbf{S} \leftarrow \mathbf{R}} (p) \Bigm|p=p_k$</p><p>$\frac{d}{dp} \mathcal{T}_{\mathbf{D} \leftarrow \mathbf{R}} (p) \Bigm|p=p_k$</p><p>の2つの行列の相関を得ることができる。</p><h4 id=combining-local-motions>Combining Local Motions</h4><p>それぞれのkeypointについて変換をおこなうことで、
-K個のkeypointの近傍についてアラインされた、変換後の画像 $\mathbf{S}^1, \ldots, \mathbf{S}^K$を得ることができる。</p><p>また、$\mathbf{S}^0 = \mathbf{S}$ を背景として考慮する。</p><p>それぞれのkeypoointに対して、heatmap $\mathbf{H}_k$ を計算することができる。これはどの部分でそれぞれの変換が生じているかを表す特徴量である。</p><p>heatmap $\mathbf{H}_k(z)$ は $\mathbf{R} \rightarrow \mathbf{D}, \mathbf{R} \rightarrow \mathbf{S}$ のふたつの変換をもとに求められたふたつのheatmapの差として考えられる。</p><figure style='margin:0 auto;text-align:center'><a data-lightbox=image-images/Hk_z.png href=https://tsumli.github.io/blog/paper/fomm/images/Hk_z.png><img src=https://tsumli.github.io/blog/paper/fomm/images/Hk_z.png></a></figure><p>heatmapとK+1個の変換後 source imageｗｐconcatし、U-Netに入力する。
+そして、dense motionネットワークが動き (motion) の表現をつかって、以下の2つの特徴量を持ってくる</p>
+<ol>
+<li>dense optical flow: $\hat{\mathcal{T}}_{\mathbf{S} \leftarrow \mathbf{D}}$</li>
+<li>occlusion map: $\hat{\mathcal{O}}_{\mathbf{S} \leftarrow \mathbf{D}}$</li>
+</ol>
+<p>そして、最後にGeneration moduleに通して最終的な画像が生成される。</p>
+<h3 id="具体的な手法">具体的な手法<a class="anchor" href="#具体的な手法">#</a></h3>
+<p>この手法は主に2つのモジュール: Motion estimation module と image generation module からなる</p>
+<p>motion estimation module の役割は、driving videoから取ってきたフレーム $\mathbf{D} \in \mathbb{R}^{3\times H \times W}$ から source image $\mathbf{S}\in \mathbb{R}^{3\times H \times W}$ への
+dense motion field を予測することである。</p>
+<p>この motion field は $\mathcal{T}_{\mathbf{S} \leftarrow \mathbf{D}}: \mathbb{R}^2 \leftarrow \mathbb{R}^2$ と定式化される。これを一般的に backward optical flow という。</p>
+<p>ここで、抽象的なreference image $\mathbf{R}$ を仮定する。その仮定、
+reference image $\rightarrow$ source image と reference image $\rightarrow$ driving image の変換を独立に予測することで、$\mathbf{D}$ と $\mathbf{S}$ に対して独立に処理することができる。</p>
+<p>keypointの
+だけの場合と比べて、局所的なアフィン変換によって多くの種類の変換を扱うことができる。</p>
+<p>テイラー展開を用いて、keypointの位置とアフィン変換のセットで $\mathcal{T}_{\mathbf{D} \leftarrow \mathbf{R}}$ を表す。そのため、keypoint detector networkではkeypointの位置とそれぞれのアフィン変換 (のパラメータ) を抽出する。</p>
+<p>そして、dense motion network ではmotion fieldに加えて、
+occlusion mask: $\hat{\mathcal{O}}_{\mathbf{S} \leftarrow \mathbf{D}}$ も抽出する。この特徴量は、$\mathbf{D}$ のどの部分が補完 (inpaint) されるべきかをあらわしている。</p>
+<p>最後に、image generation moduleで source objectに動きを与える (occlusionで指定された部分をinpaintする) 。</p>
+<h3 id="local-affine-transformations-for-approximation">Local Affine Transformations for Approximation<a class="anchor" href="#local-affine-transformations-for-approximation">#</a></h3>
+<p>参照画像 $\mathbf{R}$ から与えられた画像 $\mathbf{X}$ への変換: $\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}$ を得る方法について</p>
+<p>変換 $\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}$ が与えられた時、K個のkeypoint: $p_1, \ldots, p_K$ それぞれについて一次のテイラー展開を考えることができる。
+
+
+
+
+
+<figure
+  
+  
+  
+  style='margin:0 auto;text-align:center;'
+  >
+    <a 
+      
+        data-lightbox="image-images/tx_r.png"
+      
+      
+        href="http://localhost:1313/blog/paper/fomm/images/tx_r.png"
+      
+    
+    >
+  <img
+      
+        src="http://localhost:1313/blog/paper/fomm/images/tx_r.png"
+      
+        
+        
+         />
+    </a>
+  
+  
+</figure>
+
+
+
+</p>
+<p>ここで、$p_\cdot$ は参照画像 $\mathbf{R}$ の中のkeypointの座標を表す (ここで、$\mathbf{X}, \mathbf{S}, \mathbf{D}$ 内の座標は $z$ と表すこととする)。</p>
+<p>以下の定式化では $\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}$ はそれぞれのkeypoint $p_k$ 値とその Jacobian で表すことができる。
+
+
+
+
+
+<figure
+  
+  
+  
+  style='margin:0 auto;text-align:center;'
+  >
+    <a 
+      
+        data-lightbox="image-images/tx_r_sim.png"
+      
+      
+        href="http://localhost:1313/blog/paper/fomm/images/tx_r_sim.png"
+      
+    
+    >
+  <img
+      
+        src="http://localhost:1313/blog/paper/fomm/images/tx_r_sim.png"
+      
+        
+        
+         />
+    </a>
+  
+  
+</figure>
+
+
+
+</p>
+<!-- $$
+\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}} (p) \sim
+\bigl\{ \lbrace
+\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}} (p_1), \frac{d}{dp} \mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}} (p) \bigm|_{p=p_1} \rbrace, \ldots,  
+\lbrace
+\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}} (p_k), \frac{d}{dp} \mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}} (p) \bigm|_{p=p_K} \rbrace
+\bigr\} 
+$$ -->
+<hr>
+<p>さらに、$\mathcal{T}_{\mathbf{R} \leftarrow \mathbf{X}}$ ($\mathbf{X}$ から $\mathbf{R}$ への変換の逆変換) を求めるために、</p>
+<p>$\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}$がkeypointの近傍に対し局所的に全単射であることを仮定している。</p>
+<p>$\mathbf{D}$ のなかのkeypoint $z_k$ の近くの変換 $\mathcal{T}_{\mathbf{S} \leftarrow \mathbf{D}}$ を予測するために</p>
+<p>まず、$z_k$ の近くの変換 $\mathcal{T}_{\mathbf{R} \leftarrow \mathbf{D}}$ を予測する。</p>
+<p>ここで、$p_k = \mathcal{T}_{\mathbf{S} \leftarrow \mathbf{D}}$ が成立する。</p>
+<p>このように考えると、最終的に $\mathcal{T}_{\mathbf{S} \leftarrow \mathbf{D}}$ は次のように得られる。
+<br>
+<br>
+
+
+
+
+
+<figure
+  
+  
+  
+  style='margin:0 auto;text-align:center;'
+  >
+    <a 
+      
+        data-lightbox="image-images/ts_d.png"
+      
+      
+        href="http://localhost:1313/blog/paper/fomm/images/ts_d.png"
+      
+    
+    >
+  <img
+      
+        src="http://localhost:1313/blog/paper/fomm/images/ts_d.png"
+      
+        
+        
+         />
+    </a>
+  
+  
+</figure>
+
+
+
+</p>
+<!-- $$
+\mathcal{T}_{\mathbf{S} \leftarrow \mathbf{D}} = \mathcal{T}_{\mathbf{S} \leftarrow \mathbf{R}}
+\circ \mathcal{T}_{\mathbf{R} \leftarrow \mathbf{D}} = \mathcal{T}_{\mathbf{S} \leftarrow \mathbf{R}} \circ
+\mathcal{T}^{-1}_{\mathbf{D} \leftarrow \mathbf{R}}
+$$ -->
+<p>これは、テイラー展開を使うことで次のように変形できる
+<br>
+<br>
+
+
+
+
+
+<figure
+  
+  
+  
+  style='margin:0 auto;text-align:center;'
+  >
+    <a 
+      
+        data-lightbox="image-images/ts_d_sim.png"
+      
+      
+        href="http://localhost:1313/blog/paper/fomm/images/ts_d_sim.png"
+      
+    
+    >
+  <img
+      
+        src="http://localhost:1313/blog/paper/fomm/images/ts_d_sim.png"
+      
+        
+        
+         />
+    </a>
+  
+  
+</figure>
+
+
+
+</p>
+<!-- $$
+\mathcal{T}_{\mathbf{S} \leftarrow \mathbf{D}} (z) \sim \mathcal{T}_{\mathbf{S} \leftarrow \mathbf{R}} (p_k)
++ J_k (z - \mathcal{T}_{\mathbf{D} \leftarrow \mathbf{R}}(p_k))
+$$ -->
+<p>ここで、Jacobian $J_k$ は次のように表される</p>
+
+
+
+
+
+<figure
+  
+  
+  
+  style='margin:0 auto;text-align:center;'
+  >
+    <a 
+      
+        data-lightbox="image-images/J_k.png"
+      
+      
+        href="http://localhost:1313/blog/paper/fomm/images/J_k.png"
+      
+    
+    >
+  <img
+      
+        src="http://localhost:1313/blog/paper/fomm/images/J_k.png"
+      
+        
+        
+         />
+    </a>
+  
+  
+</figure>
+
+
+
+
+<!-- $$
+J_k = \left(\frac{d}{dp} \mathcal{T}_{\mathbf{S} \leftarrow \mathbf{R}} (p) \Bigm|p=p_k\right)
+\left(\frac{d}{dp} \mathcal{T}_{\mathbf{D} \leftarrow \mathbf{R}} (p) \Bigm|p=p_k\right)^{-1}
+$$ -->
+<p>source, driving imageに対してkeypoint predictorは4つchannelを多く出力する。
+これらの特徴用を用いて、対応するkeypointのconfidence mapを重みとした重み付き平均を計算することによって上の式 ($J_k$) の中の</p>
+<p>$\frac{d}{dp} \mathcal{T}_{\mathbf{S} \leftarrow \mathbf{R}} (p) \Bigm|p=p_k$</p>
+<p>$\frac{d}{dp} \mathcal{T}_{\mathbf{D} \leftarrow \mathbf{R}} (p) \Bigm|p=p_k$</p>
+<p>の2つの行列の相関を得ることができる。</p>
+<h4 id="combining-local-motions">Combining Local Motions</h4>
+<p>それぞれのkeypointについて変換をおこなうことで、
+K個のkeypointの近傍についてアラインされた、変換後の画像 $\mathbf{S}^1, \ldots, \mathbf{S}^K$を得ることができる。</p>
+<p>また、$\mathbf{S}^0 = \mathbf{S}$ を背景として考慮する。</p>
+<p>それぞれのkeypoointに対して、heatmap $\mathbf{H}_k$ を計算することができる。これはどの部分でそれぞれの変換が生じているかを表す特徴量である。</p>
+<p>heatmap $\mathbf{H}_k(z)$ は $\mathbf{R} \rightarrow \mathbf{D}, \mathbf{R} \rightarrow \mathbf{S}$ のふたつの変換をもとに求められたふたつのheatmapの差として考えられる。</p>
+
+
+
+
+
+<figure
+  
+  
+  
+  style='margin:0 auto;text-align:center;'
+  >
+    <a 
+      
+        data-lightbox="image-images/Hk_z.png"
+      
+      
+        href="http://localhost:1313/blog/paper/fomm/images/Hk_z.png"
+      
+    
+    >
+  <img
+      
+        src="http://localhost:1313/blog/paper/fomm/images/Hk_z.png"
+      
+        
+        
+         />
+    </a>
+  
+  
+</figure>
+
+
+
+
+<!-- $$
+\mathbf{H}_k(z) = \exp\left( \frac{\{\mathcal{T}_{\mathbf{D} \leftarrow \mathbf{R}}(p_k) - z\}^2}{\sigma}\right)
+- \exp\left( \frac{\{\mathcal{T}_{\mathbf{S} \leftarrow \mathbf{R}}(p_k) - z\}^2}{\sigma}\right)
+$$ -->
+<p>heatmapとK+1個の変換後 source imageｗｐconcatし、U-Netに入力する。
 K個の部分で物体が構成され、それぞれの部分が変換されて動くというように考え、
 K+1個のmaskを予測する。それぞれは
-最終的なdense motionは次のように導出される</p><figure style='margin:0 auto;text-align:center'><a data-lightbox=image-images/hat_Ts_d.png href=https://tsumli.github.io/blog/paper/fomm/images/hat_Ts_d.png><img src=https://tsumli.github.io/blog/paper/fomm/images/hat_Ts_d.png></a></figure><p>ここで、$M_0z$ は「背景」のような動かない部分として解釈できる。</p><h3 id=occlusion-aware-image-generation>Occlusion-aware Image Generation<a class=anchor href=#occlusion-aware-image-generation>#</a></h3><p>特徴
+最終的なdense motionは次のように導出される</p>
+
+
+
+
+
+<figure
+  
+  
+  
+  style='margin:0 auto;text-align:center;'
+  >
+    <a 
+      
+        data-lightbox="image-images/hat_Ts_d.png"
+      
+      
+        href="http://localhost:1313/blog/paper/fomm/images/hat_Ts_d.png"
+      
+    
+    >
+  <img
+      
+        src="http://localhost:1313/blog/paper/fomm/images/hat_Ts_d.png"
+      
+        
+        
+         />
+    </a>
+  
+  
+</figure>
+
+
+
+
+<!-- $$
+\hat{\mathcal{T}}_{\mathbf{S} \leftarrow \mathbf{D}}(z) = 
+\mathbf{M}_0z +
+\sum^K_{k=1} \mathbf{M}_k
+\left(
+\mathcal{T}_{\mathbf{S} \leftarrow \mathbf{R}}(p_k) + J_k(z - \mathcal{T}_{\mathbf{D} \leftarrow \mathbf{R}}(p_k))
+\right)
+$$ -->
+<p>ここで、$M_0z$ は「背景」のような動かない部分として解釈できる。</p>
+<h3 id="occlusion-aware-image-generation">Occlusion-aware Image Generation<a class="anchor" href="#occlusion-aware-image-generation">#</a></h3>
+<p>特徴
 量マップ $\xi\in \mathbb{R}^{H&rsquo; \times W&rsquo;}$ 得て、これを
-$\hat{\mathcal{T}}_{\mathbf{S} \leftarrow \mathbf{D}}$ をもとにwarpさせる。</p><p>ここで、occlusion mask $\hat{O}_{\mathbf{S} \leftarrow \mathbf{D}} \in [0, 1]^{H&rsquo; \times W&rsquo;}$ でinpaintするべき場所を表す。
+$\hat{\mathcal{T}}_{\mathbf{S} \leftarrow \mathbf{D}}$ をもとにwarpさせる。</p>
+<p>ここで、occlusion mask $\hat{O}_{\mathbf{S} \leftarrow \mathbf{D}} \in [0, 1]^{H&rsquo; \times W&rsquo;}$ でinpaintするべき場所を表す。
 つまり、&ldquo;occluded&rdquo; された部分に対応した特徴量の影響を削減する効果をもつ。
-こうして変換された特徴量マップ $\xi&rsquo;$ は次のようにあらわされる</p><figure style='margin:0 auto;text-align:center'><a data-lightbox=image-images/xi.png href=https://tsumli.github.io/blog/paper/fomm/images/xi.png><img src=https://tsumli.github.io/blog/paper/fomm/images/xi.png></a></figure><p>ここで、$f_w (\cdot, \cdot)$ はback-warpingを表し、$\odot$ はアダマール積を表す。
-このocclusion maskは次の層に入力され、画像生成に使われる。</p><h3 id=training-loss>Training Loss<a class=anchor href=#training-loss>#</a></h3><h4 id=reconstruction-loss>reconstruction loss</h4><p>Perceptual Lossをベースにしたロスで事前学習済みのVGG-19ネットワークを用いる。
+こうして変換された特徴量マップ $\xi&rsquo;$ は次のようにあらわされる</p>
+
+
+
+
+
+<figure
+  
+  
+  
+  style='margin:0 auto;text-align:center;'
+  >
+    <a 
+      
+        data-lightbox="image-images/xi.png"
+      
+      
+        href="http://localhost:1313/blog/paper/fomm/images/xi.png"
+      
+    
+    >
+  <img
+      
+        src="http://localhost:1313/blog/paper/fomm/images/xi.png"
+      
+        
+        
+         />
+    </a>
+  
+  
+</figure>
+
+
+
+
+<!-- $$
+\xi' = \hat{\mathcal{O}}_{\mathbf{S}\leftarrow \mathbf{D}} \odot f_w(\xi, \hat{\mathcal{T}}_{\mathbf{S} \leftarrow \mathbf{D}})
+$$ -->
+<p>ここで、$f_w (\cdot, \cdot)$ はback-warpingを表し、$\odot$ はアダマール積を表す。
+このocclusion maskは次の層に入力され、画像生成に使われる。</p>
+<h3 id="training-loss">Training Loss<a class="anchor" href="#training-loss">#</a></h3>
+<h4 id="reconstruction-loss">reconstruction loss</h4>
+<p>Perceptual Lossをベースにしたロスで事前学習済みのVGG-19ネットワークを用いる。
 $$
 L_{rec}(\hat{\mathbf{D}}, \mathbf{D}) = \sum_{i=1}^I \left|N_i (\hat{\mathbf{D}}) - N_i (\mathbf{D}) \right|
 $$
 ここで、$N_i(\cdot)$ はVGG-19の特定の層の i-th channel を表す。また、$I$ はその層のchannel数を表している。
-これは、$\mathbf{D}, \hat{\mathbf{D}}$ をdown samplingさせることで複数のロスを取る。</p><h4 id=imposing-equivariance-constraint>Imposing Equivariance Constraint</h4><p>Equivariance loss に Jacobian の制約を加えて拡張する。
+これは、$\mathbf{D}, \hat{\mathbf{D}}$ をdown samplingさせることで複数のロスを取る。</p>
+<h4 id="imposing-equivariance-constraint">Imposing Equivariance Constraint</h4>
+<p>Equivariance loss に Jacobian の制約を加えて拡張する。
 この手法では、
 $\mathbf{Y}$ から $\mathbf{X}$ への変換に対して、参照画像 $\mathbf{R}$ を仮定して
 $\mathbf{R}$ から $\mathbf{X}$ への変換と $\mathbf{R}$ から $\mathbf{Y}$ への変換を導出した。
-このことを用いて、次のequivariance constraintが成り立つ</p><figure style='margin:0 auto;text-align:center'><a data-lightbox=image-images/txrpng href=https://tsumli.github.io/blog/paper/fomm/images/txrpng><img src=https://tsumli.github.io/blog/paper/fomm/images/txrpng></a></figure><p>1次のテイラー展開を両辺に行うと、次のふたつの制約を得ることができる。<figure style='margin:0 auto;text-align:center'><a data-lightbox=image-images/txr_pk.png href=https://tsumli.github.io/blog/paper/fomm/images/txr_pk.png><img src=https://tsumli.github.io/blog/paper/fomm/images/txr_pk.png></a></figure></p><p><figure style='margin:0 auto;text-align:center'><a data-lightbox=image-images/txr_pk_taylor.png href=https://tsumli.github.io/blog/paper/fomm/images/txr_pk_taylor.png><img src=https://tsumli.github.io/blog/paper/fomm/images/txr_pk_taylor.png></a></figure>1つ目の式は標準的な keypoint に対する equivariance constraint (<a href=https://arxiv.org/abs/1806.07823 target=_blank rel="noreferrer noopener">Jakab et al. NeurIPS 2018</a>
-, <a href=https://arxiv.org/abs/1804.04412 target=_blank rel="noreferrer noopener">Zhang et al. CVPR 2018</a>
-と同じ設定のようです) であり、ロスとしてL1 lossが用いられている。</p><p>2つ目のこの制約は L1 loss で実装してしまうと、Jacobianの値を0に近づけてしまうという問題点がある。そのため、次のように式を書き換える。<figure style='margin:0 auto;text-align:center'><a data-lightbox=image-images/1_inv.png href=https://tsumli.github.io/blog/paper/fomm/images/1_inv.png><img src=https://tsumli.github.io/blog/paper/fomm/images/1_inv.png></a></figure>上式で $\mathbf{1}$ は2x2の単位行列。L1 loss はkeypointの場所に対する制約と似たように働く。</p><p>予備実験によると、reconstruction lossとeqivariance lossの間の相対的な重みにそこまで敏感でない (あまり重要なパラメータではない) ため、すべての実験で同じ重みを採用している。</p><h2 id=dataset>Dataset<a class=anchor href=#dataset>#</a></h2><ul><li><a href=https://www.robots.ox.ac.uk/~vgg/data/voxceleb/ target=_blank rel="noreferrer noopener">VoxCeleb</a></li><li><a href=http://www.uva-nemo.org/index.html target=_blank rel="noreferrer noopener">UvA-Nemo</a></li><li><a href=https://www.tensorflow.org/datasets/catalog/bair_robot_pushing_small target=_blank rel="noreferrer noopener">BAIR robot pushing dataset</a></li><li>Tai-chi-HD</li></ul><h2 id=result>Result<a class=anchor href=#result>#</a></h2><p><figure style='margin:0 auto;text-align:center'><a data-lightbox=image-images/result-table.png href=https://tsumli.github.io/blog/paper/fomm/images/result-table.png><img src=https://tsumli.github.io/blog/paper/fomm/images/result-table.png></a></figure>reconstructionした結果を
+このことを用いて、次のequivariance constraintが成り立つ</p>
+
+
+
+
+
+<figure
+  
+  
+  
+  style='margin:0 auto;text-align:center;'
+  >
+    <a 
+      
+        data-lightbox="image-images/txrpng"
+      
+      
+        href="http://localhost:1313/blog/paper/fomm/images/txrpng"
+      
+    
+    >
+  <img
+      
+        src="http://localhost:1313/blog/paper/fomm/images/txrpng"
+      
+        
+        
+         />
+    </a>
+  
+  
+</figure>
+
+
+
+
+<p>1次のテイラー展開を両辺に行うと、次のふたつの制約を得ることができる。
+
+
+
+
+
+<figure
+  
+  
+  
+  style='margin:0 auto;text-align:center;'
+  >
+    <a 
+      
+        data-lightbox="image-images/txr_pk.png"
+      
+      
+        href="http://localhost:1313/blog/paper/fomm/images/txr_pk.png"
+      
+    
+    >
+  <img
+      
+        src="http://localhost:1313/blog/paper/fomm/images/txr_pk.png"
+      
+        
+        
+         />
+    </a>
+  
+  
+</figure>
+
+
+
+</p>
+<p>
+
+
+
+
+<figure
+  
+  
+  
+  style='margin:0 auto;text-align:center;'
+  >
+    <a 
+      
+        data-lightbox="image-images/txr_pk_taylor.png"
+      
+      
+        href="http://localhost:1313/blog/paper/fomm/images/txr_pk_taylor.png"
+      
+    
+    >
+  <img
+      
+        src="http://localhost:1313/blog/paper/fomm/images/txr_pk_taylor.png"
+      
+        
+        
+         />
+    </a>
+  
+  
+</figure>
+
+
+
+
+1つ目の式は標準的な keypoint に対する equivariance constraint (<a href="https://arxiv.org/abs/1806.07823" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>Jakab et al. NeurIPS 2018</a>
+, <a href="https://arxiv.org/abs/1804.04412" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>Zhang et al. CVPR 2018</a>
+ と同じ設定のようです) であり、ロスとしてL1 lossが用いられている。</p>
+<p>2つ目のこの制約は L1 loss で実装してしまうと、Jacobianの値を0に近づけてしまうという問題点がある。そのため、次のように式を書き換える。
+
+
+
+
+
+<figure
+  
+  
+  
+  style='margin:0 auto;text-align:center;'
+  >
+    <a 
+      
+        data-lightbox="image-images/1_inv.png"
+      
+      
+        href="http://localhost:1313/blog/paper/fomm/images/1_inv.png"
+      
+    
+    >
+  <img
+      
+        src="http://localhost:1313/blog/paper/fomm/images/1_inv.png"
+      
+        
+        
+         />
+    </a>
+  
+  
+</figure>
+
+
+
+
+上式で $\mathbf{1}$ は2x2の単位行列。L1 loss はkeypointの場所に対する制約と似たように働く。</p>
+<p>予備実験によると、reconstruction lossとeqivariance lossの間の相対的な重みにそこまで敏感でない (あまり重要なパラメータではない) ため、すべての実験で同じ重みを採用している。</p>
+<h2 id="dataset">Dataset<a class="anchor" href="#dataset">#</a></h2>
+<ul>
+<li><a href="https://www.robots.ox.ac.uk/~vgg/data/voxceleb/" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>VoxCeleb</a>
+</li>
+<li><a href="http://www.uva-nemo.org/index.html" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>UvA-Nemo</a>
+</li>
+<li><a href="https://www.tensorflow.org/datasets/catalog/bair_robot_pushing_small" 
+  
+   target="_blank" rel="noreferrer noopener" 
+>BAIR robot pushing dataset</a>
+</li>
+<li>Tai-chi-HD</li>
+</ul>
+<h2 id="result">Result<a class="anchor" href="#result">#</a></h2>
+<p>
+
+
+
+
+<figure
+  
+  
+  
+  style='margin:0 auto;text-align:center;'
+  >
+    <a 
+      
+        data-lightbox="image-images/result-table.png"
+      
+      
+        href="http://localhost:1313/blog/paper/fomm/images/result-table.png"
+      
+    
+    >
+  <img
+      
+        src="http://localhost:1313/blog/paper/fomm/images/result-table.png"
+      
+        
+        
+         />
+    </a>
+  
+  
+</figure>
+
+
+
+
+reconstructionした結果を
 L1 Loss, Average Keypoint Distance (AKD), Missing Keypoint Rate (MKR), Average Euclidean Distance (AED) の4つの指標を用いて比較した結果を上図に示す。
 関連手法に比べ、一貫して良い結果を出していることがわかる。
-その他結果などは元論文で</p><h2 id=references>References<a class=anchor href=#references>#</a></h2><ul><li>official code
-<a href=https://github.com/AliaksandrSiarohin/first-order-model target=_blank rel="noreferrer noopener"><img src=https://gh-card.dev/repos/AliaksandrSiarohin/first-order-model.svg alt="AliaksandrSiarohin/first-order-model - GitHub"></a></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script><script type=text/x-mathjax-config>
+その他結果などは元論文で</p>
+<h2 id="references">References<a class="anchor" href="#references">#</a></h2>
+<ul>
+<li>official code
+<a href="https://github.com/AliaksandrSiarohin/first-order-model" 
+  
+   target="_blank" rel="noreferrer noopener" 
+><img src="https://gh-card.dev/repos/AliaksandrSiarohin/first-order-model.svg" alt="AliaksandrSiarohin/first-order-model - GitHub"></a>
+</li>
+</ul>
+
+
+              
+                  
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
+<script type="text/x-mathjax-config">
     MathJax.Hub.Config({
             showMathMenu: false, //disables context menu
             tex2jax: {
             inlineMath: [ ['$','$'], ['\\(','\\)'] ]
            }
     });
-</script></article><ul class=tags__list><li class=tag__item><a class=tag__link href=https://tsumli.github.io/tags/gan/>GAN</a></li><li class=tag__item><a class=tag__link href=https://tsumli.github.io/tags/paper/>paper</a></li></ul><div class=pagination><a class=pagination__item href=https://tsumli.github.io/blog/paper/video-swin-transformer/><span class=pagination__label>Previous Post</span>
-<span class=pagination__title>Video Swin Transformer を読む</span>
-</a><a class=pagination__item href=https://tsumli.github.io/blog/paper/deeplagrangianfluids/><span class=pagination__label>Next Post</span>
-<span class=pagination__title>Lagrangian Fluid Simulation With Continuous Convolutions を読む</span></a></div><footer class=post__footer><div class=social-icons><a class=social-icons__link rel=me title=Kaggle href=https://www.kaggle.com/tsumli target=_blank rel=noopener><div class=social-icons__icon style=background-image:url(https://tsumli.github.io/svg/kaggle.svg)></div></a><a class=social-icons__link rel=me title=GitHub href=https://github.com/tsumli target=_blank rel=noopener><div class=social-icons__icon style=background-image:url(https://tsumli.github.io/svg/github.svg)></div></a></div><p>© 2025</p><script src=https://code.jquery.com/jquery-3.4.1.min.js integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin=anonymous></script><link rel=stylesheet href=https://tsumli.github.io//css/lightbox.min.css><script src=https://tsumli.github.io//js/lightbox.min.js></script></footer></div></div><div class=toc-container><div class=toc-post-title>First Order Motion Model for Image Animation (FOMM) を読む</div><nav id=TableOfContents><ul><li><a href=#method>Method</a><ul><li><a href=#目的>目的</a></li><li><a href=#概観>概観</a></li><li><a href=#具体的な手法>具体的な手法</a></li><li><a href=#local-affine-transformations-for-approximation>Local Affine Transformations for Approximation</a></li><li><a href=#occlusion-aware-image-generation>Occlusion-aware Image Generation</a></li><li><a href=#training-loss>Training Loss</a></li></ul></li><li><a href=#dataset>Dataset</a></li><li><a href=#result>Result</a></li><li><a href=#references>References</a></li></ul></nav></div></div></main><script src=https://tsumli.github.io/js/index.min.301a8b0870381bf76b3b5182e8966d363a0474281183439beb024d8b8228fc66.js integrity="sha256-MBqLCHA4G/drO1GC6JZtNjoEdCgRg0Ob6wJNi4Io/GY=" crossorigin=anonymous></script><script src=https://unpkg.com/prismjs@1.20.0/components/prism-core.min.js></script><script src=https://unpkg.com/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js data-autoloader-path=https://unpkg.com/prismjs@1.20.0/components/></script><script src=https://tsumli.github.io/js/table-of-contents.js></script></body></html>
+</script>
+              
+          </article>
+          
+
+<ul class="tags__list">
+    
+    <li class="tag__item">
+        <a class="tag__link" href="http://localhost:1313/tags/gan/">GAN</a>
+    </li>
+    <li class="tag__item">
+        <a class="tag__link" href="http://localhost:1313/tags/paper/">paper</a>
+    </li></ul>
+
+ <div class="pagination">
+  
+    <a class="pagination__item" href="http://localhost:1313/blog/paper/video-swin-transformer/">
+        <span class="pagination__label">Previous Post</span>
+        <span class="pagination__title">Video Swin Transformer を読む</span>
+    </a>
+  
+
+  
+    <a class="pagination__item" href="http://localhost:1313/blog/paper/deeplagrangianfluids/">
+      <span class="pagination__label">Next Post</span>
+      <span class="pagination__title" >Lagrangian Fluid Simulation With Continuous Convolutions を読む</span>
+    </a>
+  
+</div>
+
+          
+          <footer class="post__footer">
+            
+
+
+<div class="social-icons">
+  
+     
+    
+      <a class="social-icons__link" rel="me" title="Kaggle"
+         href="https://www.kaggle.com/tsumli"
+         target="_blank" rel="noopener">
+        <div class="social-icons__icon" style="background-image: url('http://localhost:1313/svg/kaggle.svg')"></div>
+      </a>
+    
+  
+     
+    
+      <a class="social-icons__link" rel="me" title="GitHub"
+         href="https://github.com/tsumli"
+         target="_blank" rel="noopener">
+        <div class="social-icons__icon" style="background-image: url('http://localhost:1313/svg/github.svg')"></div>
+      </a>
+    
+     
+</div>
+
+            <p>© 2025</p>
+            <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+            <link rel="stylesheet" href="http://localhost:1313//css/lightbox.min.css">
+            <script src="http://localhost:1313//js/lightbox.min.js"></script>
+          </footer>
+          </div>
+      </div>
+      
+      <div class="toc-container">
+           <div class="toc-post-title">First Order Motion Model for Image Animation (FOMM) を読む</div> 
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#method">Method</a>
+      <ul>
+        <li><a href="#目的">目的</a></li>
+        <li><a href="#概観">概観</a></li>
+        <li><a href="#具体的な手法">具体的な手法</a></li>
+        <li><a href="#local-affine-transformations-for-approximation">Local Affine Transformations for Approximation</a></li>
+        <li><a href="#occlusion-aware-image-generation">Occlusion-aware Image Generation</a></li>
+        <li><a href="#training-loss">Training Loss</a></li>
+      </ul>
+    </li>
+    <li><a href="#dataset">Dataset</a></li>
+    <li><a href="#result">Result</a></li>
+    <li><a href="#references">References</a></li>
+  </ul>
+</nav>
+      </div>
+      
+    </div>
+    
+
+  </main>
+
+   
+
+  
+  <script src="http://localhost:1313/js/index.min.301a8b0870381bf76b3b5182e8966d363a0474281183439beb024d8b8228fc66.js" integrity="sha256-MBqLCHA4G/drO1GC6JZtNjoEdCgRg0Ob6wJNi4Io/GY=" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://unpkg.com/prismjs@1.20.0/components/prism-core.min.js"></script>
+
+  
+  <script src="https://unpkg.com/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"
+    data-autoloader-path="https://unpkg.com/prismjs@1.20.0/components/"></script>
+
+  
+    <script src="http://localhost:1313/js/table-of-contents.js"></script>
+  
+
+
+</body>
+
+</html>

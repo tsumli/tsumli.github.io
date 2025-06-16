@@ -1,8 +1,20 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Transfer-Learning on tsumli-pages</title><link>https://tsumli.github.io/tags/transfer-learning/</link><description>Recent content in Transfer-Learning on tsumli-pages</description><generator>Hugo</generator><language>ja</language><copyright>© {year}</copyright><lastBuildDate>Mon, 01 Feb 2021 13:55:54 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/transfer-learning/index.xml" rel="self" type="application/rss+xml"/><item><title>Taskonomyを読む</title><link>https://tsumli.github.io/blog/paper/taskonomy/</link><pubDate>Mon, 01 Feb 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/taskonomy/</guid><description>&lt;p>&lt;a href="https://arxiv.org/abs/1804.08328" 
- 
- target="_blank" rel="noreferrer noopener" 
->&lt;strong>Taskonomy: Disentangling Task Transfer Learning&lt;/strong>&lt;/a>
-という論文を読んでいきます。
-この論文はCVPR 2018のBestPaperを受賞しています (本文中の図は論文より引用) 。&lt;/p>
-&lt;h2 id="motivation">Motivation&lt;/h2>
-&lt;p>タスク間の転移学習しやすさが分かれば、アノテーションの足りないデータを扱う、または性能を向上させたいときにどのタスクで事前学習を行うべきかが分かる。&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Transfer-Learning on tsumli-pages</title>
+    <link>http://localhost:1313/tags/transfer-learning/</link>
+    <description>Recent content in Transfer-Learning on tsumli-pages</description>
+    <generator>Hugo</generator>
+    <language>ja</language>
+    <copyright>© {year}</copyright>
+    <lastBuildDate>Mon, 01 Feb 2021 13:55:54 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/transfer-learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Taskonomyを読む</title>
+      <link>http://localhost:1313/blog/paper/taskonomy/</link>
+      <pubDate>Mon, 01 Feb 2021 13:55:54 +0000</pubDate>
+      <guid>http://localhost:1313/blog/paper/taskonomy/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://arxiv.org/abs/1804.08328&#34; &#xA;  &#xA;   target=&#34;_blank&#34; rel=&#34;noreferrer noopener&#34; &#xA;&gt;&lt;strong&gt;Taskonomy: Disentangling Task Transfer Learning&lt;/strong&gt;&lt;/a&gt;&#xA;という論文を読んでいきます。&#xA;この論文はCVPR 2018のBestPaperを受賞しています (本文中の図は論文より引用) 。&lt;/p&gt;&#xA;&lt;h2 id=&#34;motivation&#34;&gt;Motivation&lt;/h2&gt;&#xA;&lt;p&gt;タスク間の転移学習しやすさが分かれば、アノテーションの足りないデータを扱う、または性能を向上させたいときにどのタスクで事前学習を行うべきかが分かる。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

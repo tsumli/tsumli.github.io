@@ -1,67 +1,48 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Optimal-Transport on tsumli-pages</title><link>https://tsumli.github.io/tags/optimal-transport/</link><description>Recent content in Optimal-Transport on tsumli-pages</description><generator>Hugo</generator><language>ja</language><copyright>© {year}</copyright><lastBuildDate>Thu, 11 Mar 2021 13:55:54 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/optimal-transport/index.xml" rel="self" type="application/rss+xml"/><item><title>Optimal Transport 03. Unbalanced Optimal Transport</title><link>https://tsumli.github.io/blog/optimal-transport/03-unbalanced/</link><pubDate>Thu, 11 Mar 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/optimal-transport/03-unbalanced/</guid><description>&lt;p>&lt;a href="https://tsumli.github.io/blog/optimal-transport/01-introduction/" 
- 
- 
->01. はじめ&lt;/a>
-&lt;br>
-&lt;a href="https://tsumli.github.io/blog/optimal-transport/02-entropy/" 
- 
- 
->02. エントロピー正則化&lt;/a>
-&lt;br>
-&lt;a href="https://tsumli.github.io/blog/optimal-transport/03-unbalanced/" 
- 
- 
->03. Unbalanced Optimal Transport&lt;/a>
-&lt;br>
-Optimal Transportの拡張系である&lt;strong>Unbalanced Optimal Transport&lt;/strong>について紹介します．&lt;/p>
-&lt;h2 id="unbalanced-optimal-transport-unbalanced-ot">Unbalanced Optimal Transport (Unbalanced OT)&lt;/h2>
-&lt;p>まず，式を見ていきましょう．
-$$
-L_\mathbf{C}^\tau (\mathbf{a}, \mathbf{b}) = \min_{\mathbf{P}\in\mathbb{R}&lt;em>+^{n\times m}} \langle \mathbf{C}, \mathbf{P} \rangle
-+\tau_1\mathbf{D}&lt;/em>\varphi(\mathbf{P}\mathbb{1}&lt;em>m|\mathbf{a}) +
-\tau_2\mathbf{D}&lt;/em>\varphi(\mathbf{P}^\mathsf{T}\mathbb{1}&lt;em>n|\mathbf{b})
-$$
-第1項は通常のoptimal transportでの最小化目標です．そして，この第2, 3項が追加されたものとなります．$\mathbf{D}&lt;/em>\varphi(\cdot|\cdot)$ はズレを表す関数で，例えば，euclideanだったりKL距離だったりが考えられます．そして，$\tau_1, \tau_2$はそれらのズレに対するペナルティの大きさを表しています．つまり，$\tau_1 = \tau_2 \rightarrow +\infty$のときズレを許さない，つまり，&amp;ldquo;balanced&amp;quot;な (通常の) optimal transportとなります．また，$\mathbf{D}_\varphi = \mathbf{KL}$ で，$\tau_1 = \tau_2 \rightarrow 0$ のとき，Hellinger距離と呼ばれる距離となります．
-$$
-\mathrm{L}(\mathbf{a}, \mathbf{b}) = \sum_i(\sqrt{\mathbf{a}_i} - \sqrt{\mathbf{b}_i})^2
-$$&lt;/p></description></item><item><title>Optimal Transport 02. エントロピー正則化</title><link>https://tsumli.github.io/blog/optimal-transport/02-entropy/</link><pubDate>Sat, 13 Feb 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/optimal-transport/02-entropy/</guid><description>&lt;p>&lt;a href="https://tsumli.github.io/blog/optimal-transport/01-introduction/" 
- 
- 
->01. はじめ&lt;/a>
-&lt;br>
-&lt;a href="https://tsumli.github.io/blog/optimal-transport/02-entropy/" 
- 
- 
->02. エントロピー正則化&lt;/a>
-&lt;br>
-&lt;a href="https://tsumli.github.io/blog/optimal-transport/03-unbalanced/" 
- 
- 
->03. Unbalanced Optimal Transport&lt;/a>
-&lt;/p>
-&lt;p>Cuturi&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup> の論文をもとに、Optimal Transportのエントロピー正則化について考えていきましょう 。&lt;/p>
-&lt;h2 id="計算量">計算量&lt;/h2>
-&lt;p>$r$ から $c$ へのOptimal Transportは次のようになります
-$$
-\large
-d_\mathbf{M}(r, c) \triangleq \min_{\mathbf{P}\in\mathbf{U}(r, c)} \langle \mathbf{P}, \mathbf{M} \rangle
-$$
-ここで、$\mathbf{M} \in \mathbb{R}^{d\times d}$ はcost matrixです&lt;br>
-計算量について考えると、どのような行列$\mathbf{M}$に対しても最悪のケースで $O(d^3 \log d)$となります。&lt;/p></description></item><item><title>Optimal Transport 01. はじめ</title><link>https://tsumli.github.io/blog/optimal-transport/01-introduction/</link><pubDate>Tue, 02 Feb 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/optimal-transport/01-introduction/</guid><description>&lt;p>&lt;a href="https://tsumli.github.io/blog/optimal-transport/01-introduction/" 
- 
- 
->01. はじめ&lt;/a>
-&lt;br>
-&lt;a href="https://tsumli.github.io/blog/optimal-transport/02-entropy/" 
- 
- 
->02. エントロピー正則化&lt;/a>
-&lt;br>
-&lt;a href="https://tsumli.github.io/blog/optimal-transport/03-unbalanced/" 
- 
- 
->03. Unbalanced Optimal Transport&lt;/a>
-&lt;/p>
-&lt;h2 id="optimal-transport-とは">Optimal Transport とは&lt;/h2>
-&lt;p>&lt;strong>Optimal Transport&lt;/strong>は、日本語で&lt;strong>最適輸送&lt;/strong> (問題) と訳されます。
-和訳が表しているように、ある物体をある地点から別の地点に移したときの最小コスト、そしてその輸送方法を求めるという問題です。そこから、確率分布の比較に使われるようになりました。&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Optimal-Transport on tsumli-pages</title>
+    <link>http://localhost:1313/tags/optimal-transport/</link>
+    <description>Recent content in Optimal-Transport on tsumli-pages</description>
+    <generator>Hugo</generator>
+    <language>ja</language>
+    <copyright>© {year}</copyright>
+    <lastBuildDate>Wed, 14 Apr 2021 13:55:54 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/optimal-transport/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Optimal Transport 99. pythonライブラリ</title>
+      <link>http://localhost:1313/blog/optimal-transport/03-library/</link>
+      <pubDate>Wed, 14 Apr 2021 13:55:54 +0000</pubDate>
+      <guid>http://localhost:1313/blog/optimal-transport/03-library/</guid>
+      <description>&lt;h2 id=&#34;ライブラリ&#34;&gt;ライブラリ&lt;/h2&gt;&#xA;&lt;p&gt;効率的に最適輸送問題を解くことのできるライブラリが開発されています。&#xA;今回はその中でも &lt;strong&gt;POT&lt;/strong&gt; (python optimal transport) と &lt;strong&gt;GeomLoss&lt;/strong&gt; について紹介したいと思います。&lt;/p&gt;&#xA;&lt;h3 id=&#34;pot&#34;&gt;POT&lt;/h3&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://pythonot.github.io/&#34; &#xA;  &#xA;   target=&#34;_blank&#34; rel=&#34;noreferrer noopener&#34; &#xA;&gt;website&lt;/a&gt;&#xA;&lt;br&gt;&#xA;&lt;a href=&#34;https://github.com/PythonOT/POT&#34; &#xA;  &#xA;   target=&#34;_blank&#34; rel=&#34;noreferrer noopener&#34; &#xA;&gt;github&lt;/a&gt;&#xA;&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;$ pip install POT&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;p&gt;installにはcythonが必要なようです。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Optimal Transport 04. Gromov Wasserstein Distance</title>
+      <link>http://localhost:1313/blog/optimal-transport/04-gromov/</link>
+      <pubDate>Fri, 12 Mar 2021 13:55:54 +0000</pubDate>
+      <guid>http://localhost:1313/blog/optimal-transport/04-gromov/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://localhost:1313/blog/optimal-transport/01-introduction/&#34; &#xA;  &#xA;  &#xA;&gt;01. はじめ&lt;/a&gt;&#xA;&lt;br&gt;&#xA;&lt;a href=&#34;http://localhost:1313/blog/optimal-transport/02-entropy/&#34; &#xA;  &#xA;  &#xA;&gt;02. エントロピー正則化&lt;/a&gt;&#xA;&lt;br&gt;&#xA;&lt;a href=&#34;http://localhost:1313/blog/optimal-transport/03-unbalanced/&#34; &#xA;  &#xA;  &#xA;&gt;03. Unbalanced Optimal Transport&lt;/a&gt;&#xA;&lt;br&gt;&#xA;&lt;a href=&#34;http://localhost:1313/blog/optimal-transport/04-gromov/&#34; &#xA;  &#xA;  &#xA;&gt;04. Gromov Wasserstein Distance&lt;/a&gt;&#xA;&lt;/p&gt;&#xA;&lt;h2 id=&#34;gromov-wasserstein-distance&#34;&gt;Gromov Wasserstein Distance&lt;/h2&gt;&#xA;&lt;p&gt;普通のOptimal Transportは，例えば集合 $A$ と集合 $B$ があったとして，データポイント間の距離（コスト）をもとに最終的な距離 (Wasserstein Distance) が計算できました．それとは異なり，Gromov Wasserstein Distance (GW) は，その集合の中のデータポイント間の距離をもとにして比較します．&#xA;つまり，異なる距離空間をもつ集合の間の距離を計算したいときに，その間の距離を定義することなく実行できるというメリットがあります．&#xA;比較したい２つの集合の，その集合の中での距離行列をそれぞれ $\mathbf{D} \in \mathbb{R}^{n\times n}, \mathbf{D}&amp;rsquo; \in \mathbb{R}^{m\times m}$&#xA;とすると，GWは次のように定義されます．&#xA;$$&#xA;\mathrm{GW} ((\mathbf{a}, \mathbf{D}), (\mathbf{b}, \mathbf{D}&amp;rsquo;))^2\triangleq&#xA;\min_{\mathbf{P}\in\mathbf{U}(\mathbf{a}, \mathbf{b})} {\LARGE \varepsilon}&lt;em&gt;{\mathbf{D}, \mathbf{D}&amp;rsquo;}(\mathbf{P})&#xA;$$&#xA;ここで，&#xA;$$&#xA;{\LARGE \varepsilon}&lt;/em&gt;{\mathbf{D}, \mathbf{D}&amp;rsquo;}(\mathbf{P}) \triangleq \sum_{i, j, i&amp;rsquo;, j&amp;rsquo;} |\mathbf{D}&lt;em&gt;{i, i&amp;rsquo;} - \mathbf{D}&lt;/em&gt;{i&amp;rsquo;, j&amp;rsquo;}|^2 \mathbf{P}&lt;em&gt;{i, i&amp;rsquo;} \mathbf{P}&lt;/em&gt;{j, j&amp;rsquo;}&#xA;$$&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Optimal Transport 03. Unbalanced Optimal Transport</title>
+      <link>http://localhost:1313/blog/optimal-transport/03-unbalanced/</link>
+      <pubDate>Thu, 11 Mar 2021 13:55:54 +0000</pubDate>
+      <guid>http://localhost:1313/blog/optimal-transport/03-unbalanced/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://localhost:1313/blog/optimal-transport/01-introduction/&#34; &#xA;  &#xA;  &#xA;&gt;01. はじめ&lt;/a&gt;&#xA;&lt;br&gt;&#xA;&lt;a href=&#34;http://localhost:1313/blog/optimal-transport/02-entropy/&#34; &#xA;  &#xA;  &#xA;&gt;02. エントロピー正則化&lt;/a&gt;&#xA;&lt;br&gt;&#xA;&lt;a href=&#34;http://localhost:1313/blog/optimal-transport/03-unbalanced/&#34; &#xA;  &#xA;  &#xA;&gt;03. Unbalanced Optimal Transport&lt;/a&gt;&#xA;&lt;br&gt;&#xA;Optimal Transportの拡張系である&lt;strong&gt;Unbalanced Optimal Transport&lt;/strong&gt;について紹介します．&lt;/p&gt;&#xA;&lt;h2 id=&#34;unbalanced-optimal-transport-unbalanced-ot&#34;&gt;Unbalanced Optimal Transport (Unbalanced OT)&lt;/h2&gt;&#xA;&lt;p&gt;まず，式を見ていきましょう．&#xA;$$&#xA;L_\mathbf{C}^\tau (\mathbf{a}, \mathbf{b}) = \min_{\mathbf{P}\in\mathbb{R}&lt;em&gt;+^{n\times m}} \langle \mathbf{C}, \mathbf{P} \rangle&#xA;+\tau_1\mathbf{D}&lt;/em&gt;\varphi(\mathbf{P}\mathbb{1}&lt;em&gt;m|\mathbf{a}) +&#xA;\tau_2\mathbf{D}&lt;/em&gt;\varphi(\mathbf{P}^\mathsf{T}\mathbb{1}&lt;em&gt;n|\mathbf{b})&#xA;$$&#xA;第1項は通常のoptimal transportでの最小化目標です．そして，この第2, 3項が追加されたものとなります．$\mathbf{D}&lt;/em&gt;\varphi(\cdot|\cdot)$ はズレを表す関数で，例えば，euclideanだったりKL距離だったりが考えられます．そして，$\tau_1, \tau_2$はそれらのズレに対するペナルティの大きさを表しています．つまり，$\tau_1 = \tau_2 \rightarrow +\infty$のときズレを許さない，つまり，&amp;ldquo;balanced&amp;quot;な (通常の) optimal transportとなります．また，$\mathbf{D}_\varphi = \mathbf{KL}$ で，$\tau_1 = \tau_2 \rightarrow 0$ のとき，Hellinger距離と呼ばれる距離となります．&#xA;$$&#xA;\mathrm{L}(\mathbf{a}, \mathbf{b}) = \sum_i(\sqrt{\mathbf{a}_i} - \sqrt{\mathbf{b}_i})^2&#xA;$$&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Optimal Transport 02. エントロピー正則化</title>
+      <link>http://localhost:1313/blog/optimal-transport/02-entropy/</link>
+      <pubDate>Sat, 13 Feb 2021 13:55:54 +0000</pubDate>
+      <guid>http://localhost:1313/blog/optimal-transport/02-entropy/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://localhost:1313/blog/optimal-transport/01-introduction/&#34; &#xA;  &#xA;  &#xA;&gt;01. はじめ&lt;/a&gt;&#xA;&lt;br&gt;&#xA;&lt;a href=&#34;http://localhost:1313/blog/optimal-transport/02-entropy/&#34; &#xA;  &#xA;  &#xA;&gt;02. エントロピー正則化&lt;/a&gt;&#xA;&lt;br&gt;&#xA;&lt;a href=&#34;http://localhost:1313/blog/optimal-transport/03-unbalanced/&#34; &#xA;  &#xA;  &#xA;&gt;03. Unbalanced Optimal Transport&lt;/a&gt;&#xA;&lt;/p&gt;&#xA;&lt;p&gt;Cuturi&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; の論文をもとに、Optimal Transportのエントロピー正則化について考えていきましょう 。&lt;/p&gt;&#xA;&lt;h2 id=&#34;計算量&#34;&gt;計算量&lt;/h2&gt;&#xA;&lt;p&gt;$r$ から $c$ へのOptimal Transportは次のようになります&#xA;$$&#xA;\large&#xA;d_\mathbf{M}(r, c) \triangleq \min_{\mathbf{P}\in\mathbf{U}(r, c)} \langle \mathbf{P}, \mathbf{M} \rangle&#xA;$$&#xA;ここで、$\mathbf{M} \in \mathbb{R}^{d\times d}$ はcost matrixです&lt;br&gt;&#xA;計算量について考えると、どのような行列$\mathbf{M}$に対しても最悪のケースで $O(d^3 \log d)$となります。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Optimal Transport 01. はじめ</title>
+      <link>http://localhost:1313/blog/optimal-transport/01-introduction/</link>
+      <pubDate>Tue, 02 Feb 2021 13:55:54 +0000</pubDate>
+      <guid>http://localhost:1313/blog/optimal-transport/01-introduction/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://localhost:1313/blog/optimal-transport/01-introduction/&#34; &#xA;  &#xA;  &#xA;&gt;01. はじめ&lt;/a&gt;&#xA;&lt;br&gt;&#xA;&lt;a href=&#34;http://localhost:1313/blog/optimal-transport/02-entropy/&#34; &#xA;  &#xA;  &#xA;&gt;02. エントロピー正則化&lt;/a&gt;&#xA;&lt;br&gt;&#xA;&lt;a href=&#34;http://localhost:1313/blog/optimal-transport/03-unbalanced/&#34; &#xA;  &#xA;  &#xA;&gt;03. Unbalanced Optimal Transport&lt;/a&gt;&#xA;&lt;/p&gt;&#xA;&lt;h2 id=&#34;optimal-transport-とは&#34;&gt;Optimal Transport とは&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;Optimal Transport&lt;/strong&gt;は、日本語で&lt;strong&gt;最適輸送&lt;/strong&gt; (問題) と訳されます。&#xA;和訳が表しているように、ある物体をある地点から別の地点に移したときの最小コスト、そしてその輸送方法を求めるという問題です。そこから、確率分布の比較に使われるようになりました。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
