@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Cuda on tsumli pages</title><link>https://tsumli.github.io/tags/cuda/</link><description>Recent content in Cuda on tsumli pages</description><generator>Hugo</generator><language>en</language><lastBuildDate>Fri, 02 Aug 2024 00:55:54 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/cuda/index.xml" rel="self" type="application/rss+xml"/><item><title>CUDA: Cooperative Groupsについて</title><link>https://tsumli.github.io/posts/cuda/cooperative-groups/</link><pubDate>Fri, 02 Aug 2024 00:55:54 +0000</pubDate><guid>https://tsumli.github.io/posts/cuda/cooperative-groups/</guid><description>&lt;p>&lt;a href="https://developer.nvidia.com/blog/cooperative-groups/" class="external-link" target="_blank" rel="noopener">NVIDIAのblog&lt;/a> を読んでいたのですが良く分からなかったのでコードを動かしながら見ていきます。&lt;/p>
+&lt;h2 id="cooperative-groups-とは">
+ Cooperative Groups とは?
+ &lt;a class="heading-link" href="#cooperative-groups-%e3%81%a8%e3%81%af">
+ &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading">&lt;/i>
+ &lt;span class="sr-only">Link to heading&lt;/span>
+ &lt;/a>
+&lt;/h2>
+&lt;figure>&lt;img src="images/overview.png"
+ alt="Concepts of Cooperative Groups.">&lt;figcaption>
+ &lt;p>Concepts of Cooperative Groups.&lt;/p>
+ &lt;/figcaption>
+&lt;/figure>
+
+&lt;p>今までは&lt;code>__syncthreads()&lt;/code>を使わないと同期できませんでした。しかし、これよりも小さなグループで同期を取りたいことがあります。Cooperative GroupsはCUDA 9から導入された機能で、これを使うことによって柔軟な同期が可能になります。&lt;/p>
+&lt;p>&lt;code>cooperative_groups.h&lt;/code>をincludeするだけで使うことができます。そして、一般的に&lt;code>cg&lt;/code>とaliasされることが多いようです。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8b949e;font-weight:bold;font-style:italic">#include&lt;/span> &lt;span style="color:#8b949e;font-weight:bold;font-style:italic">&amp;lt;cooperative_groups.h&amp;gt;&lt;/span>&lt;span style="color:#8b949e;font-weight:bold;font-style:italic">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8b949e;font-weight:bold;font-style:italic">&lt;/span>&lt;span style="color:#ff7b72">namespace&lt;/span> cg &lt;span style="color:#ff7b72;font-weight:bold">=&lt;/span> cooperative_groups;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>これより先のコードではこの定義を使うため注意してください。&lt;/p>
+&lt;h2 id="thread-group">
+ Thread Group
+ &lt;a class="heading-link" href="#thread-group">
+ &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading">&lt;/i>
+ &lt;span class="sr-only">Link to heading&lt;/span>
+ &lt;/a>
+&lt;/h2>
+&lt;p>Cooperative Groupsの中でも最も基本の型は&lt;code>thread_group&lt;/code>です。threadの数やthreadのindex ([0, size - 1]) は次のように取得できます。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>__global__ &lt;span style="color:#ff7b72">void&lt;/span> &lt;span style="color:#d2a8ff;font-weight:bold">my_kernel&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cg&lt;span style="color:#ff7b72;font-weight:bold">::&lt;/span>thread_block block &lt;span style="color:#ff7b72;font-weight:bold">=&lt;/span> cg&lt;span style="color:#ff7b72;font-weight:bold">::&lt;/span>this_thread_block();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> printf(&lt;span style="color:#a5d6ff">&amp;#34;size: %d, thread_rank: %d&lt;/span>&lt;span style="color:#79c0ff">\n&lt;/span>&lt;span style="color:#a5d6ff">&amp;#34;&lt;/span>, block.size(), block.thread_rank());
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ff7b72">int&lt;/span> &lt;span style="color:#d2a8ff;font-weight:bold">main&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> my_kernel&lt;span style="color:#ff7b72;font-weight:bold">&amp;lt;&amp;lt;&amp;lt;&lt;/span>&lt;span style="color:#a5d6ff">2&lt;/span>, &lt;span style="color:#a5d6ff">4&lt;/span>&lt;span style="color:#ff7b72;font-weight:bold">&amp;gt;&amp;gt;&amp;gt;&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> THROW_IF_FAILED(cudaDeviceSynchronize());
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ff7b72">return&lt;/span> &lt;span style="color:#a5d6ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>出力は以下になります&lt;/p></description></item></channel></rss>
