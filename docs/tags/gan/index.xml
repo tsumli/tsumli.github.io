@@ -1,1 +1,214 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>GAN on tsumli-pages</title><link>https://tsumli.github.io/tags/gan/</link><description>Recent content in GAN on tsumli-pages</description><generator>Hugo -- gohugo.io</generator><language>ja</language><copyright>© {year}</copyright><lastBuildDate>Tue, 01 Feb 2022 19:58:16 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/gan/index.xml" rel="self" type="application/rss+xml"/><item><title>First Order Motion Model for Image Animation (FOMM) を読む</title><link>https://tsumli.github.io/blog/paper/fomm/</link><pubDate>Tue, 01 Feb 2022 19:58:16 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/fomm/</guid><description>First Order Motion Model for Image Animation [A. Siarohin et al. NeurIPS 2019] という論文を読んでいきます (本文中の図は論文より引用)。 FOMMという名前で知られている手法です。 Figure . example animation Method 目的 source</description></item><item><title>One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing を読む</title><link>https://tsumli.github.io/blog/paper/one-shot-talking-head/</link><pubDate>Wed, 13 Oct 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/one-shot-talking-head/</guid><description>One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing という論文を読んでいきます。CVPR 2021にacceptされています (本文中の図は論文より引用) 。 Figure . 提案手法の結果。H.</description></item><item><title>GANimation を読む</title><link>https://tsumli.github.io/blog/paper/GANimation/</link><pubDate>Sat, 22 May 2021 11:38:22 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/GANimation/</guid><description>$$ \def\image#1{\mathbf{I}_{\mathbf{y}{\scriptsize{#1}}}} $$ GANimation: Anatomically-aware Facial Animation from a Single Image [Pumarola et al. ECCV 2018] という論文を読んでいきます. (本文中の図は論文より引用). Action Units (AU) アノテーションに基づいたGAN Figure . Facial animation from a single</description></item><item><title>StarGAN v2 を読む</title><link>https://tsumli.github.io/blog/paper/StarGANv2/</link><pubDate>Fri, 21 May 2021 19:58:16 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/StarGANv2/</guid><description>StarGAN v2: Diverse Image Synthesis for Multiple Domains [Choi et al. CVPR 2020] という論文を読んでいきます. (本文中の図は論文より引用). Figure . Synthesis Result image-to-image translationのタスクにおいて, 異なる</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>GAN on tsumli-pages</title><link>https://tsumli.github.io/tags/gan/</link><description>Recent content in GAN on tsumli-pages</description><generator>Hugo</generator><language>ja</language><copyright>© {year}</copyright><lastBuildDate>Tue, 01 Feb 2022 19:58:16 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/gan/index.xml" rel="self" type="application/rss+xml"/><item><title>First Order Motion Model for Image Animation (FOMM) を読む</title><link>https://tsumli.github.io/blog/paper/fomm/</link><pubDate>Tue, 01 Feb 2022 19:58:16 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/fomm/</guid><description>&lt;p>&lt;a href="https://proceedings.neurips.cc/paper/2019/file/31c0b36aef265d9221af80872ceb62f9-Paper.pdf" 
+ 
+ target="_blank" rel="noreferrer noopener" 
+>&lt;strong>First Order Motion Model for Image Animation&lt;/strong>&lt;/a>
+&lt;br>
+[A. Siarohin et al. NeurIPS 2019] という論文を読んでいきます (本文中の図は論文より引用)。
+FOMMという名前で知られている手法です。&lt;/p>
+
+ 
+
+
+
+
+
+&lt;figure
+ 
+ 
+ 
+ style='margin:0 auto;text-align:center;'
+ >
+ &lt;a 
+ 
+ data-lightbox="image-images/result.png"
+ 
+ 
+ href="https://tsumli.github.io/blog/paper/fomm/images/result.png"
+ 
+ 
+ >
+ &lt;img
+ 
+ src="https://tsumli.github.io/blog/paper/fomm/images/result.png"
+ 
+ alt="example animation"
+ 
+ 
+ />
+ &lt;/a>
+ 
+ 
+ &lt;figcaption>
+ &lt;span class="img--caption">
+ Figure . example animation
+ 
+ &lt;/span>
+ &lt;/figcaption>
+ 
+&lt;/figure>
+
+
+
+
+&lt;h2 id="method">Method&lt;/h2>
+&lt;h3 id="目的">目的&lt;/h3>
+&lt;p>&lt;strong>source image $\mathbf{S}$ と deiving video $\mathcal{D}$ の動きを表す潜在表現を組み合わせて、 driving video を再構成する&lt;/strong>&lt;/p></description></item><item><title>One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing を読む</title><link>https://tsumli.github.io/blog/paper/one-shot-talking-head/</link><pubDate>Wed, 13 Oct 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/one-shot-talking-head/</guid><description>&lt;p>&lt;a href="https://arxiv.org/abs/2011.15126" 
+ 
+ target="_blank" rel="noreferrer noopener" 
+>&lt;strong>One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing&lt;/strong>&lt;/a>
+という論文を読んでいきます。CVPR 2021にacceptされています (本文中の図は論文より引用) 。&lt;/p>
+
+ 
+
+
+
+
+
+&lt;figure
+ 
+ 
+ 
+ style='margin:0 auto;text-align:center;'
+ >
+ &lt;a 
+ 
+ data-lightbox="image-images/overview.png"
+ 
+ 
+ href="https://tsumli.github.io/blog/paper/one-shot-talking-head/images/overview.png"
+ 
+ 
+ >
+ &lt;img
+ 
+ src="https://tsumli.github.io/blog/paper/one-shot-talking-head/images/overview.png"
+ 
+ alt="提案手法の結果。H.264より10倍以上効率的にビデオを圧縮できる。また、画像のposeを自由に変更することができる。"
+ 
+ 
+ />
+ &lt;/a>
+ 
+ 
+ &lt;figcaption>
+ &lt;span class="img--caption">
+ Figure . 提案手法の結果。H.264より10倍以上効率的にビデオを圧縮できる。また、画像のposeを自由に変更することができる。
+ 
+ &lt;/span>
+ &lt;/figcaption>
+ 
+&lt;/figure>
+
+
+
+
+&lt;h2 id="motivation">Motivation&lt;/h2>
+&lt;p>Contrubutionは次の通り&lt;/p></description></item><item><title>GANimation を読む</title><link>https://tsumli.github.io/blog/paper/GANimation/</link><pubDate>Sat, 22 May 2021 11:38:22 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/GANimation/</guid><description>&lt;!-- define macro -->
+&lt;p>$$
+\def\image#1{\mathbf{I}_{\mathbf{y}{\scriptsize{#1}}}}
+$$&lt;/p>
+&lt;!-- end define -->
+&lt;p>&lt;a href="https://arxiv.org/abs/1807.09251" 
+ 
+ target="_blank" rel="noreferrer noopener" 
+>&lt;strong>GANimation: Anatomically-aware Facial Animation from a Single Image&lt;/strong>&lt;/a>
+&lt;br>
+[Pumarola et al. ECCV 2018] という論文を読んでいきます. (本文中の図は論文より引用).&lt;/p>
+&lt;p>Action Units (AU) アノテーションに基づいたGAN
+
+ 
+
+
+
+
+
+&lt;figure
+ 
+ 
+ 
+ style='margin:0 auto;text-align:center;'
+ >
+ &lt;a 
+ 
+ data-lightbox="image-images/synthesis_result.png"
+ 
+ 
+ href="https://tsumli.github.io/blog/paper/GANimation/images/synthesis_result.png"
+ 
+ 
+ >
+ &lt;img
+ 
+ src="https://tsumli.github.io/blog/paper/GANimation/images/synthesis_result.png"
+ 
+ alt="Facial animation from a single image."
+ 
+ 
+ />
+ &lt;/a>
+ 
+ 
+ &lt;figcaption>
+ &lt;span class="img--caption">
+ Figure . Facial animation from a single image.
+ 
+ &lt;/span>
+ &lt;/figcaption>
+ 
+&lt;/figure>
+
+
+
+&lt;/p></description></item><item><title>StarGAN v2 を読む</title><link>https://tsumli.github.io/blog/paper/StarGANv2/</link><pubDate>Fri, 21 May 2021 19:58:16 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/StarGANv2/</guid><description>&lt;p>&lt;a href="https://arxiv.org/abs/1912.01865" 
+ 
+ target="_blank" rel="noreferrer noopener" 
+>&lt;strong>StarGAN v2: Diverse Image Synthesis for Multiple Domains&lt;/strong>&lt;/a>
+&lt;br>
+[Choi et al. CVPR 2020] という論文を読んでいきます. (本文中の図は論文より引用).&lt;/p>
+
+ 
+
+
+
+
+
+&lt;figure
+ 
+ 
+ 
+ style='margin:0 auto;text-align:center;'
+ >
+ &lt;a 
+ 
+ data-lightbox="image-images/Synth_result.png"
+ 
+ 
+ href="https://tsumli.github.io/blog/paper/StarGANv2/images/Synth_result.png"
+ 
+ 
+ >
+ &lt;img
+ 
+ src="https://tsumli.github.io/blog/paper/StarGANv2/images/Synth_result.png"
+ 
+ alt="Synthesis Result"
+ 
+ 
+ />
+ &lt;/a>
+ 
+ 
+ &lt;figcaption>
+ &lt;span class="img--caption">
+ Figure . Synthesis Result
+ 
+ &lt;/span>
+ &lt;/figcaption>
+ 
+&lt;/figure>
+
+
+
+
+&lt;p>image-to-image translationのタスクにおいて, 異なるドメイン間のマッピングを学習しなければならない.
+そして, それらは次の要素を満たす必要がある.&lt;/p></description></item></channel></rss>

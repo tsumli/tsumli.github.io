@@ -1,1 +1,67 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>optimal-transport on tsumli-pages</title><link>https://tsumli.github.io/tags/optimal-transport/</link><description>Recent content in optimal-transport on tsumli-pages</description><generator>Hugo -- gohugo.io</generator><language>ja</language><copyright>© {year}</copyright><lastBuildDate>Thu, 11 Mar 2021 13:55:54 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/optimal-transport/index.xml" rel="self" type="application/rss+xml"/><item><title>Optimal Transport 03. Unbalanced Optimal Transport</title><link>https://tsumli.github.io/blog/optimal-transport/03-unbalanced/</link><pubDate>Thu, 11 Mar 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/optimal-transport/03-unbalanced/</guid><description>01. はじめ 02. エントロピー正則化 03. Unbalanced Optimal Transport Optimal Transportの拡張系であるUnbalanced Optimal Transportについて紹介します． Unbalanced Optimal Transport (Unbalanced OT)</description></item><item><title>Optimal Transport 02. エントロピー正則化</title><link>https://tsumli.github.io/blog/optimal-transport/02-entropy/</link><pubDate>Sat, 13 Feb 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/optimal-transport/02-entropy/</guid><description>01. はじめ 02. エントロピー正則化 03. Unbalanced Optimal Transport Cuturi1 の論文をもとに、Optimal Transportのエントロピー正則化について考えていきましょう 。 計算量</description></item><item><title>Optimal Transport 01. はじめ</title><link>https://tsumli.github.io/blog/optimal-transport/01-introduction/</link><pubDate>Tue, 02 Feb 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/optimal-transport/01-introduction/</guid><description>01. はじめ 02. エントロピー正則化 03. Unbalanced Optimal Transport Optimal Transport とは Optimal Transportは、日本語で最適輸送 (問題) と訳されます。 和訳が表しているように、ある物体を</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Optimal-Transport on tsumli-pages</title><link>https://tsumli.github.io/tags/optimal-transport/</link><description>Recent content in Optimal-Transport on tsumli-pages</description><generator>Hugo</generator><language>ja</language><copyright>© {year}</copyright><lastBuildDate>Thu, 11 Mar 2021 13:55:54 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/optimal-transport/index.xml" rel="self" type="application/rss+xml"/><item><title>Optimal Transport 03. Unbalanced Optimal Transport</title><link>https://tsumli.github.io/blog/optimal-transport/03-unbalanced/</link><pubDate>Thu, 11 Mar 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/optimal-transport/03-unbalanced/</guid><description>&lt;p>&lt;a href="https://tsumli.github.io/blog/optimal-transport/01-introduction/" 
+ 
+ 
+>01. はじめ&lt;/a>
+&lt;br>
+&lt;a href="https://tsumli.github.io/blog/optimal-transport/02-entropy/" 
+ 
+ 
+>02. エントロピー正則化&lt;/a>
+&lt;br>
+&lt;a href="https://tsumli.github.io/blog/optimal-transport/03-unbalanced/" 
+ 
+ 
+>03. Unbalanced Optimal Transport&lt;/a>
+&lt;br>
+Optimal Transportの拡張系である&lt;strong>Unbalanced Optimal Transport&lt;/strong>について紹介します．&lt;/p>
+&lt;h2 id="unbalanced-optimal-transport-unbalanced-ot">Unbalanced Optimal Transport (Unbalanced OT)&lt;/h2>
+&lt;p>まず，式を見ていきましょう．
+$$
+L_\mathbf{C}^\tau (\mathbf{a}, \mathbf{b}) = \min_{\mathbf{P}\in\mathbb{R}&lt;em>+^{n\times m}} \langle \mathbf{C}, \mathbf{P} \rangle
++\tau_1\mathbf{D}&lt;/em>\varphi(\mathbf{P}\mathbb{1}&lt;em>m|\mathbf{a}) +
+\tau_2\mathbf{D}&lt;/em>\varphi(\mathbf{P}^\mathsf{T}\mathbb{1}&lt;em>n|\mathbf{b})
+$$
+第1項は通常のoptimal transportでの最小化目標です．そして，この第2, 3項が追加されたものとなります．$\mathbf{D}&lt;/em>\varphi(\cdot|\cdot)$ はズレを表す関数で，例えば，euclideanだったりKL距離だったりが考えられます．そして，$\tau_1, \tau_2$はそれらのズレに対するペナルティの大きさを表しています．つまり，$\tau_1 = \tau_2 \rightarrow +\infty$のときズレを許さない，つまり，&amp;ldquo;balanced&amp;quot;な (通常の) optimal transportとなります．また，$\mathbf{D}_\varphi = \mathbf{KL}$ で，$\tau_1 = \tau_2 \rightarrow 0$ のとき，Hellinger距離と呼ばれる距離となります．
+$$
+\mathrm{L}(\mathbf{a}, \mathbf{b}) = \sum_i(\sqrt{\mathbf{a}_i} - \sqrt{\mathbf{b}_i})^2
+$$&lt;/p></description></item><item><title>Optimal Transport 02. エントロピー正則化</title><link>https://tsumli.github.io/blog/optimal-transport/02-entropy/</link><pubDate>Sat, 13 Feb 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/optimal-transport/02-entropy/</guid><description>&lt;p>&lt;a href="https://tsumli.github.io/blog/optimal-transport/01-introduction/" 
+ 
+ 
+>01. はじめ&lt;/a>
+&lt;br>
+&lt;a href="https://tsumli.github.io/blog/optimal-transport/02-entropy/" 
+ 
+ 
+>02. エントロピー正則化&lt;/a>
+&lt;br>
+&lt;a href="https://tsumli.github.io/blog/optimal-transport/03-unbalanced/" 
+ 
+ 
+>03. Unbalanced Optimal Transport&lt;/a>
+&lt;/p>
+&lt;p>Cuturi&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup> の論文をもとに、Optimal Transportのエントロピー正則化について考えていきましょう 。&lt;/p>
+&lt;h2 id="計算量">計算量&lt;/h2>
+&lt;p>$r$ から $c$ へのOptimal Transportは次のようになります
+$$
+\large
+d_\mathbf{M}(r, c) \triangleq \min_{\mathbf{P}\in\mathbf{U}(r, c)} \langle \mathbf{P}, \mathbf{M} \rangle
+$$
+ここで、$\mathbf{M} \in \mathbb{R}^{d\times d}$ はcost matrixです&lt;br>
+計算量について考えると、どのような行列$\mathbf{M}$に対しても最悪のケースで $O(d^3 \log d)$となります。&lt;/p></description></item><item><title>Optimal Transport 01. はじめ</title><link>https://tsumli.github.io/blog/optimal-transport/01-introduction/</link><pubDate>Tue, 02 Feb 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/optimal-transport/01-introduction/</guid><description>&lt;p>&lt;a href="https://tsumli.github.io/blog/optimal-transport/01-introduction/" 
+ 
+ 
+>01. はじめ&lt;/a>
+&lt;br>
+&lt;a href="https://tsumli.github.io/blog/optimal-transport/02-entropy/" 
+ 
+ 
+>02. エントロピー正則化&lt;/a>
+&lt;br>
+&lt;a href="https://tsumli.github.io/blog/optimal-transport/03-unbalanced/" 
+ 
+ 
+>03. Unbalanced Optimal Transport&lt;/a>
+&lt;/p>
+&lt;h2 id="optimal-transport-とは">Optimal Transport とは&lt;/h2>
+&lt;p>&lt;strong>Optimal Transport&lt;/strong>は、日本語で&lt;strong>最適輸送&lt;/strong> (問題) と訳されます。
+和訳が表しているように、ある物体をある地点から別の地点に移したときの最小コスト、そしてその輸送方法を求めるという問題です。そこから、確率分布の比較に使われるようになりました。&lt;/p></description></item></channel></rss>

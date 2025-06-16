@@ -23,9 +23,6 @@ copyright = "© {year}"
 # Add your Disqus shortname here.
 # disqusShortname = ""
 
-# Add your Google Analytics identifier: UA-XXXXXXXX-X
-googleAnalytics = "UA-188554402-1"
-
 
 # Syntax Highlight
 pygmentsCodefences = true
@@ -49,13 +46,12 @@ github = "https://github.com/tsumli"
 # instagram = "https://instagram.com/<your handle>"
 # linkedin = "<link to your profile>"
 # youtube = "https://www.youtube.com/channel/<your channel>"
-medium = "https://medium.com/@tsumli"
 # Titles for your icons (shown as tooltips), and also their display order.
 # Currently, these icons are supported: 
 #   "Twitter", "GitHub", "Email", "Mastodon", "Facebook", "GitLab", "Instagram", "LinkedIn", "YouTube"
 
 
-iconOrder = ["Kaggle", "GitHub", "Medium"]
+iconOrder = ["Kaggle", "GitHub"]
 
 # Metadata for Twitter cards, defaults to params.twitter
 # twitterSite = "@<your handle>"

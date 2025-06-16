@@ -1,38 +1,29 @@
-version: '3'
 services:
   server:
-    image:
-      "trenton/hugo-extended"
+    image: "hugomods/hugo"
     ports:
       - 1313:1313
     volumes:
-      - ./:/site
-    tty:
-      true
-    command:
-      hugo server -D -p 1313 --bind 0.0.0.0
+      - ./:/src
+    tty: true
+    command: hugo server -D -p 1313 --bind 0.0.0.0
     user: "${LOCALUID}:${LOCALGID}"
-  
+
   newpost:
-    image:
-      "trenton/hugo-extended"
+    image: "hugomods/hugo"
     ports:
       - 1313:1313
     user: "${LOCALUID}:${LOCALGID}"
     volumes:
-      - ./:/site
-    tty:
-      true
-    command:
-      hugo new ${NAME}
+      - ./:/src
+    tty: true
+    command: hugo new ${NAME}
 
   build_pages:
-    image:
-      "trenton/hugo-extended"
+    image: "hugomods/hugo"
     ports:
       - 1313:1313
     user: "${LOCALUID}:${LOCALGID}"
     volumes:
-      - ./:/site
-    command:
-      hugo --minify
+      - ./:/src
+    command: hugo --minify

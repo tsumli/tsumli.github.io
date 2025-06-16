@@ -1,1 +1,349 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>paper on tsumli-pages</title><link>https://tsumli.github.io/tags/paper/</link><description>Recent content in paper on tsumli-pages</description><generator>Hugo -- gohugo.io</generator><language>ja</language><copyright>© {year}</copyright><lastBuildDate>Tue, 06 Sep 2022 10:33:39 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/paper/index.xml" rel="self" type="application/rss+xml"/><item><title>BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation を読む</title><link>https://tsumli.github.io/blog/paper/bisenet/</link><pubDate>Tue, 06 Sep 2022 10:33:39 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/bisenet/</guid><description>BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation [Yu et al. ECCV 2018] という論文を読んでいきます。 (本文中の図は論文より引用) 。 semantic segmentationの課題である、リアルタイム性 (</description></item><item><title>Lagrangian Fluid Simulation With Continuous Convolutions を読む</title><link>https://tsumli.github.io/blog/paper/deeplagrangianfluids/</link><pubDate>Fri, 08 Jul 2022 15:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/deeplagrangianfluids/</guid><description>Lagrangian Fluid Simulation With Continuous Convolutions という論文を読んでいきます (本文中の図は論文より引用) 。 この論文では液体をグラフとして扱う&amp;hellip;のではなくspatia</description></item><item><title>First Order Motion Model for Image Animation (FOMM) を読む</title><link>https://tsumli.github.io/blog/paper/fomm/</link><pubDate>Tue, 01 Feb 2022 19:58:16 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/fomm/</guid><description>First Order Motion Model for Image Animation [A. Siarohin et al. NeurIPS 2019] という論文を読んでいきます (本文中の図は論文より引用)。 FOMMという名前で知られている手法です。 Figure . example animation Method 目的 source</description></item><item><title>Video Swin Transformer を読む</title><link>https://tsumli.github.io/blog/paper/video-swin-transformer/</link><pubDate>Thu, 14 Oct 2021 15:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/video-swin-transformer/</guid><description>Video Swin Transformer という論文を読んでいきます (本文中の図は論文より引用) 。ざっくり言うと、Swin Transformerをそのままvideoの入力に拡張</description></item><item><title>Swin Transformer: Hierarchical Vision Transformer using Shifted Windows を読む</title><link>https://tsumli.github.io/blog/paper/swin-transformer/</link><pubDate>Thu, 14 Oct 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/swin-transformer/</guid><description>Swin Transformer: Hierarchical Vision Transformer using Shifted Windows という論文を読んでいきます (本文中の図は論文より引用) 。 Method Figure 1. The architecture of a Swin Transformer (b) two successive Swin Transformer Blocks. Swin Transformerの全体像 (小さ</description></item><item><title>One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing を読む</title><link>https://tsumli.github.io/blog/paper/one-shot-talking-head/</link><pubDate>Wed, 13 Oct 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/one-shot-talking-head/</guid><description>One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing という論文を読んでいきます。CVPR 2021にacceptされています (本文中の図は論文より引用) 。 Figure . 提案手法の結果。H.</description></item><item><title>TGAN: Synthesizing Tabular Data using Generative Adversarial Networks を読む</title><link>https://tsumli.github.io/blog/paper/TGAN/</link><pubDate>Mon, 14 Jun 2021 10:33:39 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/TGAN/</guid><description>Synthesizing Tabular Data using Generative Adversarial Networks [Xu et al. arXiv 2018] という論文を読んでいきます. (本文中の図は論文より引用). tabular dataに対するGAN (TGAN) についての紹介. 様々なデータ (categorical, n</description></item><item><title>FNet: Mixing Tokens with Fourier Transforms を読む</title><link>https://tsumli.github.io/blog/paper/FNet/</link><pubDate>Thu, 03 Jun 2021 07:11:44 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/FNet/</guid><description>FNet: Mixing Tokens with Fourier Transforms [Thorp et al. arXiv 2020] という論文を読んでいきます. (本文中の図は論文より引用). Contributions: token &amp;ldquo;mixing&amp;rdquo; 変換がテキストデータにおける多様なsemanticsを</description></item><item><title>GANimation を読む</title><link>https://tsumli.github.io/blog/paper/GANimation/</link><pubDate>Sat, 22 May 2021 11:38:22 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/GANimation/</guid><description>$$ \def\image#1{\mathbf{I}_{\mathbf{y}{\scriptsize{#1}}}} $$ GANimation: Anatomically-aware Facial Animation from a Single Image [Pumarola et al. ECCV 2018] という論文を読んでいきます. (本文中の図は論文より引用). Action Units (AU) アノテーションに基づいたGAN Figure . Facial animation from a single</description></item><item><title>StarGAN v2 を読む</title><link>https://tsumli.github.io/blog/paper/StarGANv2/</link><pubDate>Fri, 21 May 2021 19:58:16 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/StarGANv2/</guid><description>StarGAN v2: Diverse Image Synthesis for Multiple Domains [Choi et al. CVPR 2020] という論文を読んでいきます. (本文中の図は論文より引用). Figure . Synthesis Result image-to-image translationのタスクにおいて, 異なる</description></item><item><title>Taskonomyを読む</title><link>https://tsumli.github.io/blog/paper/taskonomy/</link><pubDate>Mon, 01 Feb 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/taskonomy/</guid><description>Taskonomy: Disentangling Task Transfer Learning という論文を読んでいきます。 この論文はCVPR 2018のBestPaperを受賞しています (本文中の図は論文より引用) 。 Motivation タスク間</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Paper on tsumli-pages</title><link>https://tsumli.github.io/tags/paper/</link><description>Recent content in Paper on tsumli-pages</description><generator>Hugo</generator><language>ja</language><copyright>© {year}</copyright><lastBuildDate>Tue, 06 Sep 2022 10:33:39 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/paper/index.xml" rel="self" type="application/rss+xml"/><item><title>BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation を読む</title><link>https://tsumli.github.io/blog/paper/bisenet/</link><pubDate>Tue, 06 Sep 2022 10:33:39 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/bisenet/</guid><description>&lt;p>&lt;a href="https://arxiv.org/abs/1808.00897" 
+ 
+ target="_blank" rel="noreferrer noopener" 
+>&lt;strong>BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation&lt;/strong>&lt;/a>
+&lt;br>
+[Yu et al. ECCV 2018] という論文を読んでいきます。 (本文中の図は論文より引用) 。
+semantic segmentationの課題である、リアルタイム性 (推論速度) と精度のトレードオフ
+を解決する新たなネットワークBilateral Segmentation Network (BiSeNet) の提案。&lt;/p></description></item><item><title>Lagrangian Fluid Simulation With Continuous Convolutions を読む</title><link>https://tsumli.github.io/blog/paper/deeplagrangianfluids/</link><pubDate>Fri, 08 Jul 2022 15:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/deeplagrangianfluids/</guid><description>&lt;p>&lt;a href="https://openreview.net/pdf?id=B1lDoJSYDH" 
+ 
+ target="_blank" rel="noreferrer noopener" 
+>&lt;strong>Lagrangian Fluid Simulation
+With Continuous Convolutions&lt;/strong>&lt;/a>
+ という論文を読んでいきます (本文中の図は論文より引用) 。
+この論文では液体をグラフとして扱う&amp;hellip;のではなくspatial convolutionを使って近傍の粒子との関係を計算します。&lt;/p></description></item><item><title>First Order Motion Model for Image Animation (FOMM) を読む</title><link>https://tsumli.github.io/blog/paper/fomm/</link><pubDate>Tue, 01 Feb 2022 19:58:16 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/fomm/</guid><description>&lt;p>&lt;a href="https://proceedings.neurips.cc/paper/2019/file/31c0b36aef265d9221af80872ceb62f9-Paper.pdf" 
+ 
+ target="_blank" rel="noreferrer noopener" 
+>&lt;strong>First Order Motion Model for Image Animation&lt;/strong>&lt;/a>
+&lt;br>
+[A. Siarohin et al. NeurIPS 2019] という論文を読んでいきます (本文中の図は論文より引用)。
+FOMMという名前で知られている手法です。&lt;/p>
+
+ 
+
+
+
+
+
+&lt;figure
+ 
+ 
+ 
+ style='margin:0 auto;text-align:center;'
+ >
+ &lt;a 
+ 
+ data-lightbox="image-images/result.png"
+ 
+ 
+ href="https://tsumli.github.io/blog/paper/fomm/images/result.png"
+ 
+ 
+ >
+ &lt;img
+ 
+ src="https://tsumli.github.io/blog/paper/fomm/images/result.png"
+ 
+ alt="example animation"
+ 
+ 
+ />
+ &lt;/a>
+ 
+ 
+ &lt;figcaption>
+ &lt;span class="img--caption">
+ Figure . example animation
+ 
+ &lt;/span>
+ &lt;/figcaption>
+ 
+&lt;/figure>
+
+
+
+
+&lt;h2 id="method">Method&lt;/h2>
+&lt;h3 id="目的">目的&lt;/h3>
+&lt;p>&lt;strong>source image $\mathbf{S}$ と deiving video $\mathcal{D}$ の動きを表す潜在表現を組み合わせて、 driving video を再構成する&lt;/strong>&lt;/p></description></item><item><title>Video Swin Transformer を読む</title><link>https://tsumli.github.io/blog/paper/video-swin-transformer/</link><pubDate>Thu, 14 Oct 2021 15:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/video-swin-transformer/</guid><description>&lt;p>&lt;a href="https://arxiv.org/abs/2106.13230" 
+ 
+ target="_blank" rel="noreferrer noopener" 
+>&lt;strong>Video Swin Transformer&lt;/strong>&lt;/a>
+という論文を読んでいきます (本文中の図は論文より引用) 。ざっくり言うと、Swin Transformerをそのままvideoの入力に拡張した論文です。&lt;/p></description></item><item><title>Swin Transformer: Hierarchical Vision Transformer using Shifted Windows を読む</title><link>https://tsumli.github.io/blog/paper/swin-transformer/</link><pubDate>Thu, 14 Oct 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/swin-transformer/</guid><description>&lt;p>&lt;a href="https://arxiv.org/abs/2103.14030" 
+ 
+ target="_blank" rel="noreferrer noopener" 
+>&lt;strong>Swin Transformer: Hierarchical Vision Transformer using Shifted Windows&lt;/strong>&lt;/a>
+という論文を読んでいきます (本文中の図は論文より引用) 。&lt;/p>
+
+
+
+
+
+&lt;figure
+ 
+ 
+ 
+ style='margin:0 auto;text-align:center;'
+ >
+ &lt;a 
+ 
+ data-lightbox="image-images/compare_vit.png"
+ 
+ 
+ href="https://tsumli.github.io/blog/paper/swin-transformer/images/compare_vit.png"
+ 
+ 
+ >
+ &lt;img
+ 
+ src="https://tsumli.github.io/blog/paper/swin-transformer/images/compare_vit.png"
+ 
+ 
+ 
+ />
+ &lt;/a>
+ 
+ 
+&lt;/figure>
+
+
+
+
+&lt;h2 id="method">Method&lt;/h2>
+&lt;p>
+ 
+
+
+
+
+
+&lt;figure
+ 
+ 
+ 
+ style='margin:0 auto;text-align:center;'
+ >
+ &lt;a 
+ 
+ data-lightbox="image-images/architecture.png"
+ 
+ 
+ href="https://tsumli.github.io/blog/paper/swin-transformer/images/architecture.png"
+ 
+ 
+ >
+ &lt;img
+ 
+ src="https://tsumli.github.io/blog/paper/swin-transformer/images/architecture.png"
+ 
+ alt="The architecture of a Swin Transformer (b) two successive Swin Transformer Blocks."
+ 
+ 
+ />
+ &lt;/a>
+ 
+ 
+ &lt;figcaption>
+ &lt;span class="img--caption">
+ Figure 1. The architecture of a Swin Transformer (b) two successive Swin Transformer Blocks.
+ 
+ &lt;/span>
+ &lt;/figcaption>
+ 
+&lt;/figure>
+
+
+
+
+Swin Transformerの全体像 (小さいバージョン)。
+まず、RGB画像をオーバーラップしないようにpatchに分ける。そして、そのRGB値をconcatしたものが特徴量として扱われる。
+この論文では、$4\times 4$ のpatchに分けている。つまり、 特徴量は $4\times 4 \times 3 = 48$ 次元となる。
+この特徴量は線形層に通され、任意の次元に投影される。&lt;/p></description></item><item><title>One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing を読む</title><link>https://tsumli.github.io/blog/paper/one-shot-talking-head/</link><pubDate>Wed, 13 Oct 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/one-shot-talking-head/</guid><description>&lt;p>&lt;a href="https://arxiv.org/abs/2011.15126" 
+ 
+ target="_blank" rel="noreferrer noopener" 
+>&lt;strong>One-Shot Free-View Neural Talking-Head Synthesis for Video Conferencing&lt;/strong>&lt;/a>
+という論文を読んでいきます。CVPR 2021にacceptされています (本文中の図は論文より引用) 。&lt;/p>
+
+ 
+
+
+
+
+
+&lt;figure
+ 
+ 
+ 
+ style='margin:0 auto;text-align:center;'
+ >
+ &lt;a 
+ 
+ data-lightbox="image-images/overview.png"
+ 
+ 
+ href="https://tsumli.github.io/blog/paper/one-shot-talking-head/images/overview.png"
+ 
+ 
+ >
+ &lt;img
+ 
+ src="https://tsumli.github.io/blog/paper/one-shot-talking-head/images/overview.png"
+ 
+ alt="提案手法の結果。H.264より10倍以上効率的にビデオを圧縮できる。また、画像のposeを自由に変更することができる。"
+ 
+ 
+ />
+ &lt;/a>
+ 
+ 
+ &lt;figcaption>
+ &lt;span class="img--caption">
+ Figure . 提案手法の結果。H.264より10倍以上効率的にビデオを圧縮できる。また、画像のposeを自由に変更することができる。
+ 
+ &lt;/span>
+ &lt;/figcaption>
+ 
+&lt;/figure>
+
+
+
+
+&lt;h2 id="motivation">Motivation&lt;/h2>
+&lt;p>Contrubutionは次の通り&lt;/p></description></item><item><title>TGAN: Synthesizing Tabular Data using Generative Adversarial Networks を読む</title><link>https://tsumli.github.io/blog/paper/TGAN/</link><pubDate>Mon, 14 Jun 2021 10:33:39 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/TGAN/</guid><description>&lt;p>&lt;a href="https://arxiv.org/abs/1811.11264" 
+ 
+ target="_blank" rel="noreferrer noopener" 
+>&lt;strong>Synthesizing Tabular Data using Generative Adversarial Networks&lt;/strong>&lt;/a>
+&lt;br>
+[Xu et al. arXiv 2018] という論文を読んでいきます. (本文中の図は論文より引用).&lt;/p>
+&lt;p>tabular dataに対するGAN (TGAN) についての紹介.
+様々なデータ (categorical, numericalなど) が混合したようなテーブルに対して用いることができる.&lt;/p></description></item><item><title>FNet: Mixing Tokens with Fourier Transforms を読む</title><link>https://tsumli.github.io/blog/paper/FNet/</link><pubDate>Thu, 03 Jun 2021 07:11:44 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/FNet/</guid><description>&lt;p>&lt;a href="https://arxiv.org/abs/2105.03824" 
+ 
+ target="_blank" rel="noreferrer noopener" 
+>&lt;strong>FNet: Mixing Tokens with Fourier Transforms&lt;/strong>&lt;/a>
+&lt;br>
+[Thorp et al. arXiv 2020] という論文を読んでいきます. (本文中の図は論文より引用).&lt;/p>
+&lt;p>Contributions:&lt;/p>
+&lt;ol>
+&lt;li>token &amp;ldquo;mixing&amp;rdquo; 変換がテキストデータにおける多様なsemanticsを十分に捉えられることを示した&lt;/li>
+&lt;li>self-attention層をFourier Transform層に置き換えたTransformer-likeな &lt;strong>FNet&lt;/strong> というモデルの提案&lt;/li>
+&lt;li>学習速度が早く (TPUでは短いシークエンスのときのみ), 精度も良い. また, メモリ使用量も比較的少なくすむ&lt;/li>
+&lt;/ol>
+&lt;h2 id="model">Model&lt;/h2>
+&lt;h3 id="background-discrete-fourier-transforms">Background: discrete Fourier Transforms&lt;/h3>
+&lt;p>シークエンス $\lbrace x_n \rbrace$ $\left( n \in [0, N-1] \right)$ が与えられたとき,
+discrete Fourier Transform (DFT) は次のように表される.&lt;/p></description></item><item><title>GANimation を読む</title><link>https://tsumli.github.io/blog/paper/GANimation/</link><pubDate>Sat, 22 May 2021 11:38:22 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/GANimation/</guid><description>&lt;!-- define macro -->
+&lt;p>$$
+\def\image#1{\mathbf{I}_{\mathbf{y}{\scriptsize{#1}}}}
+$$&lt;/p>
+&lt;!-- end define -->
+&lt;p>&lt;a href="https://arxiv.org/abs/1807.09251" 
+ 
+ target="_blank" rel="noreferrer noopener" 
+>&lt;strong>GANimation: Anatomically-aware Facial Animation from a Single Image&lt;/strong>&lt;/a>
+&lt;br>
+[Pumarola et al. ECCV 2018] という論文を読んでいきます. (本文中の図は論文より引用).&lt;/p>
+&lt;p>Action Units (AU) アノテーションに基づいたGAN
+
+ 
+
+
+
+
+
+&lt;figure
+ 
+ 
+ 
+ style='margin:0 auto;text-align:center;'
+ >
+ &lt;a 
+ 
+ data-lightbox="image-images/synthesis_result.png"
+ 
+ 
+ href="https://tsumli.github.io/blog/paper/GANimation/images/synthesis_result.png"
+ 
+ 
+ >
+ &lt;img
+ 
+ src="https://tsumli.github.io/blog/paper/GANimation/images/synthesis_result.png"
+ 
+ alt="Facial animation from a single image."
+ 
+ 
+ />
+ &lt;/a>
+ 
+ 
+ &lt;figcaption>
+ &lt;span class="img--caption">
+ Figure . Facial animation from a single image.
+ 
+ &lt;/span>
+ &lt;/figcaption>
+ 
+&lt;/figure>
+
+
+
+&lt;/p></description></item><item><title>StarGAN v2 を読む</title><link>https://tsumli.github.io/blog/paper/StarGANv2/</link><pubDate>Fri, 21 May 2021 19:58:16 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/StarGANv2/</guid><description>&lt;p>&lt;a href="https://arxiv.org/abs/1912.01865" 
+ 
+ target="_blank" rel="noreferrer noopener" 
+>&lt;strong>StarGAN v2: Diverse Image Synthesis for Multiple Domains&lt;/strong>&lt;/a>
+&lt;br>
+[Choi et al. CVPR 2020] という論文を読んでいきます. (本文中の図は論文より引用).&lt;/p>
+
+ 
+
+
+
+
+
+&lt;figure
+ 
+ 
+ 
+ style='margin:0 auto;text-align:center;'
+ >
+ &lt;a 
+ 
+ data-lightbox="image-images/Synth_result.png"
+ 
+ 
+ href="https://tsumli.github.io/blog/paper/StarGANv2/images/Synth_result.png"
+ 
+ 
+ >
+ &lt;img
+ 
+ src="https://tsumli.github.io/blog/paper/StarGANv2/images/Synth_result.png"
+ 
+ alt="Synthesis Result"
+ 
+ 
+ />
+ &lt;/a>
+ 
+ 
+ &lt;figcaption>
+ &lt;span class="img--caption">
+ Figure . Synthesis Result
+ 
+ &lt;/span>
+ &lt;/figcaption>
+ 
+&lt;/figure>
+
+
+
+
+&lt;p>image-to-image translationのタスクにおいて, 異なるドメイン間のマッピングを学習しなければならない.
+そして, それらは次の要素を満たす必要がある.&lt;/p></description></item><item><title>Taskonomyを読む</title><link>https://tsumli.github.io/blog/paper/taskonomy/</link><pubDate>Mon, 01 Feb 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/taskonomy/</guid><description>&lt;p>&lt;a href="https://arxiv.org/abs/1804.08328" 
+ 
+ target="_blank" rel="noreferrer noopener" 
+>&lt;strong>Taskonomy: Disentangling Task Transfer Learning&lt;/strong>&lt;/a>
+という論文を読んでいきます。
+この論文はCVPR 2018のBestPaperを受賞しています (本文中の図は論文より引用) 。&lt;/p>
+&lt;h2 id="motivation">Motivation&lt;/h2>
+&lt;p>タスク間の転移学習しやすさが分かれば、アノテーションの足りないデータを扱う、または性能を向上させたいときにどのタスクで事前学習を行うべきかが分かる。&lt;/p></description></item></channel></rss>

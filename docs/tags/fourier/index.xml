@@ -1,1 +1,16 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Fourier on tsumli-pages</title><link>https://tsumli.github.io/tags/fourier/</link><description>Recent content in Fourier on tsumli-pages</description><generator>Hugo -- gohugo.io</generator><language>ja</language><copyright>© {year}</copyright><lastBuildDate>Thu, 03 Jun 2021 07:11:44 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/fourier/index.xml" rel="self" type="application/rss+xml"/><item><title>FNet: Mixing Tokens with Fourier Transforms を読む</title><link>https://tsumli.github.io/blog/paper/FNet/</link><pubDate>Thu, 03 Jun 2021 07:11:44 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/FNet/</guid><description>FNet: Mixing Tokens with Fourier Transforms [Thorp et al. arXiv 2020] という論文を読んでいきます. (本文中の図は論文より引用). Contributions: token &amp;ldquo;mixing&amp;rdquo; 変換がテキストデータにおける多様なsemanticsを</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Fourier on tsumli-pages</title><link>https://tsumli.github.io/tags/fourier/</link><description>Recent content in Fourier on tsumli-pages</description><generator>Hugo</generator><language>ja</language><copyright>© {year}</copyright><lastBuildDate>Thu, 03 Jun 2021 07:11:44 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/fourier/index.xml" rel="self" type="application/rss+xml"/><item><title>FNet: Mixing Tokens with Fourier Transforms を読む</title><link>https://tsumli.github.io/blog/paper/FNet/</link><pubDate>Thu, 03 Jun 2021 07:11:44 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/FNet/</guid><description>&lt;p>&lt;a href="https://arxiv.org/abs/2105.03824" 
+ 
+ target="_blank" rel="noreferrer noopener" 
+>&lt;strong>FNet: Mixing Tokens with Fourier Transforms&lt;/strong>&lt;/a>
+&lt;br>
+[Thorp et al. arXiv 2020] という論文を読んでいきます. (本文中の図は論文より引用).&lt;/p>
+&lt;p>Contributions:&lt;/p>
+&lt;ol>
+&lt;li>token &amp;ldquo;mixing&amp;rdquo; 変換がテキストデータにおける多様なsemanticsを十分に捉えられることを示した&lt;/li>
+&lt;li>self-attention層をFourier Transform層に置き換えたTransformer-likeな &lt;strong>FNet&lt;/strong> というモデルの提案&lt;/li>
+&lt;li>学習速度が早く (TPUでは短いシークエンスのときのみ), 精度も良い. また, メモリ使用量も比較的少なくすむ&lt;/li>
+&lt;/ol>
+&lt;h2 id="model">Model&lt;/h2>
+&lt;h3 id="background-discrete-fourier-transforms">Background: discrete Fourier Transforms&lt;/h3>
+&lt;p>シークエンス $\lbrace x_n \rbrace$ $\left( n \in [0, N-1] \right)$ が与えられたとき,
+discrete Fourier Transform (DFT) は次のように表される.&lt;/p></description></item></channel></rss>
