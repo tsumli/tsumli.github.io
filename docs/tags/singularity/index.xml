@@ -23,16 +23,17 @@
 以下のようなshellscriptを作成し，保存します．
 今回はquay.ioからimageを持ってきました．&lt;a href="https://quay.io/repository/singularity/singularity?tab=tags" class="external-link" target="_blank" rel="noopener">Tags&lt;/a>を見ることで，
 他のsingularityのバージョンなどに適宜変更できます．&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8b949e;font-style:italic"># build_singularity.sh&lt;/span>
+&lt;div class="highlight">&lt;div style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+&lt;table style="border-spacing:0;padding:0;margin:0;border:0;">&lt;tr>&lt;td style="vertical-align:top;padding:0;margin:0;border:0;">
+&lt;pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679">1
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+&lt;pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8b949e;font-style:italic"># build_singularity.sh&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>docker run --rm -v &lt;span style="color:#a5d6ff">&amp;#34;&lt;/span>&lt;span style="color:#79c0ff">$PWD&lt;/span>&lt;span style="color:#a5d6ff">&amp;#34;&lt;/span>:/src/ -w&lt;span style="color:#ff7b72;font-weight:bold">=&lt;/span>&lt;span style="color:#a5d6ff">&amp;#34;/src/&amp;#34;&lt;/span> -v /var/run/docker.sock:/var/run/docker.sock quay.io/singularity/singularity:v3.7.2 build /src/&lt;span style="color:#a5d6ff">${&lt;/span>&lt;span style="color:#79c0ff">NAME&lt;/span>&lt;span style="color:#a5d6ff">}&lt;/span>.sif docker-daemon://&lt;span style="color:#a5d6ff">${&lt;/span>&lt;span style="color:#79c0ff">IMAGE&lt;/span>&lt;span style="color:#a5d6ff">}&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>このshellscriptを次のように実行します．&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#79c0ff">IMAGE&lt;/span>&lt;span style="color:#ff7b72;font-weight:bold">=&lt;/span>foo:latest &lt;span style="color:#79c0ff">NAME&lt;/span>&lt;span style="color:#ff7b72;font-weight:bold">=&lt;/span>foo sh build_singularity.sh 
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>結果として，カレントディレクトリに${NAME}.sifが生成されます．
-あとはGPUサーバに上げるなりして使うことができます．&lt;/p>
-&lt;hr>
-&lt;p>感想として，.sifファイルは.defファイルから作成するよりもdocker imageから作成する方が簡単でした (単に慣れの問題かもしれません).
-セキュリティの問題でremoteサーバでdockerが使えず，singularityが推奨されることが多いので，
-このように簡単にimageファイルが作成できるのはうれしいです．&lt;/p></description></item><item><title>自分的Singularityの使い方</title><link>https://tsumli.github.io/posts/abci/singularity/</link><pubDate>Mon, 01 Feb 2021 15:55:54 +0000</pubDate><guid>https://tsumli.github.io/posts/abci/singularity/</guid><description>&lt;h2 id="why-singularity">
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>このshellscriptを次のように実行します．&lt;/p></description></item><item><title>自分的Singularityの使い方</title><link>https://tsumli.github.io/posts/abci/singularity/</link><pubDate>Mon, 01 Feb 2021 15:55:54 +0000</pubDate><guid>https://tsumli.github.io/posts/abci/singularity/</guid><description>&lt;h2 id="why-singularity">
  Why Singularity?
  &lt;a class="heading-link" href="#why-singularity">
  &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading">&lt;/i>
@@ -58,7 +59,27 @@ dockerはroot権限が奪取される可能性があるため、共用サーバ�
 &lt;/h3>
 &lt;p>imageを作成するためのDefinition fileを作成します (詳細は&lt;a href="https://repo.sylabs.io/c/0f6898986ad0b646b5ce6deba21781ac62cb7e0a86a5153bbb31732ee6593f43/guides/singularitypro35-user-guide/" class="external-link" target="_blank" rel="noopener">公式ドキュメント&lt;/a>) 。&lt;br>
 ubuntuのimageをもとにdefinition fileを作成しました (docker-compose.ymlを書くときのイメージですね) 。&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml:foo.def" data-lang="yaml:foo.def">&lt;span style="display:flex;">&lt;span>Bootstrap: docker
+&lt;div class="highlight">&lt;div style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+&lt;table style="border-spacing:0;padding:0;margin:0;border:0;">&lt;tr>&lt;td style="vertical-align:top;padding:0;margin:0;border:0;">
+&lt;pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 1
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 2
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 3
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 4
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 5
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 6
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 7
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 8
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 9
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679">10
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679">11
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679">12
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679">13
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679">14
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679">15
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+&lt;pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml:foo.def" data-lang="yaml:foo.def">&lt;span style="display:flex;">&lt;span>Bootstrap: docker
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>From: ubuntu
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f85149">%&lt;/span>files
@@ -74,7 +95,9 @@ ubuntuのimageをもとにdefinition fileを作成しました (docker-compose.y
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f85149">%&lt;/span>environment
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	export LC_ALL&lt;span style="color:#ff7b72;font-weight:bold">=&lt;/span>ja_JP.utf&lt;span style="color:#ff7b72;font-weight:bold">-&lt;/span>&lt;span style="color:#a5d6ff">8&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> export LANG&lt;span style="color:#ff7b72;font-weight:bold">=&lt;/span>ja_JP.utf&lt;span style="color:#ff7b72;font-weight:bold">-&lt;/span>&lt;span style="color:#a5d6ff">8&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="2-build">
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="2-build">
  2. build
  &lt;a class="heading-link" href="#2-build">
  &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading">&lt;/i>
