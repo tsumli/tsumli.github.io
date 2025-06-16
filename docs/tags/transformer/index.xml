@@ -1,1 +1,94 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>transformer on tsumli-pages</title><link>https://tsumli.github.io/tags/transformer/</link><description>Recent content in transformer on tsumli-pages</description><generator>Hugo -- gohugo.io</generator><language>ja</language><copyright>© {year}</copyright><lastBuildDate>Thu, 14 Oct 2021 15:55:54 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/transformer/index.xml" rel="self" type="application/rss+xml"/><item><title>Video Swin Transformer を読む</title><link>https://tsumli.github.io/blog/paper/video-swin-transformer/</link><pubDate>Thu, 14 Oct 2021 15:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/video-swin-transformer/</guid><description>Video Swin Transformer という論文を読んでいきます (本文中の図は論文より引用) 。ざっくり言うと、Swin Transformerをそのままvideoの入力に拡張</description></item><item><title>Swin Transformer: Hierarchical Vision Transformer using Shifted Windows を読む</title><link>https://tsumli.github.io/blog/paper/swin-transformer/</link><pubDate>Thu, 14 Oct 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/swin-transformer/</guid><description>Swin Transformer: Hierarchical Vision Transformer using Shifted Windows という論文を読んでいきます (本文中の図は論文より引用) 。 Method Figure 1. The architecture of a Swin Transformer (b) two successive Swin Transformer Blocks. Swin Transformerの全体像 (小さ</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Transformer on tsumli-pages</title><link>https://tsumli.github.io/tags/transformer/</link><description>Recent content in Transformer on tsumli-pages</description><generator>Hugo</generator><language>ja</language><copyright>© {year}</copyright><lastBuildDate>Thu, 14 Oct 2021 15:55:54 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/transformer/index.xml" rel="self" type="application/rss+xml"/><item><title>Video Swin Transformer を読む</title><link>https://tsumli.github.io/blog/paper/video-swin-transformer/</link><pubDate>Thu, 14 Oct 2021 15:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/video-swin-transformer/</guid><description>&lt;p>&lt;a href="https://arxiv.org/abs/2106.13230" 
+ 
+ target="_blank" rel="noreferrer noopener" 
+>&lt;strong>Video Swin Transformer&lt;/strong>&lt;/a>
+という論文を読んでいきます (本文中の図は論文より引用) 。ざっくり言うと、Swin Transformerをそのままvideoの入力に拡張した論文です。&lt;/p></description></item><item><title>Swin Transformer: Hierarchical Vision Transformer using Shifted Windows を読む</title><link>https://tsumli.github.io/blog/paper/swin-transformer/</link><pubDate>Thu, 14 Oct 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/blog/paper/swin-transformer/</guid><description>&lt;p>&lt;a href="https://arxiv.org/abs/2103.14030" 
+ 
+ target="_blank" rel="noreferrer noopener" 
+>&lt;strong>Swin Transformer: Hierarchical Vision Transformer using Shifted Windows&lt;/strong>&lt;/a>
+という論文を読んでいきます (本文中の図は論文より引用) 。&lt;/p>
+
+
+
+
+
+&lt;figure
+ 
+ 
+ 
+ style='margin:0 auto;text-align:center;'
+ >
+ &lt;a 
+ 
+ data-lightbox="image-images/compare_vit.png"
+ 
+ 
+ href="https://tsumli.github.io/blog/paper/swin-transformer/images/compare_vit.png"
+ 
+ 
+ >
+ &lt;img
+ 
+ src="https://tsumli.github.io/blog/paper/swin-transformer/images/compare_vit.png"
+ 
+ 
+ 
+ />
+ &lt;/a>
+ 
+ 
+&lt;/figure>
+
+
+
+
+&lt;h2 id="method">Method&lt;/h2>
+&lt;p>
+ 
+
+
+
+
+
+&lt;figure
+ 
+ 
+ 
+ style='margin:0 auto;text-align:center;'
+ >
+ &lt;a 
+ 
+ data-lightbox="image-images/architecture.png"
+ 
+ 
+ href="https://tsumli.github.io/blog/paper/swin-transformer/images/architecture.png"
+ 
+ 
+ >
+ &lt;img
+ 
+ src="https://tsumli.github.io/blog/paper/swin-transformer/images/architecture.png"
+ 
+ alt="The architecture of a Swin Transformer (b) two successive Swin Transformer Blocks."
+ 
+ 
+ />
+ &lt;/a>
+ 
+ 
+ &lt;figcaption>
+ &lt;span class="img--caption">
+ Figure 1. The architecture of a Swin Transformer (b) two successive Swin Transformer Blocks.
+ 
+ &lt;/span>
+ &lt;/figcaption>
+ 
+&lt;/figure>
+
+
+
+
+Swin Transformerの全体像 (小さいバージョン)。
+まず、RGB画像をオーバーラップしないようにpatchに分ける。そして、そのRGB値をconcatしたものが特徴量として扱われる。
+この論文では、$4\times 4$ のpatchに分けている。つまり、 特徴量は $4\times 4 \times 3 = 48$ 次元となる。
+この特徴量は線形層に通され、任意の次元に投影される。&lt;/p></description></item></channel></rss>
