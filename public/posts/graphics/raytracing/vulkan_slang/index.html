@@ -27,21 +27,46 @@ SlangとVulkanを用いてRaytracingを行う記事があまりなかったの�
     Link to heading
   
 
-Sascha WillemsのVulkanレポジトリで、GLSL/HLSLに加えて採用されたりと、個人的に気になっているシェーディング言語です。
+最近ではSascha WillemsのVulkanレポジトリで、GLSL/HLSLに加えて採用されたりと、使用例もだんだん増えてきている印象があります。
+少し書いてみて感じたのは、SlangはHLSL, GLSLとは違い書いていてストレスが少ないです。また、vscodeの拡張機能でsyntax highlightingもサポートされているのも大きいでしょう。
+文法的にはhlslに似ており、glslを書いていることが多かった自分としてはかなり違いがあって戸惑いました。slangの機能の一部を紹介しましょう
 
-  References
+  Interface
   
     
     Link to heading
   
 
 
-Slang User’s Guide
+  Generics
+  
+    
+    Link to heading
+  
 
-HLSL, GLSLからの移行ガイドなど
+
+  Variadic Generics
+  
+    
+    Link to heading
+  
 
 
-">
+  Automatic Differentiation
+  
+    
+    Link to heading
+  
+
+
+  Reflection
+  
+    
+    Link to heading
+  
+
+reflectionがあるとvulkanコードとの整合性チェックやdescriptor set layoutなどの自動生成が可能になります。
+spirv-cross">
 <meta name="keywords" content="raytracing, graphics">
 
 
@@ -49,15 +74,15 @@ HLSL, GLSLからの移行ガイドなど
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="SlangとVulkanでのRaytracing">
   <meta name="twitter:description" content="はじめに Link to heading SlangとVulkanを用いてRaytracingを行う記事があまりなかったので書きます
-Slangとは Link to heading Sascha WillemsのVulkanレポジトリで、GLSL/HLSLに加えて採用されたりと、個人的に気になっているシェーディング言語です。
-References Link to heading Slang User’s Guide HLSL, GLSLからの移行ガイドなど">
+Slangとは Link to heading 最近ではSascha WillemsのVulkanレポジトリで、GLSL/HLSLに加えて採用されたりと、使用例もだんだん増えてきている印象があります。 少し書いてみて感じたのは、SlangはHLSL, GLSLとは違い書いていてストレスが少ないです。また、vscodeの拡張機能でsyntax highlightingもサポートされているのも大きいでしょう。 文法的にはhlslに似ており、glslを書いていることが多かった自分としてはかなり違いがあって戸惑いました。slangの機能の一部を紹介しましょう
+Interface Link to heading Generics Link to heading Variadic Generics Link to heading Automatic Differentiation Link to heading Reflection Link to heading reflectionがあるとvulkanコードとの整合性チェックやdescriptor set layoutなどの自動生成が可能になります。 spirv-cross">
 
 <meta property="og:url" content="http://localhost:1313/posts/graphics/raytracing/vulkan_slang/">
   <meta property="og:site_name" content="tsumli pages">
   <meta property="og:title" content="SlangとVulkanでのRaytracing">
   <meta property="og:description" content="はじめに Link to heading SlangとVulkanを用いてRaytracingを行う記事があまりなかったので書きます
-Slangとは Link to heading Sascha WillemsのVulkanレポジトリで、GLSL/HLSLに加えて採用されたりと、個人的に気になっているシェーディング言語です。
-References Link to heading Slang User’s Guide HLSL, GLSLからの移行ガイドなど">
+Slangとは Link to heading 最近ではSascha WillemsのVulkanレポジトリで、GLSL/HLSLに加えて採用されたりと、使用例もだんだん増えてきている印象があります。 少し書いてみて感じたのは、SlangはHLSL, GLSLとは違い書いていてストレスが少ないです。また、vscodeの拡張機能でsyntax highlightingもサポートされているのも大きいでしょう。 文法的にはhlslに似ており、glslを書いていることが多かった自分としてはかなり違いがあって戸惑いました。slangの機能の一部を紹介しましょう
+Interface Link to heading Generics Link to heading Variadic Generics Link to heading Automatic Differentiation Link to heading Reflection Link to heading reflectionがあるとvulkanコードとの整合性チェックやdescriptor set layoutなどの自動生成が可能になります。 spirv-cross">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -217,7 +242,46 @@ References Link to heading Slang User’s Guide HLSL, GLSLからの移行ガイ�
     <span class="sr-only">Link to heading</span>
   </a>
 </h3>
-<p>Sascha Willemsの<a href="https://github.com/SaschaWillems/Vulkan"  class="external-link" target="_blank" rel="noopener">Vulkan</a>レポジトリで、GLSL/HLSLに加えて<a href="https://www.saschawillems.de/blog/2025/06/03/shaders-for-vulkan-samples-now-also-available-in-slang/"  class="external-link" target="_blank" rel="noopener">採用</a>されたりと、個人的に気になっているシェーディング言語です。</p>
+<p>最近ではSascha Willemsの<a href="https://github.com/SaschaWillems/Vulkan"  class="external-link" target="_blank" rel="noopener">Vulkan</a>レポジトリで、<a href="https://www.saschawillems.de/blog/2025/06/03/shaders-for-vulkan-samples-now-also-available-in-slang/"  class="external-link" target="_blank" rel="noopener">GLSL/HLSLに加えて採用されたり</a>と、使用例もだんだん増えてきている印象があります。
+少し書いてみて感じたのは、SlangはHLSL, GLSLとは違い書いていてストレスが少ないです。また、vscodeの拡張機能でsyntax highlightingもサポートされているのも大きいでしょう。
+文法的にはhlslに似ており、glslを書いていることが多かった自分としてはかなり違いがあって戸惑いました。slangの機能の一部を紹介しましょう</p>
+<h4 id="interface">
+  Interface
+  <a class="heading-link" href="#interface">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h4>
+<h4 id="generics">
+  Generics
+  <a class="heading-link" href="#generics">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h4>
+<h4 id="variadic-generics">
+  Variadic Generics
+  <a class="heading-link" href="#variadic-generics">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h4>
+<h4 id="automatic-differentiation">
+  Automatic Differentiation
+  <a class="heading-link" href="#automatic-differentiation">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h4>
+<h4 id="reflection">
+  Reflection
+  <a class="heading-link" href="#reflection">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h4>
+<p>reflectionがあるとvulkanコードとの整合性チェックやdescriptor set layoutなどの自動生成が可能になります。
+spirv-cross</p>
 <h2 id="references">
   References
   <a class="heading-link" href="#references">
@@ -226,6 +290,7 @@ References Link to heading Slang User’s Guide HLSL, GLSLからの移行ガイ�
   </a>
 </h2>
 <ul>
+<li><a href="https://shader-slang.org/slang-playground/"  class="external-link" target="_blank" rel="noopener">Slang Playground</a></li>
 <li><a href="https://docs.shader-slang.org/en/latest/external/slang/docs/user-guide/"  class="external-link" target="_blank" rel="noopener">Slang User’s Guide</a>
 <ul>
 <li>HLSL, GLSLからの移行ガイドなど</li>
