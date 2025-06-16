@@ -13,6 +13,9 @@ shortname = "tsumli"
 
 [markup.highlight]
 style = "github-dark"
+guessSyntax = true
+lineNos = true
+codeFences = true
 
 [params]
 faviconSVG = "/img/favicon.svg"

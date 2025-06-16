@@ -68,8 +68,55 @@ let uv = Interpolate(v0.uv, v1.uv, v2.uv, attr.barycentrics);      // uvはfloat
 Reflectionを使うことによって、Vulkanコードとの整合性チェックやDescriptorSetLayoutなどの自動生成が可能になります。
 [SPIRV-Cross](https://github.com/KhronosGroup/SPIRV-Cross)というおなじみのツールがあるので、もし複数のシェーダ言語をSPIR-Vに変換して扱う場合はこちらを使うのも良いでしょう。
 
+## Vulkan Raytracing
+今回はC++でコードを書き、[Vulkan-Hpp](https://github.com/KhronosGroup/Vulkan-Hpp)を用いてVulkanのAPIを呼び出します。
+
+raytracingを使うためにはまず対応したdevice extensionを有効にする必要があります。
+```cpp
+constexpr auto kDeviceExtensions = std::to_array<const char*>({
+    vk::KHRPipelineLibraryExtensionName,
+    vk::KHRRayTracingPipelineExtensionName,
+    vk::KHRAccelerationStructureExtensionName,
+    vk::EXTDescriptorIndexingExtensionName,
+    // ...
+});
+```
+
+logical deviceを作成する際に、対応するfeatureを有効にしてあげます。
+Vulkan-HppではStructureChainを用いて、以下のように記述することができます (`.sType`や`.pNext`を手動で設定する必要がない)
+```cpp
+vk::StructureChain<
+  /* ... */,
+  vk::PhysicalDeviceBufferDeviceAddressFeatures,
+  vk::PhysicalDeviceAccelerationStructureFeaturesKHR,
+  vk::PhysicalDeviceRayTracingPipelineFeaturesKHR,
+  vk::PhysicalDeviceDescriptorIndexingFeatures>
+  chain;
+
+chain.get<vk::PhysicalDeviceBufferDeviceAddressFeatures>()
+  .setBufferDeviceAddress(VK_TRUE);
+
+chain.get<vk::PhysicalDeviceAccelerationStructureFeaturesKHR>()
+  .setAccelerationStructure(VK_TRUE)
+  .setAccelerationStructureCaptureReplay(VK_TRUE)
+  .setDescriptorBindingAccelerationStructureUpdateAfterBind(VK_TRUE);
+
+chain.get<vk::PhysicalDeviceRayTracingPipelineFeaturesKHR>()
+  .setRayTracingPipeline(VK_TRUE)
+  .setRayTracingPipelineTraceRaysIndirect(VK_TRUE)
+  .setRayTraversalPrimitiveCulling(VK_TRUE);
+
+chain.get<vk::PhysicalDeviceDescriptorIndexingFeatures>()
+  .setShaderInputAttachmentArrayDynamicIndexing(VK_TRUE)
+  // ...
+```
+
+
 
 ## 感想
+- slangは書いててSAN値が削られにくいので良いです
+- asan使用するとraytracingのdevice extensionが有効にならないことに気づかず1週間くらい溶かしてしまいました。なぜ...
+- imguiがいつの間にかdynamic renderingに対応していて感動した (関係ない)
 
 
 ## References
