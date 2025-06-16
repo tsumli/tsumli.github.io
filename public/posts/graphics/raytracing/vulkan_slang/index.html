@@ -19,7 +19,7 @@
     Link to heading
   
 
-SlangとVulkanを用いてRaytracingを行う記事があまりなかったので書きます
+SlangとVulkanを用いてRaytracingを触ってみたメモ
 
   Slangとは
   
@@ -27,62 +27,60 @@ SlangとVulkanを用いてRaytracingを行う記事があまりなかったの�
     Link to heading
   
 
-最近ではSascha WillemsのVulkanレポジトリで、GLSL/HLSLに加えて採用されたりと、使用例もだんだん増えてきている印象があります。
-少し書いてみて感じたのは、SlangはHLSL, GLSLとは違い書いていてストレスが少ないです。また、vscodeの拡張機能でsyntax highlightingもサポートされているのも大きいでしょう。
-文法的にはhlslに似ており、glslを書いていることが多かった自分としてはかなり違いがあって戸惑いました。slangの機能の一部を紹介しましょう
+最近では、Sascha Willems 氏の Vulkan サンプル集でも、GLSL/HLSL に加えて Slang が採用されるなど、使用例が徐々に増えてきている印象です。
+少し触ってみて感じたのは、Slang は HLSL や GLSL に比べて書いていてストレスが少ないということです。VSCode 向けの拡張機能によるシンタックスハイライトもサポートされており、開発体験が快適なのも大きなポイントでしょう。
+文法的には HLSL に近く、GLSL に慣れていた自分としては最初は戸惑う部分もありましたが、慣れてくると Slang独自の機能や設計がとても魅力的に感じられます。
+Slang の特徴的な機能をいくつか紹介していきます。
 
-  Interface
+  1. Interface
   
     
     Link to heading
   
 
+structにinterfaceを持たせることができます。例えば、Light interfaceを定義して、それを実装するPointLight, AreaLightなどを作るという例が紹介されています
+(Interfaces Design.)
+interface IFoo
+{
+    int MyMethod(float arg);
+}
 
-  Generics
+struct MyType : IFoo
+{
+    int MyMethod(float arg)
+    {
+        return (int)arg &#43; 1;
+    }
+}
+
+  2. Generics
   
     
     Link to heading
   
 
-
-  Variadic Generics
-  
-    
-    Link to heading
-  
-
-
-  Automatic Differentiation
-  
-    
-    Link to heading
-  
-
-
-  Reflection
-  
-    
-    Link to heading
-  
-
-reflectionがあるとvulkanコードとの整合性チェックやdescriptor set layoutなどの自動生成が可能になります。
-spirv-cross">
+GLSLには存在しなかった機能のひとつに、Genericsがあります。
+HLSLではHLSL 2021でtemplate機能が導入されており、これがそれに近い仕組みと言えるでしょう。">
 <meta name="keywords" content="raytracing, graphics">
 
 
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="SlangとVulkanでのRaytracing">
-  <meta name="twitter:description" content="はじめに Link to heading SlangとVulkanを用いてRaytracingを行う記事があまりなかったので書きます
-Slangとは Link to heading 最近ではSascha WillemsのVulkanレポジトリで、GLSL/HLSLに加えて採用されたりと、使用例もだんだん増えてきている印象があります。 少し書いてみて感じたのは、SlangはHLSL, GLSLとは違い書いていてストレスが少ないです。また、vscodeの拡張機能でsyntax highlightingもサポートされているのも大きいでしょう。 文法的にはhlslに似ており、glslを書いていることが多かった自分としてはかなり違いがあって戸惑いました。slangの機能の一部を紹介しましょう
-Interface Link to heading Generics Link to heading Variadic Generics Link to heading Automatic Differentiation Link to heading Reflection Link to heading reflectionがあるとvulkanコードとの整合性チェックやdescriptor set layoutなどの自動生成が可能になります。 spirv-cross">
+  <meta name="twitter:description" content="はじめに Link to heading SlangとVulkanを用いてRaytracingを触ってみたメモ
+Slangとは Link to heading 最近では、Sascha Willems 氏の Vulkan サンプル集でも、GLSL/HLSL に加えて Slang が採用されるなど、使用例が徐々に増えてきている印象です。 少し触ってみて感じたのは、Slang は HLSL や GLSL に比べて書いていてストレスが少ないということです。VSCode 向けの拡張機能によるシンタックスハイライトもサポートされており、開発体験が快適なのも大きなポイントでしょう。 文法的には HLSL に近く、GLSL に慣れていた自分としては最初は戸惑う部分もありましたが、慣れてくると Slang独自の機能や設計がとても魅力的に感じられます。
+Slang の特徴的な機能をいくつか紹介していきます。
+1. Interface Link to heading structにinterfaceを持たせることができます。例えば、Light interfaceを定義して、それを実装するPointLight, AreaLightなどを作るという例が紹介されています (Interfaces Design.)
+interface IFoo { int MyMethod(float arg); } struct MyType : IFoo { int MyMethod(float arg) { return (int)arg &#43; 1; } } 2. Generics Link to heading GLSLには存在しなかった機能のひとつに、Genericsがあります。 HLSLではHLSL 2021でtemplate機能が導入されており、これがそれに近い仕組みと言えるでしょう。">
 
 <meta property="og:url" content="http://localhost:1313/posts/graphics/raytracing/vulkan_slang/">
   <meta property="og:site_name" content="tsumli pages">
   <meta property="og:title" content="SlangとVulkanでのRaytracing">
-  <meta property="og:description" content="はじめに Link to heading SlangとVulkanを用いてRaytracingを行う記事があまりなかったので書きます
-Slangとは Link to heading 最近ではSascha WillemsのVulkanレポジトリで、GLSL/HLSLに加えて採用されたりと、使用例もだんだん増えてきている印象があります。 少し書いてみて感じたのは、SlangはHLSL, GLSLとは違い書いていてストレスが少ないです。また、vscodeの拡張機能でsyntax highlightingもサポートされているのも大きいでしょう。 文法的にはhlslに似ており、glslを書いていることが多かった自分としてはかなり違いがあって戸惑いました。slangの機能の一部を紹介しましょう
-Interface Link to heading Generics Link to heading Variadic Generics Link to heading Automatic Differentiation Link to heading Reflection Link to heading reflectionがあるとvulkanコードとの整合性チェックやdescriptor set layoutなどの自動生成が可能になります。 spirv-cross">
+  <meta property="og:description" content="はじめに Link to heading SlangとVulkanを用いてRaytracingを触ってみたメモ
+Slangとは Link to heading 最近では、Sascha Willems 氏の Vulkan サンプル集でも、GLSL/HLSL に加えて Slang が採用されるなど、使用例が徐々に増えてきている印象です。 少し触ってみて感じたのは、Slang は HLSL や GLSL に比べて書いていてストレスが少ないということです。VSCode 向けの拡張機能によるシンタックスハイライトもサポートされており、開発体験が快適なのも大きなポイントでしょう。 文法的には HLSL に近く、GLSL に慣れていた自分としては最初は戸惑う部分もありましたが、慣れてくると Slang独自の機能や設計がとても魅力的に感じられます。
+Slang の特徴的な機能をいくつか紹介していきます。
+1. Interface Link to heading structにinterfaceを持たせることができます。例えば、Light interfaceを定義して、それを実装するPointLight, AreaLightなどを作るという例が紹介されています (Interfaces Design.)
+interface IFoo { int MyMethod(float arg); } struct MyType : IFoo { int MyMethod(float arg) { return (int)arg &#43; 1; } } 2. Generics Link to heading GLSLには存在しなかった機能のひとつに、Genericsがあります。 HLSLではHLSL 2021でtemplate機能が導入されており、これがそれに近い仕組みと言えるでしょう。">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -234,7 +232,7 @@ Interface Link to heading Generics Link to heading Variadic Generics Link to hea
     <span class="sr-only">Link to heading</span>
   </a>
 </h2>
-<p>SlangとVulkanを用いてRaytracingを行う記事があまりなかったので書きます</p>
+<p>SlangとVulkanを用いてRaytracingを触ってみたメモ</p>
 <h3 id="slangとは">
   Slangとは
   <a class="heading-link" href="#slang%e3%81%a8%e3%81%af">
@@ -242,46 +240,75 @@ Interface Link to heading Generics Link to heading Variadic Generics Link to hea
     <span class="sr-only">Link to heading</span>
   </a>
 </h3>
-<p>最近ではSascha Willemsの<a href="https://github.com/SaschaWillems/Vulkan"  class="external-link" target="_blank" rel="noopener">Vulkan</a>レポジトリで、<a href="https://www.saschawillems.de/blog/2025/06/03/shaders-for-vulkan-samples-now-also-available-in-slang/"  class="external-link" target="_blank" rel="noopener">GLSL/HLSLに加えて採用されたり</a>と、使用例もだんだん増えてきている印象があります。
-少し書いてみて感じたのは、SlangはHLSL, GLSLとは違い書いていてストレスが少ないです。また、vscodeの拡張機能でsyntax highlightingもサポートされているのも大きいでしょう。
-文法的にはhlslに似ており、glslを書いていることが多かった自分としてはかなり違いがあって戸惑いました。slangの機能の一部を紹介しましょう</p>
-<h4 id="interface">
-  Interface
-  <a class="heading-link" href="#interface">
+<p>最近では、Sascha Willems 氏の <a href="https://github.com/SaschaWillems/Vulkan"  class="external-link" target="_blank" rel="noopener">Vulkan サンプル集</a>でも、<a href="https://www.saschawillems.de/blog/2025/06/03/shaders-for-vulkan-samples-now-also-available-in-slang/"  class="external-link" target="_blank" rel="noopener">GLSL/HLSL に加えて Slang が採用される</a>など、使用例が徐々に増えてきている印象です。
+少し触ってみて感じたのは、Slang は HLSL や GLSL に比べて書いていてストレスが少ないということです。VSCode 向けの拡張機能によるシンタックスハイライトもサポートされており、開発体験が快適なのも大きなポイントでしょう。
+文法的には HLSL に近く、GLSL に慣れていた自分としては最初は戸惑う部分もありましたが、慣れてくると Slang独自の機能や設計がとても魅力的に感じられます。</p>
+<p>Slang の特徴的な機能をいくつか紹介していきます。</p>
+<h4 id="1-interface">
+  1. Interface
+  <a class="heading-link" href="#1-interface">
     <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
     <span class="sr-only">Link to heading</span>
   </a>
 </h4>
-<h4 id="generics">
-  Generics
-  <a class="heading-link" href="#generics">
+<p>structにinterfaceを持たせることができます。例えば、Light interfaceを定義して、それを実装するPointLight, AreaLightなどを作るという例が紹介されています
+(<a href="https://github.com/shader-slang/slang/blob/master/docs/design/interfaces.md"  class="external-link" target="_blank" rel="noopener">Interfaces Design</a>.)</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>interface IFoo
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#ff7b72">int</span> <span style="color:#d2a8ff;font-weight:bold">MyMethod</span>(<span style="color:#ff7b72">float</span> arg);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff7b72">struct</span> <span style="color:#f0883e;font-weight:bold">MyType</span> <span style="color:#ff7b72;font-weight:bold">:</span> IFoo
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#ff7b72">int</span> <span style="color:#d2a8ff;font-weight:bold">MyMethod</span>(<span style="color:#ff7b72">float</span> arg)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff7b72">return</span> (<span style="color:#ff7b72">int</span>)arg <span style="color:#ff7b72;font-weight:bold">+</span> <span style="color:#a5d6ff">1</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h4 id="2-generics">
+  2. Generics
+  <a class="heading-link" href="#2-generics">
     <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
     <span class="sr-only">Link to heading</span>
   </a>
 </h4>
-<h4 id="variadic-generics">
-  Variadic Generics
-  <a class="heading-link" href="#variadic-generics">
+<p>GLSLには存在しなかった機能のひとつに、Genericsがあります。
+HLSLでは<a href="https://devblogs.microsoft.com/directx/announcing-hlsl-2021/"  class="external-link" target="_blank" rel="noopener">HLSL 2021</a>でtemplate機能が導入されており、これがそれに近い仕組みと言えるでしょう。</p>
+<p>以下はGenericsを用いたコードの例です:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>T Interpolate<span style="color:#ff7b72;font-weight:bold">&lt;</span><span style="color:#79c0ff;font-weight:bold">T</span> : IFloat<span style="color:#ff7b72;font-weight:bold">&gt;</span>(T v0, T v1, T v2, float2 uv) {
+</span></span><span style="display:flex;"><span>  let bary_u <span style="color:#ff7b72;font-weight:bold">=</span> T(uv.x);
+</span></span><span style="display:flex;"><span>  let bary_v <span style="color:#ff7b72;font-weight:bold">=</span> T(uv.y);
+</span></span><span style="display:flex;"><span>  let bary_w <span style="color:#ff7b72;font-weight:bold">=</span> T(<span style="color:#a5d6ff">1.0</span>) <span style="color:#ff7b72;font-weight:bold">-</span> bary_u <span style="color:#ff7b72;font-weight:bold">-</span> bary_v;
+</span></span><span style="display:flex;"><span>  <span style="color:#ff7b72">return</span> v0 <span style="color:#ff7b72;font-weight:bold">*</span> bary_w <span style="color:#ff7b72;font-weight:bold">+</span> v1 <span style="color:#ff7b72;font-weight:bold">*</span> bary_u <span style="color:#ff7b72;font-weight:bold">+</span> v2 <span style="color:#ff7b72;font-weight:bold">*</span> bary_v;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>こうして定義された関数は以下のように利用できます:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>let pos <span style="color:#ff7b72;font-weight:bold">=</span> Interpolate(v0.pos, v1.pos, v2.pos, attr.barycentrics);  <span style="color:#8b949e;font-style:italic">// posはfloat3
+</span></span></span><span style="display:flex;"><span><span style="color:#8b949e;font-style:italic"></span>let uv <span style="color:#ff7b72;font-weight:bold">=</span> Interpolate(v0.uv, v1.uv, v2.uv, attr.barycentrics);      <span style="color:#8b949e;font-style:italic">// uvはfloat2
+</span></span></span></code></pre></div><p>ジェネリクスを使うことで、同じロジックを複数の型に対して簡単に記述できて便利ですね</p>
+<h4 id="3-automatic-differentiation">
+  3. Automatic Differentiation
+  <a class="heading-link" href="#3-automatic-differentiation">
     <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
     <span class="sr-only">Link to heading</span>
   </a>
 </h4>
-<h4 id="automatic-differentiation">
-  Automatic Differentiation
-  <a class="heading-link" href="#automatic-differentiation">
+<p>自動微分を行うことができます。今回は深入りしませんが応用先は多そうです。</p>
+<h4 id="4-reflection">
+  4. Reflection
+  <a class="heading-link" href="#4-reflection">
     <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
     <span class="sr-only">Link to heading</span>
   </a>
 </h4>
-<h4 id="reflection">
-  Reflection
-  <a class="heading-link" href="#reflection">
+<p>Reflectionを使うことによって、Vulkanコードとの整合性チェックやDescriptorSetLayoutなどの自動生成が可能になります。
+<a href="https://github.com/KhronosGroup/SPIRV-Cross"  class="external-link" target="_blank" rel="noopener">SPIRV-Cross</a>というおなじみのツールがあるので、もし複数のシェーダ言語をSPIR-Vに変換して扱う場合はこちらを使うのも良いでしょう。</p>
+<h2 id="感想">
+  感想
+  <a class="heading-link" href="#%e6%84%9f%e6%83%b3">
     <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
     <span class="sr-only">Link to heading</span>
   </a>
-</h4>
-<p>reflectionがあるとvulkanコードとの整合性チェックやdescriptor set layoutなどの自動生成が可能になります。
-spirv-cross</p>
+</h2>
 <h2 id="references">
   References
   <a class="heading-link" href="#references">
@@ -294,6 +321,11 @@ spirv-cross</p>
 <li><a href="https://docs.shader-slang.org/en/latest/external/slang/docs/user-guide/"  class="external-link" target="_blank" rel="noopener">Slang User’s Guide</a>
 <ul>
 <li>HLSL, GLSLからの移行ガイドなど</li>
+</ul>
+</li>
+<li><a href="https://github.com/shader-slang/slangpy"  class="external-link" target="_blank" rel="noopener">shader-slang/slangpy</a>
+<ul>
+<li>Slangをpythonで扱うためのライブラリ. compute shaderだけではなくgraphicsやhardware raytracingなども行うことができて汎用性が高い</li>
 </ul>
 </li>
 </ul>
