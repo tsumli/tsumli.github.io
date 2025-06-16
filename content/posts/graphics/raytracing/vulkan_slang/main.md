@@ -4,7 +4,7 @@ date: 2025-06-16T10:01:52Z
 slug: "raytracing"
 description: ""
 keywords: ["raytracing", "graphics"]
-draft: true
+draft: false
 tags: ["raytracing", "graphics"]
 url: "posts/graphics/raytracing/vulkan_slang"
 math: true

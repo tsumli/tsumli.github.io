@@ -1,0 +1,810 @@
+<!doctype html><html lang=en><head><title>SlangとVulkanでのRaytracing · tsumli pages</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=color-scheme content="light dark"><meta name=description content="
+  はじめに
+  
+    
+    Link to heading
+  
+
+SlangとVulkanを用いてRaytracingを触ってみたメモ
+
+  Slangとは?
+  
+    
+    Link to heading
+  
+
+最近話題の (?) シェーディング言語です。GLSLやHLSLと互換性を保ちつつ、Genericsやinterfaceなどのモダンなプログラミング機能を取り入れているのが特徴です。
+生成できるターゲットは幅広く、GLSL、HLSL、SPIR-V、Metal、CUDA、WGSLに加えて、CPU向けのC++コードの生成にも対応しており、クロスプラットフォームかつバックエンド非依存なシェーダー開発を可能にします。
+最近では、Sascha Willems 氏の Vulkan サンプル集でも、GLSL/HLSL に加えて Slang が採用されるなど、使用例が徐々に増えてきている印象です。
+少し触ってみて感じたのは、SlangはHLSLやGLSLに比べて書いていてストレスが少ないということです。VSCode向けの拡張機能によるシンタックスハイライトもサポートされており、開発体験が快適なのも大きなポイントでしょう。
+文法的にはHLSLに近く、GLSLに慣れていた自分としては最初は戸惑う部分もありましたが、慣れてくると書きやすく感じます。
+Slang の特徴的な機能をいくつか紹介していきます。
+
+  1. Interface
+  
+    
+    Link to heading
+  
+
+structにinterfaceを持たせることができます。例えば、Light interfaceを定義して、それを実装するPointLight, AreaLightなどを作るという例が紹介されています
+(Interfaces Design.)
+
+
+ 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+
+
+interface IFoo
+{
+    int MyMethod(float arg);
+}
+
+struct MyType : IFoo
+{
+    int MyMethod(float arg)
+    {
+        return (int)arg + 1;
+    }
+}
+
+
+
+  2. Generics
+  
+    
+    Link to heading
+  
+
+GLSLには存在しなかった機能のひとつに、Genericsがあります。
+HLSLではHLSL 2021でtemplate機能が導入されており、これがそれに近い仕組みと言えるでしょう。"><meta name=keywords content="raytracing,graphics"><meta name=twitter:card content="summary"><meta name=twitter:title content="SlangとVulkanでのRaytracing"><meta name=twitter:description content="はじめに Link to heading SlangとVulkanを用いてRaytracingを触ってみたメモ
+Slangとは? Link to heading 最近話題の (?) シェーディング言語です。GLSLやHLSLと互換性を保ちつつ、Genericsやinterfaceなどのモダンなプログラミング機能を取り入れているのが特徴です。 生成できるターゲットは幅広く、GLSL、HLSL、SPIR-V、Metal、CUDA、WGSLに加えて、CPU向けのC++コードの生成にも対応しており、クロスプラットフォームかつバックエンド非依存なシェーダー開発を可能にします。 最近では、Sascha Willems 氏の Vulkan サンプル集でも、GLSL/HLSL に加えて Slang が採用されるなど、使用例が徐々に増えてきている印象です。 少し触ってみて感じたのは、SlangはHLSLやGLSLに比べて書いていてストレスが少ないということです。VSCode向けの拡張機能によるシンタックスハイライトもサポートされており、開発体験が快適なのも大きなポイントでしょう。 文法的にはHLSLに近く、GLSLに慣れていた自分としては最初は戸惑う部分もありましたが、慣れてくると書きやすく感じます。
+Slang の特徴的な機能をいくつか紹介していきます。
+1. Interface Link to heading structにinterfaceを持たせることができます。例えば、Light interfaceを定義して、それを実装するPointLight, AreaLightなどを作るという例が紹介されています (Interfaces Design.)
+1 2 3 4 5 6 7 8 9 10 11 12 interface IFoo { int MyMethod(float arg); } struct MyType : IFoo { int MyMethod(float arg) { return (int)arg + 1; } } 2. Generics Link to heading GLSLには存在しなかった機能のひとつに、Genericsがあります。 HLSLではHLSL 2021でtemplate機能が導入されており、これがそれに近い仕組みと言えるでしょう。"><meta property="og:url" content="https://tsumli.github.io/posts/graphics/raytracing/vulkan_slang/"><meta property="og:site_name" content="tsumli pages"><meta property="og:title" content="SlangとVulkanでのRaytracing"><meta property="og:description" content="はじめに Link to heading SlangとVulkanを用いてRaytracingを触ってみたメモ
+Slangとは? Link to heading 最近話題の (?) シェーディング言語です。GLSLやHLSLと互換性を保ちつつ、Genericsやinterfaceなどのモダンなプログラミング機能を取り入れているのが特徴です。 生成できるターゲットは幅広く、GLSL、HLSL、SPIR-V、Metal、CUDA、WGSLに加えて、CPU向けのC++コードの生成にも対応しており、クロスプラットフォームかつバックエンド非依存なシェーダー開発を可能にします。 最近では、Sascha Willems 氏の Vulkan サンプル集でも、GLSL/HLSL に加えて Slang が採用されるなど、使用例が徐々に増えてきている印象です。 少し触ってみて感じたのは、SlangはHLSLやGLSLに比べて書いていてストレスが少ないということです。VSCode向けの拡張機能によるシンタックスハイライトもサポートされており、開発体験が快適なのも大きなポイントでしょう。 文法的にはHLSLに近く、GLSLに慣れていた自分としては最初は戸惑う部分もありましたが、慣れてくると書きやすく感じます。
+Slang の特徴的な機能をいくつか紹介していきます。
+1. Interface Link to heading structにinterfaceを持たせることができます。例えば、Light interfaceを定義して、それを実装するPointLight, AreaLightなどを作るという例が紹介されています (Interfaces Design.)
+1 2 3 4 5 6 7 8 9 10 11 12 interface IFoo { int MyMethod(float arg); } struct MyType : IFoo { int MyMethod(float arg) { return (int)arg + 1; } } 2. Generics Link to heading GLSLには存在しなかった機能のひとつに、Genericsがあります。 HLSLではHLSL 2021でtemplate機能が導入されており、これがそれに近い仕組みと言えるでしょう。"><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-06-16T10:01:52+00:00"><meta property="article:modified_time" content="2025-06-16T10:01:52+00:00"><meta property="article:tag" content="Raytracing"><meta property="article:tag" content="Graphics"><link rel=canonical href=https://tsumli.github.io/posts/graphics/raytracing/vulkan_slang/><link rel=preload href=/fonts/fa-brands-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=/fonts/fa-regular-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=/fonts/fa-solid-900.woff2 as=font type=font/woff2 crossorigin><link rel=stylesheet href=/css/coder.min.6445a802b9389c9660e1b07b724dcf5718b1065ed2d71b4eeaf981cc7cc5fc46.css integrity="sha256-ZEWoArk4nJZg4bB7ck3PVxixBl7S1xtO6vmBzHzF/EY=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/coder-dark.min.a00e6364bacbc8266ad1cc81230774a1397198f8cfb7bcba29b7d6fcb54ce57f.css integrity="sha256-oA5jZLrLyCZq0cyBIwd0oTlxmPjPt7y6KbfW/LVM5X8=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/custom.min.5fc0bca9f2f250cd2f46d1b47b5d85a80c0780e2de59f0ed76ac61a21e33e26a.css integrity="sha256-X8C8qfLyUM0vRtG0e12FqAwHgOLeWfDtdqxhoh4z4mo=" crossorigin=anonymous media=screen><link rel=icon type=image/svg+xml href=/img/favicon.svg sizes=any><link rel=icon type=image/png href=/images/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/images/favicon-16x16.png sizes=16x16><link rel=apple-touch-icon href=/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/images/safari-pinned-tab.svg color=#5bbad5></head><body class="preload-transitions colorscheme-auto"><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=https://tsumli.github.io/>tsumli pages
+</a><input type=checkbox id=menu-toggle>
+<label class="menu-button float-right" for=menu-toggle><i class="fa-solid fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=/posts/>Blog</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://tsumli.github.io/posts/graphics/raytracing/vulkan_slang/>SlangとVulkanでのRaytracing</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa-solid fa-calendar" aria-hidden=true></i>
+<time datetime=2025-06-16T10:01:52Z>June 16, 2025
+</time></span><span class=reading-time><i class="fa-solid fa-clock" aria-hidden=true></i>
+7-minute read</span></div><div class=tags><i class="fa-solid fa-tag" aria-hidden=true></i>
+<span class=tag><a href=/tags/raytracing/>Raytracing</a>
+</span><span class=separator>•</span>
+<span class=tag><a href=/tags/graphics/>Graphics</a></span></div></div></header><div class=post-content><h2 id=はじめに>はじめに
+<a class=heading-link href=#%e3%81%af%e3%81%98%e3%82%81%e3%81%ab><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p>SlangとVulkanを用いてRaytracingを触ってみたメモ</p><h3 id=slangとは>Slangとは?
+<a class=heading-link href=#slang%e3%81%a8%e3%81%af><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h3><p>最近話題の (?) シェーディング言語です。GLSLやHLSLと互換性を保ちつつ、Genericsやinterfaceなどのモダンなプログラミング機能を取り入れているのが特徴です。
+生成できるターゲットは幅広く、GLSL、HLSL、SPIR-V、Metal、CUDA、WGSLに加えて、CPU向けのC++コードの生成にも対応しており、クロスプラットフォームかつバックエンド非依存なシェーダー開発を可能にします。
+最近では、Sascha Willems 氏の <a href=https://github.com/SaschaWillems/Vulkan class=external-link target=_blank rel=noopener>Vulkan サンプル集</a>でも、<a href=https://www.saschawillems.de/blog/2025/06/03/shaders-for-vulkan-samples-now-also-available-in-slang/ class=external-link target=_blank rel=noopener>GLSL/HLSL に加えて Slang が採用される</a>など、使用例が徐々に増えてきている印象です。
+少し触ってみて感じたのは、SlangはHLSLやGLSLに比べて書いていてストレスが少ないということです。VSCode向けの拡張機能によるシンタックスハイライトもサポートされており、開発体験が快適なのも大きなポイントでしょう。
+文法的にはHLSLに近く、GLSLに慣れていた自分としては最初は戸惑う部分もありましたが、慣れてくると書きやすく感じます。</p><p>Slang の特徴的な機能をいくつか紹介していきます。</p><h4 id=1-interface>1. Interface
+<a class=heading-link href=#1-interface><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h4><p>structにinterfaceを持たせることができます。例えば、Light interfaceを定義して、それを実装するPointLight, AreaLightなどを作るという例が紹介されています
+(<a href=https://github.com/shader-slang/slang/blob/master/docs/design/interfaces.md class=external-link target=_blank rel=noopener>Interfaces Design</a>.)</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">12
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span>interface IFoo
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#ff7b72>int</span> <span style=color:#d2a8ff;font-weight:700>MyMethod</span>(<span style=color:#ff7b72>float</span> arg);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff7b72>struct</span> <span style=color:#f0883e;font-weight:700>MyType</span> <span style=color:#ff7b72;font-weight:700>:</span> IFoo
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#ff7b72>int</span> <span style=color:#d2a8ff;font-weight:700>MyMethod</span>(<span style=color:#ff7b72>float</span> arg)
+</span></span><span style=display:flex><span>    {
+</span></span><span style=display:flex><span>        <span style=color:#ff7b72>return</span> (<span style=color:#ff7b72>int</span>)arg <span style=color:#ff7b72;font-weight:700>+</span> <span style=color:#a5d6ff>1</span>;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><h4 id=2-generics>2. Generics
+<a class=heading-link href=#2-generics><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h4><p>GLSLには存在しなかった機能のひとつに、Genericsがあります。
+HLSLでは<a href=https://devblogs.microsoft.com/directx/announcing-hlsl-2021/ class=external-link target=_blank rel=noopener>HLSL 2021</a>でtemplate機能が導入されており、これがそれに近い仕組みと言えるでしょう。</p><p>以下はGenericsを用いたコードの例です。頂点の各アトリビュートを補完するための関数になります</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">6
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span>T Interpolate<span style=color:#ff7b72;font-weight:700>&lt;</span><span style=color:#79c0ff;font-weight:700>T</span> : IFloat<span style=color:#ff7b72;font-weight:700>&gt;</span>(T v0, T v1, T v2, float2 uv) {
+</span></span><span style=display:flex><span>  let bary_u <span style=color:#ff7b72;font-weight:700>=</span> T(uv.x);
+</span></span><span style=display:flex><span>  let bary_v <span style=color:#ff7b72;font-weight:700>=</span> T(uv.y);
+</span></span><span style=display:flex><span>  let bary_w <span style=color:#ff7b72;font-weight:700>=</span> T(<span style=color:#a5d6ff>1.0</span>) <span style=color:#ff7b72;font-weight:700>-</span> bary_u <span style=color:#ff7b72;font-weight:700>-</span> bary_v;
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>return</span> v0 <span style=color:#ff7b72;font-weight:700>*</span> bary_w <span style=color:#ff7b72;font-weight:700>+</span> v1 <span style=color:#ff7b72;font-weight:700>*</span> bary_u <span style=color:#ff7b72;font-weight:700>+</span> v2 <span style=color:#ff7b72;font-weight:700>*</span> bary_v;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>こうして定義された関数は以下のように利用できます:</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">2
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span>let pos <span style=color:#ff7b72;font-weight:700>=</span> Interpolate(v0.pos, v1.pos, v2.pos, attr.barycentrics);  <span style=color:#8b949e;font-style:italic>// posはfloat3
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>let uv <span style=color:#ff7b72;font-weight:700>=</span> Interpolate(v0.uv, v1.uv, v2.uv, attr.barycentrics);      <span style=color:#8b949e;font-style:italic>// uvはfloat2
+</span></span></span></code></pre></td></tr></table></div></div><p>ジェネリクスを使うことで、同じロジックを複数の型に対して簡単に記述できて便利ですね</p><h4 id=3-automatic-differentiation>3. Automatic Differentiation
+<a class=heading-link href=#3-automatic-differentiation><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h4><p>自動微分を行うことができます。今回は深入りしませんが応用先は多そうです。</p><h4 id=4-reflection>4. Reflection
+<a class=heading-link href=#4-reflection><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h4><p>Reflectionを使うことによって、Vulkanコードとの整合性チェックやDescriptorSetLayoutなどの自動生成が可能になります。
+<a href=https://github.com/KhronosGroup/SPIRV-Cross class=external-link target=_blank rel=noopener>SPIRV-Cross</a>というおなじみのツールがあるので、もし複数のシェーダ言語をSPIR-Vに変換して扱う場合はこちらを使うのも良いでしょう。</p><h2 id=vulkan--slang-raytracing>Vulkan + Slang Raytracing
+<a class=heading-link href=#vulkan--slang-raytracing><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p>実装していきます</p><h3 id=slang-side>Slang-side
+<a class=heading-link href=#slang-side><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h3><p>SlangでのRaytracingのコードを見てみましょう。今回はなるべくミニマルにコードを書きたいので、raygen shader, closest hit shader, miss shaderのみを使います。
+また、今回のゴールはglTFファイルを読み込んでbase color textureを描画することにします。</p><h4 id=1-使用する型の準備>1. 使用する型の準備
+<a class=heading-link href=#1-%e4%bd%bf%e7%94%a8%e3%81%99%e3%82%8b%e5%9e%8b%e3%81%ae%e6%ba%96%e5%82%99><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h4><p>まずは、glTFファイルを読み込むための型を定義します。</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">38
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">39
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">40
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">41
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">42
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">43
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">44
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#8b949e;font-style:italic>// types.slang
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span><span style=color:#ff7b72>typedef</span> <span style=color:#ff7b72>uint32_t</span> Index;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff7b72>struct</span> <span style=color:#f0883e;font-weight:700>Vertex</span> {
+</span></span><span style=display:flex><span>  float3 pos;
+</span></span><span style=display:flex><span>  float3 normal;
+</span></span><span style=display:flex><span>  float2 uv;
+</span></span><span style=display:flex><span>  float4 color;
+</span></span><span style=display:flex><span>  float4 tangent;
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff7b72>struct</span> <span style=color:#f0883e;font-weight:700>Material</span> {
+</span></span><span style=display:flex><span>  float4 base_color_factor;
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>float</span> metallic;
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>float</span> roughness;
+</span></span><span style=display:flex><span>  float3 emissive_factor;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// textures (-1 means no texture)
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  <span style=color:#ff7b72>int</span> base_color_texture_index;
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>int</span> normal_texture_index;
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>int</span> metallic_roughness_texture_index;
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>int</span> emissive_texture_index;
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff7b72>struct</span> <span style=color:#f0883e;font-weight:700>Texture</span> {
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>int</span> image_index;
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>int</span> sampler_index;
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff7b72>struct</span> <span style=color:#f0883e;font-weight:700>GeometryNode</span> {
+</span></span><span style=display:flex><span>  Vertex<span style=color:#ff7b72;font-weight:700>*</span> vertices;
+</span></span><span style=display:flex><span>  Index<span style=color:#ff7b72;font-weight:700>*</span> indices;
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>int</span> material_index;
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff7b72>struct</span> <span style=color:#f0883e;font-weight:700>CameraParams</span> {
+</span></span><span style=display:flex><span>  float4 position;
+</span></span><span style=display:flex><span>  float4x4 world;
+</span></span><span style=display:flex><span>  float4x4 view_proj;
+</span></span><span style=display:flex><span>  float4x4 world_view_proj;
+</span></span><span style=display:flex><span>  float4x4 proj_to_world;
+</span></span><span style=display:flex><span>  float4x4 view_inverse;
+</span></span><span style=display:flex><span>  float4x4 proj_inverse;
+</span></span><span style=display:flex><span>};
+</span></span></code></pre></td></tr></table></div></div><p><code>GeometryNode</code>は、各ジオメトリが持つ頂点データとインデックスデータ、そしてマテリアルへのインデックスを持つ型です。
+ポインタは直感的に<code>Vertex*</code>と記述できるのが嬉しいですね。次に、Rayが持つpayloadを定義します。</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">13
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#8b949e;font-style:italic>// ray_payload.slang
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>
+</span></span><span style=display:flex><span><span style=color:#ff7b72>struct</span> <span style=color:#f0883e;font-weight:700>RayPayload</span> {
+</span></span><span style=display:flex><span>  float3 color;
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>float</span> distance;
+</span></span><span style=display:flex><span>  float3 normal;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  __init() {
+</span></span><span style=display:flex><span>    color <span style=color:#ff7b72;font-weight:700>=</span> float3(<span style=color:#a5d6ff>0.0</span>, <span style=color:#a5d6ff>0.0</span>, <span style=color:#a5d6ff>0.0</span>);
+</span></span><span style=display:flex><span>    distance <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#a5d6ff>0.0</span>;
+</span></span><span style=display:flex><span>    normal <span style=color:#ff7b72;font-weight:700>=</span> float3(<span style=color:#a5d6ff>0.0</span>, <span style=color:#a5d6ff>0.0</span>, <span style=color:#a5d6ff>0.0</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>};
+</span></span></code></pre></td></tr></table></div></div><p>Slangでは<code>__init()</code>を用いて、structのコンストラクタを指定することができます。</p><h4 id=2-raygen-shader>2. Raygen shader
+<a class=heading-link href=#2-raygen-shader><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h4><p>Raygen shaderのbinding部分を見てみましょう</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">15
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#8b949e;font-style:italic>// raygen.rgen.slang
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>
+</span></span><span style=display:flex><span><span style=color:#8b949e;font-weight:700;font-style:italic>#include</span> <span style=color:#8b949e;font-weight:700;font-style:italic>&#34;ray_payload.slang&#34;</span><span style=color:#8b949e;font-weight:700;font-style:italic>
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-weight:700;font-style:italic>#include</span> <span style=color:#8b949e;font-weight:700;font-style:italic>&#34;types.slang&#34;</span><span style=color:#8b949e;font-weight:700;font-style:italic>
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-weight:700;font-style:italic></span>
+</span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic>// note: vk::binding(binding, set) という順番になる
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic>// (set, binding) という順番ではないので注意
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>[[vk::binding(0, 0)]]
+</span></span><span style=display:flex><span>RaytracingAccelerationStructure tlas;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>[[vk::binding(1, 0)]]
+</span></span><span style=display:flex><span>ConstantBuffer<span style=color:#ff7b72;font-weight:700>&lt;</span>CameraParams, Std140DataLayout<span style=color:#ff7b72;font-weight:700>&gt;</span> cam;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>[[vk::binding(0, 1)]]
+</span></span><span style=display:flex><span>RWTexture2D<span style=color:#ff7b72;font-weight:700>&lt;</span>float4<span style=color:#ff7b72;font-weight:700>&gt;</span> result;
+</span></span></code></pre></td></tr></table></div></div><p>Bufferのバインディングにはデータのレイアウト (<code>Std140DataLayout</code>, <code>Std430DataLayout</code>, <code>ScalarDataLayout</code>) を指定することができます。これがcpp側とマッチしていないと結果がおかしくなるので注意です。
+各レイアウトの説明は<a href=https://docs.vulkan.org/guide/latest/shader_memory_layout.html class=external-link target=_blank rel=noopener>Shader Memory Layout :: Vulkan Documentation Project</a>が詳しいです。</p><p>raygen shaderの本体を見てみましょう。</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">29
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#8b949e;font-style:italic>// raygen.rgen.slang つづき
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>
+</span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic>// note: shaderの名前は`raygen`ではなく`raygeneration`
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>[shader(<span style=color:#a5d6ff>&#34;raygeneration&#34;</span>)]
+</span></span><span style=display:flex><span><span style=color:#ff7b72>void</span> main() {
+</span></span><span style=display:flex><span>  let subpixel_jitter <span style=color:#ff7b72;font-weight:700>=</span> float2(<span style=color:#a5d6ff>0.5</span>, <span style=color:#a5d6ff>0.5</span>);
+</span></span><span style=display:flex><span>  let launch_xy_idx <span style=color:#ff7b72;font-weight:700>=</span> DispatchRaysIndex().xy;
+</span></span><span style=display:flex><span>  let launch_xy_size <span style=color:#ff7b72;font-weight:700>=</span> DispatchRaysDimensions().xy;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// ジッタを加えてピクセルの真ん中からレイを飛ばす
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  let pixel_center <span style=color:#ff7b72;font-weight:700>=</span> launch_xy_idx <span style=color:#ff7b72;font-weight:700>+</span> subpixel_jitter;
+</span></span><span style=display:flex><span>  let uv <span style=color:#ff7b72;font-weight:700>=</span> pixel_center <span style=color:#ff7b72;font-weight:700>/</span> launch_xy_size;
+</span></span><span style=display:flex><span>  let ndc_coords <span style=color:#ff7b72;font-weight:700>=</span> uv <span style=color:#ff7b72;font-weight:700>*</span> <span style=color:#a5d6ff>2.0</span> <span style=color:#ff7b72;font-weight:700>-</span> <span style=color:#a5d6ff>1.0</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  let origin <span style=color:#ff7b72;font-weight:700>=</span> mul(cam.view_inverse, float4(<span style=color:#a5d6ff>0</span>, <span style=color:#a5d6ff>0</span>, <span style=color:#a5d6ff>0</span>, <span style=color:#a5d6ff>1</span>));
+</span></span><span style=display:flex><span>  let target <span style=color:#ff7b72;font-weight:700>=</span> mul(cam.proj_inverse, float4(ndc_coords.x, ndc_coords.y, <span style=color:#a5d6ff>1</span>, <span style=color:#a5d6ff>1</span>));
+</span></span><span style=display:flex><span>  let direction <span style=color:#ff7b72;font-weight:700>=</span> mul(cam.view_inverse, float4(normalize(target.xyz), <span style=color:#a5d6ff>0</span>));
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  var ray_payload <span style=color:#ff7b72;font-weight:700>=</span> RayPayload();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// Tmin = 0.01, Tmax = 1000.0とする
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  let ray_desc <span style=color:#ff7b72;font-weight:700>=</span> RayDesc(origin.xyz, <span style=color:#a5d6ff>0.01</span>, direction.xyz, <span style=color:#a5d6ff>1000.0</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// レイを飛ばす
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  TraceRay(tlas, RAY_FLAG_FORCE_OPAQUE, <span style=color:#a5d6ff>0xff</span>, <span style=color:#a5d6ff>0</span>, <span style=color:#a5d6ff>0</span>, <span style=color:#a5d6ff>0</span>, ray_desc, ray_payload);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// 出力先のフォーマットの関係でrgb -&gt; bgrに変換
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  result[launch_xy_idx] <span style=color:#ff7b72;font-weight:700>=</span> float4(ray_payload.color.bgr, <span style=color:#a5d6ff>1.0</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>関数の名前が変わったくらいで、あとはHLSL/GLSLとほぼ同じです。</p><h4 id=3-miss-shader>3. Miss shader
+<a class=heading-link href=#3-miss-shader><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h4><p>Miss shaderは以下のようになります。</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">10
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#8b949e;font-style:italic>// miss.rmiss.slang
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>
+</span></span><span style=display:flex><span><span style=color:#8b949e;font-weight:700;font-style:italic>#include</span> <span style=color:#8b949e;font-weight:700;font-style:italic>&#34;ray_payload.slang&#34;</span><span style=color:#8b949e;font-weight:700;font-style:italic>
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-weight:700;font-style:italic></span>
+</span></span><span style=display:flex><span>[shader(<span style=color:#a5d6ff>&#34;miss&#34;</span>)]
+</span></span><span style=display:flex><span><span style=color:#ff7b72>void</span> main(inout RayPayload payload) {
+</span></span><span style=display:flex><span>  payload.color <span style=color:#ff7b72;font-weight:700>=</span> float3(<span style=color:#a5d6ff>0.3</span>, <span style=color:#a5d6ff>0.3</span>, <span style=color:#a5d6ff>0.3</span>);
+</span></span><span style=display:flex><span>  payload.distance <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#ff7b72;font-weight:700>-</span><span style=color:#a5d6ff>1.0</span>;
+</span></span><span style=display:flex><span>  payload.normal <span style=color:#ff7b72;font-weight:700>=</span> float3(<span style=color:#a5d6ff>0.0</span>, <span style=color:#a5d6ff>0.0</span>, <span style=color:#a5d6ff>0.0</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>BVHにレイが当たらなかったとき、payloadに色: (0.3, 0.3, 0.3) を設定しています (今回は特にdistance, normalを設定する意味はなかったです) 。
+GLSLでは関数の外にpayloadを宣言していましたが、Slangでは引数として渡さなければいけません</p><h4 id=4-closest-hit-shader>4. Closest hit shader
+<a class=heading-link href=#4-closest-hit-shader><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h4><p>まずはbinding部分を見てみましょう。</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">23
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#8b949e;font-style:italic>// chit.rchit.slang
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>
+</span></span><span style=display:flex><span><span style=color:#8b949e;font-weight:700;font-style:italic>#include</span> <span style=color:#8b949e;font-weight:700;font-style:italic>&#34;ray_payload.slang&#34;</span><span style=color:#8b949e;font-weight:700;font-style:italic>
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-weight:700;font-style:italic>#include</span> <span style=color:#8b949e;font-weight:700;font-style:italic>&#34;ray_payload.slang&#34;</span><span style=color:#8b949e;font-weight:700;font-style:italic>
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-weight:700;font-style:italic>#include</span> <span style=color:#8b949e;font-weight:700;font-style:italic>&#34;types.slang&#34;</span><span style=color:#8b949e;font-weight:700;font-style:italic>
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-weight:700;font-style:italic></span>
+</span></span><span style=display:flex><span>[[vk::binding(1, 0)]]
+</span></span><span style=display:flex><span>ConstantBuffer<span style=color:#ff7b72;font-weight:700>&lt;</span>CameraParams, Std140DataLayout<span style=color:#ff7b72;font-weight:700>&gt;</span> cam;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>[[vk::binding(1, 1)]]
+</span></span><span style=display:flex><span>StructuredBuffer<span style=color:#ff7b72;font-weight:700>&lt;</span>GeometryNode<span style=color:#ff7b72;font-weight:700>&gt;</span> geometry_nodes;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>[[vk::binding(2, 1)]]
+</span></span><span style=display:flex><span>StructuredBuffer<span style=color:#ff7b72;font-weight:700>&lt;</span>Material, ScalarDataLayout<span style=color:#ff7b72;font-weight:700>&gt;</span> materials;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>[[vk::binding(3, 1)]]
+</span></span><span style=display:flex><span>StructuredBuffer<span style=color:#ff7b72;font-weight:700>&lt;</span>Texture<span style=color:#ff7b72;font-weight:700>&gt;</span> textures;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>[[vk::binding(0, 2)]]
+</span></span><span style=display:flex><span>Texture2D<span style=color:#ff7b72;font-weight:700>&lt;</span>float4<span style=color:#ff7b72;font-weight:700>&gt;</span> texture_images[];
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>[[vk::binding(1, 2)]]
+</span></span><span style=display:flex><span>SamplerState samplers[];
+</span></span></code></pre></td></tr></table></div></div><p>Arrayのバインディングは<code>Texture2D&lt;float4> texture_images[];</code>のように、<code>[]</code>をつけて宣言します。</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">19
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#8b949e;font-style:italic>// chit.rchit.slang つづき
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>
+</span></span><span style=display:flex><span>T Interpolate<span style=color:#ff7b72;font-weight:700>&lt;</span><span style=color:#79c0ff;font-weight:700>T</span> : IFloat<span style=color:#ff7b72;font-weight:700>&gt;</span>(T v0, T v1, T v2, float2 uv) {
+</span></span><span style=display:flex><span>  let bary_u <span style=color:#ff7b72;font-weight:700>=</span> T(uv.x);
+</span></span><span style=display:flex><span>  let bary_v <span style=color:#ff7b72;font-weight:700>=</span> T(uv.y);
+</span></span><span style=display:flex><span>  let bary_w <span style=color:#ff7b72;font-weight:700>=</span> T(<span style=color:#a5d6ff>1.0</span>) <span style=color:#ff7b72;font-weight:700>-</span> bary_u <span style=color:#ff7b72;font-weight:700>-</span> bary_v;
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>return</span> v0 <span style=color:#ff7b72;font-weight:700>*</span> bary_w <span style=color:#ff7b72;font-weight:700>+</span> v1 <span style=color:#ff7b72;font-weight:700>*</span> bary_u <span style=color:#ff7b72;font-weight:700>+</span> v2 <span style=color:#ff7b72;font-weight:700>*</span> bary_v;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Vertex <span style=color:#d2a8ff;font-weight:700>InterpolateVertex</span>(Vertex v0, Vertex v1, Vertex v2,
+</span></span><span style=display:flex><span>                         <span style=color:#ff7b72>const</span> BuiltInTriangleIntersectionAttributes attr) {
+</span></span><span style=display:flex><span>  Vertex result;
+</span></span><span style=display:flex><span>  result.pos <span style=color:#ff7b72;font-weight:700>=</span> Interpolate(v0.pos, v1.pos, v2.pos, attr.barycentrics);
+</span></span><span style=display:flex><span>  result.normal <span style=color:#ff7b72;font-weight:700>=</span> Interpolate(v0.normal, v1.normal, v2.normal, attr.barycentrics);
+</span></span><span style=display:flex><span>  result.uv <span style=color:#ff7b72;font-weight:700>=</span> Interpolate(v0.uv, v1.uv, v2.uv, attr.barycentrics);
+</span></span><span style=display:flex><span>  result.color <span style=color:#ff7b72;font-weight:700>=</span> Interpolate(v0.color, v1.color, v2.color, attr.barycentrics);
+</span></span><span style=display:flex><span>  result.tangent <span style=color:#ff7b72;font-weight:700>=</span> Interpolate(v0.tangent, v1.tangent, v2.tangent, attr.barycentrics);
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>return</span> result;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>先ほど説明したGenericsを用いて、頂点の各アトリビュートを補完する関数を定義しています。
+最後に、closest hit shaderの本体を見てみましょう。</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">34
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#8b949e;font-style:italic>// chit.rchit.slang つづき
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>
+</span></span><span style=display:flex><span>[shader(<span style=color:#a5d6ff>&#34;closesthit&#34;</span>)]
+</span></span><span style=display:flex><span><span style=color:#ff7b72>void</span> main(inout RayPayload payload, in <span style=color:#ff7b72>const</span> BuiltInTriangleIntersectionAttributes attr) {
+</span></span><span style=display:flex><span>  payload.distance <span style=color:#ff7b72;font-weight:700>=</span> RayTCurrent();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  let geometry_node <span style=color:#ff7b72;font-weight:700>=</span> geometry_nodes[NonUniformResourceIndex(InstanceIndex())];
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  let index1 <span style=color:#ff7b72;font-weight:700>=</span> geometry_node.indices[NonUniformResourceIndex(PrimitiveIndex() <span style=color:#ff7b72;font-weight:700>*</span> <span style=color:#a5d6ff>3</span> <span style=color:#ff7b72;font-weight:700>+</span> <span style=color:#a5d6ff>0</span>)];
+</span></span><span style=display:flex><span>  let index2 <span style=color:#ff7b72;font-weight:700>=</span> geometry_node.indices[NonUniformResourceIndex(PrimitiveIndex() <span style=color:#ff7b72;font-weight:700>*</span> <span style=color:#a5d6ff>3</span> <span style=color:#ff7b72;font-weight:700>+</span> <span style=color:#a5d6ff>1</span>)];
+</span></span><span style=display:flex><span>  let index3 <span style=color:#ff7b72;font-weight:700>=</span> geometry_node.indices[NonUniformResourceIndex(PrimitiveIndex() <span style=color:#ff7b72;font-weight:700>*</span> <span style=color:#a5d6ff>3</span> <span style=color:#ff7b72;font-weight:700>+</span> <span style=color:#a5d6ff>2</span>)];
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  let v0 <span style=color:#ff7b72;font-weight:700>=</span> geometry_node.vertices[NonUniformResourceIndex(index1)];
+</span></span><span style=display:flex><span>  let v1 <span style=color:#ff7b72;font-weight:700>=</span> geometry_node.vertices[NonUniformResourceIndex(index2)];
+</span></span><span style=display:flex><span>  let v2 <span style=color:#ff7b72;font-weight:700>=</span> geometry_node.vertices[NonUniformResourceIndex(index3)];
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  let vertex <span style=color:#ff7b72;font-weight:700>=</span> InterpolateVertex(v0, v1, v2, attr);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  let material_index <span style=color:#ff7b72;font-weight:700>=</span> geometry_node.material_index;
+</span></span><span style=display:flex><span>  let material <span style=color:#ff7b72;font-weight:700>=</span> materials[NonUniformResourceIndex(material_index)];
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// base color
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  let base_color_texture_index <span style=color:#ff7b72;font-weight:700>=</span> material.base_color_texture_index;
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>if</span> (base_color_texture_index <span style=color:#ff7b72;font-weight:700>!=</span> <span style=color:#ff7b72;font-weight:700>-</span><span style=color:#a5d6ff>1</span>) {
+</span></span><span style=display:flex><span>    let texture <span style=color:#ff7b72;font-weight:700>=</span> textures[NonUniformResourceIndex(base_color_texture_index)];
+</span></span><span style=display:flex><span>    let base_color_image <span style=color:#ff7b72;font-weight:700>=</span> texture_images[NonUniformResourceIndex(texture.image_index)];
+</span></span><span style=display:flex><span>    payload.color <span style=color:#ff7b72;font-weight:700>=</span>
+</span></span><span style=display:flex><span>        base_color_image
+</span></span><span style=display:flex><span>            .SampleLevel(samplers[NonUniformResourceIndex(texture.sampler_index)], vertex.uv, <span style=color:#a5d6ff>0</span>)
+</span></span><span style=display:flex><span>            .rgb;
+</span></span><span style=display:flex><span>  } <span style=color:#ff7b72>else</span> {
+</span></span><span style=display:flex><span>    payload.color <span style=color:#ff7b72;font-weight:700>=</span> float3(<span style=color:#a5d6ff>0.0</span>, <span style=color:#a5d6ff>0.0</span>, <span style=color:#a5d6ff>0.0</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>GLSLでは<code>gl_PrimitiveID</code>を用いてprimitive indexを取得していましたが、Slangでは<code>PrimitiveIndex()</code>を用いて取得します。
+同様に、<code>gl_InstanceID</code>は<code>InstanceIndex()</code>で取得できます。また、<code>NonUniformResourceIndex</code>は、Uniformではないリソースにアクセスするための関数です。
+Warpの中の各スレッドが異なるバッファにアクセスする可能性があるため使用しています。</p><p>以上がSlang側のコードになります。HLSL/GLSLに慣れているならすんなりと読めると思います。</p><h3 id=vulkan-side>Vulkan-side
+<a class=heading-link href=#vulkan-side><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h3><p>今回はC++でコードを書き、<a href=https://github.com/KhronosGroup/Vulkan-Hpp class=external-link target=_blank rel=noopener>Vulkan-Hpp</a>を用いてVulkanのAPIを呼び出します。
+ちゃんと書こうとすると結構長くなるので、今回はVulkan側の説明はかなり省略します。</p><h4 id=1-機能の有効化>1. 機能の有効化
+<a class=heading-link href=#1-%e6%a9%9f%e8%83%bd%e3%81%ae%e6%9c%89%e5%8a%b9%e5%8c%96><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h4><p>raytracingを使うためにはまず対応したdevice extensionを有効にする必要があります。</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">7
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#ff7b72>constexpr</span> <span style=color:#ff7b72>auto</span> kDeviceExtensions <span style=color:#ff7b72;font-weight:700>=</span> std<span style=color:#ff7b72;font-weight:700>::</span>to_array<span style=color:#ff7b72;font-weight:700>&lt;</span><span style=color:#ff7b72>const</span> <span style=color:#ff7b72>char</span><span style=color:#ff7b72;font-weight:700>*&gt;</span>({
+</span></span><span style=display:flex><span>    vk<span style=color:#ff7b72;font-weight:700>::</span>KHRPipelineLibraryExtensionName,
+</span></span><span style=display:flex><span>    vk<span style=color:#ff7b72;font-weight:700>::</span>KHRRayTracingPipelineExtensionName,
+</span></span><span style=display:flex><span>    vk<span style=color:#ff7b72;font-weight:700>::</span>KHRAccelerationStructureExtensionName,
+</span></span><span style=display:flex><span>    vk<span style=color:#ff7b72;font-weight:700>::</span>EXTDescriptorIndexingExtensionName,
+</span></span><span style=display:flex><span>    <span style=color:#8b949e;font-style:italic>// ...
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>});
+</span></span></code></pre></td></tr></table></div></div><p>logical deviceを作成する際に、対応するfeatureを有効にしてあげます。
+Vulkan-HppではStructureChainを用いて、以下のように記述することができます (<code>.sType</code>や<code>.pNext</code>を手動で設定する必要がない)</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">24
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span>vk<span style=color:#ff7b72;font-weight:700>::</span>StructureChain<span style=color:#ff7b72;font-weight:700>&lt;</span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>/* ... */</span>,
+</span></span><span style=display:flex><span>  vk<span style=color:#ff7b72;font-weight:700>::</span>PhysicalDeviceBufferDeviceAddressFeatures,
+</span></span><span style=display:flex><span>  vk<span style=color:#ff7b72;font-weight:700>::</span>PhysicalDeviceAccelerationStructureFeaturesKHR,
+</span></span><span style=display:flex><span>  vk<span style=color:#ff7b72;font-weight:700>::</span>PhysicalDeviceRayTracingPipelineFeaturesKHR,
+</span></span><span style=display:flex><span>  vk<span style=color:#ff7b72;font-weight:700>::</span>PhysicalDeviceDescriptorIndexingFeatures<span style=color:#ff7b72;font-weight:700>&gt;</span>
+</span></span><span style=display:flex><span>  chain;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>chain.get<span style=color:#ff7b72;font-weight:700>&lt;</span>vk<span style=color:#ff7b72;font-weight:700>::</span>PhysicalDeviceBufferDeviceAddressFeatures<span style=color:#ff7b72;font-weight:700>&gt;</span>()
+</span></span><span style=display:flex><span>  .setBufferDeviceAddress(VK_TRUE);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>chain.get<span style=color:#ff7b72;font-weight:700>&lt;</span>vk<span style=color:#ff7b72;font-weight:700>::</span>PhysicalDeviceAccelerationStructureFeaturesKHR<span style=color:#ff7b72;font-weight:700>&gt;</span>()
+</span></span><span style=display:flex><span>  .setAccelerationStructure(VK_TRUE)
+</span></span><span style=display:flex><span>  .setAccelerationStructureCaptureReplay(VK_TRUE)
+</span></span><span style=display:flex><span>  .setDescriptorBindingAccelerationStructureUpdateAfterBind(VK_TRUE);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>chain.get<span style=color:#ff7b72;font-weight:700>&lt;</span>vk<span style=color:#ff7b72;font-weight:700>::</span>PhysicalDeviceRayTracingPipelineFeaturesKHR<span style=color:#ff7b72;font-weight:700>&gt;</span>()
+</span></span><span style=display:flex><span>  .setRayTracingPipeline(VK_TRUE)
+</span></span><span style=display:flex><span>  .setRayTracingPipelineTraceRaysIndirect(VK_TRUE)
+</span></span><span style=display:flex><span>  .setRayTraversalPrimitiveCulling(VK_TRUE);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>chain.get<span style=color:#ff7b72;font-weight:700>&lt;</span>vk<span style=color:#ff7b72;font-weight:700>::</span>PhysicalDeviceDescriptorIndexingFeatures<span style=color:#ff7b72;font-weight:700>&gt;</span>()
+</span></span><span style=display:flex><span>  .setShaderInputAttachmentArrayDynamicIndexing(VK_TRUE)
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// ...
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=2-シェーダの読み込み>2. シェーダの読み込み
+<a class=heading-link href=#2-%e3%82%b7%e3%82%a7%e3%83%bc%e3%83%80%e3%81%ae%e8%aa%ad%e3%81%bf%e8%be%bc%e3%81%bf><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h4><p>先ほど使用したシェーダを読み込むためのコードを見てみましょう。
+slangcを使ってシェーダをSPIR-Vに変換する方法も考えましたが、今回はreflectionを試してみたかったためC++ APIを使用してコンパイルしています<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>。
+基本的には <a href=https://shader-slang.org/slang/user-guide/compiling.html#using-the-compilation-api class=external-link target=_blank rel=noopener>https://shader-slang.org/slang/user-guide/compiling.html#using-the-compilation-api</a> に沿ってコードを書いていきます。</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">38
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">39
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">40
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">41
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">42
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">43
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">44
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">45
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">46
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">47
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">48
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">49
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">50
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">51
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">52
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">53
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">54
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">55
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">56
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">57
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">58
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">59
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">60
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">61
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">62
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">63
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">64
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">65
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">66
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">67
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">68
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">69
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">70
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">71
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">72
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">73
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">74
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">75
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">76
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">77
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">78
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">79
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">80
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">81
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">82
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">83
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">84
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">85
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#8b949e;font-style:italic>// shader.cpp
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>
+</span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic>// SlangShaderクラスのコンストラクタ
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>SlangShader<span style=color:#ff7b72;font-weight:700>::</span>SlangShader(<span style=color:#ff7b72>const</span> vk<span style=color:#ff7b72;font-weight:700>::</span>raii<span style=color:#ff7b72;font-weight:700>::</span>Device<span style=color:#ff7b72;font-weight:700>&amp;</span> device, std<span style=color:#ff7b72;font-weight:700>::</span>filesystem<span style=color:#ff7b72;font-weight:700>::</span>path path,
+</span></span><span style=display:flex><span>                         std<span style=color:#ff7b72;font-weight:700>::</span>string_view entry_point)
+</span></span><span style=display:flex><span>    <span style=color:#ff7b72;font-weight:700>:</span> path_(std<span style=color:#ff7b72;font-weight:700>::</span>move(path)), entry_point_(entry_point) {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// 1. global sessionの作成
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  <span style=color:#ff7b72>const</span> <span style=color:#ff7b72>auto</span> target_desc <span style=color:#ff7b72;font-weight:700>=</span> slang<span style=color:#ff7b72;font-weight:700>::</span>TargetDesc{.format <span style=color:#ff7b72;font-weight:700>=</span> SLANG_SPIRV};
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>const</span> slang<span style=color:#ff7b72;font-weight:700>::</span>SessionDesc session_desc{
+</span></span><span style=display:flex><span>      .targets <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#ff7b72;font-weight:700>&amp;</span>target_desc,
+</span></span><span style=display:flex><span>      .targetCount <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#a5d6ff>1</span>,
+</span></span><span style=display:flex><span>      .defaultMatrixLayoutMode <span style=color:#ff7b72;font-weight:700>=</span> SLANG_MATRIX_LAYOUT_COLUMN_MAJOR,  <span style=color:#8b949e;font-style:italic>// glmがcolumn majorを使っているため
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>      <span style=color:#8b949e;font-style:italic>// include pathを設定したい場合は `.searchPaths` の設定が必要
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>      <span style=color:#8b949e;font-style:italic>// preprocessorの設定は `.preprocessorMacros` で行う
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  };
+</span></span><span style=display:flex><span>  SlangEnvironment<span style=color:#ff7b72;font-weight:700>::</span>Instance().GetGlobalSession()<span style=color:#ff7b72;font-weight:700>-&gt;</span>createSession(session_desc, session_.writeRef());
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// 2. ファイルの存在確認
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  <span style=color:#ff7b72>const</span> <span style=color:#ff7b72>auto</span> slang_root <span style=color:#ff7b72;font-weight:700>=</span> GetSlangRoot();
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>const</span> <span style=color:#ff7b72>auto</span> slang_path <span style=color:#ff7b72;font-weight:700>=</span> slang_root <span style=color:#ff7b72;font-weight:700>/</span> path_;
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>if</span> (<span style=color:#ff7b72;font-weight:700>!</span>std<span style=color:#ff7b72;font-weight:700>::</span>filesystem<span style=color:#ff7b72;font-weight:700>::</span>exists(slang_path)) {
+</span></span><span style=display:flex><span>    <span style=color:#ff7b72>throw</span> std<span style=color:#ff7b72;font-weight:700>::</span>runtime_error(<span style=color:#a5d6ff>&#34;failed to find slang file: &#34;</span> <span style=color:#ff7b72;font-weight:700>+</span> slang_path.string());
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// 3. モジュールの読み込み
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  <span style=color:#8b949e;font-style:italic>// ここでコンパイルが行われます
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  Slang<span style=color:#ff7b72;font-weight:700>::</span>ComPtr<span style=color:#ff7b72;font-weight:700>&lt;</span>slang<span style=color:#ff7b72;font-weight:700>::</span>IBlob<span style=color:#ff7b72;font-weight:700>&gt;</span> module_diagnostics_blob;
+</span></span><span style=display:flex><span>  Slang<span style=color:#ff7b72;font-weight:700>::</span>ComPtr<span style=color:#ff7b72;font-weight:700>&lt;</span>slang<span style=color:#ff7b72;font-weight:700>::</span>IModule<span style=color:#ff7b72;font-weight:700>&gt;</span> module <span style=color:#ff7b72;font-weight:700>=</span> Slang<span style=color:#ff7b72;font-weight:700>::</span>ComPtr(
+</span></span><span style=display:flex><span>      session_<span style=color:#ff7b72;font-weight:700>-&gt;</span>loadModule(slang_path.string().c_str(), module_diagnostics_blob.writeRef()));
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>if</span> (module_diagnostics_blob <span style=color:#ff7b72;font-weight:700>!=</span> <span style=color:#ff7b72>nullptr</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#ff7b72>const</span> <span style=color:#ff7b72>auto</span><span style=color:#ff7b72;font-weight:700>*</span> <span style=color:#ff7b72>const</span> msg <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#ff7b72>static_cast</span><span style=color:#ff7b72;font-weight:700>&lt;</span><span style=color:#ff7b72>const</span> <span style=color:#ff7b72>char</span><span style=color:#ff7b72;font-weight:700>*&gt;</span>(module_diagnostics_blob<span style=color:#ff7b72;font-weight:700>-&gt;</span>getBufferPointer());
+</span></span><span style=display:flex><span>    <span style=color:#ff7b72>if</span> (std<span style=color:#ff7b72;font-weight:700>::</span>string(msg).contains(<span style=color:#a5d6ff>&#34;warning&#34;</span>)) {
+</span></span><span style=display:flex><span>      spdlog<span style=color:#ff7b72;font-weight:700>::</span>warn(<span style=color:#a5d6ff>&#34;{}&#34;</span>, msg);
+</span></span><span style=display:flex><span>    } <span style=color:#ff7b72>else</span> {
+</span></span><span style=display:flex><span>      spdlog<span style=color:#ff7b72;font-weight:700>::</span>error(<span style=color:#a5d6ff>&#34;{}&#34;</span>, msg);
+</span></span><span style=display:flex><span>      <span style=color:#ff7b72>throw</span> std<span style=color:#ff7b72;font-weight:700>::</span>runtime_error(<span style=color:#a5d6ff>&#34;failed to load slang module&#34;</span>);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// 4. エントリーポイントの存在確認
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  Slang<span style=color:#ff7b72;font-weight:700>::</span>ComPtr<span style=color:#ff7b72;font-weight:700>&lt;</span>slang<span style=color:#ff7b72;font-weight:700>::</span>IEntryPoint<span style=color:#ff7b72;font-weight:700>&gt;</span> entry_point_slang;
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>const</span> <span style=color:#ff7b72>auto</span> entry_point_str <span style=color:#ff7b72;font-weight:700>=</span> std<span style=color:#ff7b72;font-weight:700>::</span>string(entry_point);
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>if</span> (module<span style=color:#ff7b72;font-weight:700>-&gt;</span>findEntryPointByName(entry_point_str.c_str(), entry_point_slang.writeRef()) <span style=color:#ff7b72;font-weight:700>!=</span>
+</span></span><span style=display:flex><span>      SLANG_OK) {
+</span></span><span style=display:flex><span>    <span style=color:#ff7b72>throw</span> std<span style=color:#ff7b72;font-weight:700>::</span>runtime_error(<span style=color:#a5d6ff>&#34;failed to find entry point&#34;</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// 5. プログラムの作成
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  std<span style=color:#ff7b72;font-weight:700>::</span>vector<span style=color:#ff7b72;font-weight:700>&lt;</span>slang<span style=color:#ff7b72;font-weight:700>::</span>IComponentType<span style=color:#ff7b72;font-weight:700>*&gt;</span> components <span style=color:#ff7b72;font-weight:700>=</span> {module, entry_point_slang};
+</span></span><span style=display:flex><span>  Slang<span style=color:#ff7b72;font-weight:700>::</span>ComPtr<span style=color:#ff7b72;font-weight:700>&lt;</span>slang<span style=color:#ff7b72;font-weight:700>::</span>IComponentType<span style=color:#ff7b72;font-weight:700>&gt;</span> program;
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>if</span> (session_<span style=color:#ff7b72;font-weight:700>-&gt;</span>createCompositeComponentType(components.data(),
+</span></span><span style=display:flex><span>                                             <span style=color:#ff7b72>static_cast</span><span style=color:#ff7b72;font-weight:700>&lt;</span>SlangInt<span style=color:#ff7b72;font-weight:700>&gt;</span>(components.size()),
+</span></span><span style=display:flex><span>                                             program.writeRef()) <span style=color:#ff7b72;font-weight:700>!=</span> SLANG_OK) {
+</span></span><span style=display:flex><span>    <span style=color:#ff7b72>throw</span> std<span style=color:#ff7b72;font-weight:700>::</span>runtime_error(<span style=color:#a5d6ff>&#34;failed to create composite component type&#34;</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// 6. プログラムのリンク
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  <span style=color:#8b949e;font-style:italic>// link-time specializationもできるらしい
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  Slang<span style=color:#ff7b72;font-weight:700>::</span>ComPtr<span style=color:#ff7b72;font-weight:700>&lt;</span>ISlangBlob<span style=color:#ff7b72;font-weight:700>&gt;</span> link_diagnostic_blob;
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>if</span> (program<span style=color:#ff7b72;font-weight:700>-&gt;</span>link(linked_program_.writeRef(), link_diagnostic_blob.writeRef()) <span style=color:#ff7b72;font-weight:700>!=</span> SLANG_OK) {
+</span></span><span style=display:flex><span>    spdlog<span style=color:#ff7b72;font-weight:700>::</span>error(<span style=color:#a5d6ff>&#34;{}&#34;</span>, <span style=color:#ff7b72>static_cast</span><span style=color:#ff7b72;font-weight:700>&lt;</span><span style=color:#ff7b72>const</span> <span style=color:#ff7b72>char</span><span style=color:#ff7b72;font-weight:700>*&gt;</span>(link_diagnostic_blob<span style=color:#ff7b72;font-weight:700>-&gt;</span>getBufferPointer()));
+</span></span><span style=display:flex><span>    <span style=color:#ff7b72>throw</span> std<span style=color:#ff7b72;font-weight:700>::</span>runtime_error(<span style=color:#a5d6ff>&#34;failed to link program&#34;</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>if</span> (linked_program_ <span style=color:#ff7b72;font-weight:700>==</span> <span style=color:#ff7b72>nullptr</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#ff7b72>throw</span> std<span style=color:#ff7b72;font-weight:700>::</span>runtime_error(<span style=color:#a5d6ff>&#34;linked program should not be nullptr&#34;</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// 7. カーネルの取得
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  Slang<span style=color:#ff7b72;font-weight:700>::</span>ComPtr<span style=color:#ff7b72;font-weight:700>&lt;</span>slang<span style=color:#ff7b72;font-weight:700>::</span>IBlob<span style=color:#ff7b72;font-weight:700>&gt;</span> kernel_blob;
+</span></span><span style=display:flex><span>  Slang<span style=color:#ff7b72;font-weight:700>::</span>ComPtr<span style=color:#ff7b72;font-weight:700>&lt;</span>ISlangBlob<span style=color:#ff7b72;font-weight:700>&gt;</span> kernel_diagnostics_blob;
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>if</span> (linked_program_<span style=color:#ff7b72;font-weight:700>-&gt;</span>getEntryPointCode(<span style=color:#a5d6ff>0</span>, <span style=color:#a5d6ff>0</span>, kernel_blob.writeRef(),
+</span></span><span style=display:flex><span>                                         kernel_diagnostics_blob.writeRef()) <span style=color:#ff7b72;font-weight:700>!=</span> SLANG_OK) {
+</span></span><span style=display:flex><span>    spdlog<span style=color:#ff7b72;font-weight:700>::</span>error(<span style=color:#a5d6ff>&#34;{}&#34;</span>, <span style=color:#ff7b72>static_cast</span><span style=color:#ff7b72;font-weight:700>&lt;</span><span style=color:#ff7b72>const</span> <span style=color:#ff7b72>char</span><span style=color:#ff7b72;font-weight:700>*&gt;</span>(kernel_diagnostics_blob<span style=color:#ff7b72;font-weight:700>-&gt;</span>getBufferPointer()));
+</span></span><span style=display:flex><span>    <span style=color:#ff7b72>throw</span> std<span style=color:#ff7b72;font-weight:700>::</span>runtime_error(<span style=color:#a5d6ff>&#34;failed to get entry point code&#34;</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// 8. シェーダモジュールの作成
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  <span style=color:#ff7b72>const</span> <span style=color:#ff7b72>auto</span> create_info <span style=color:#ff7b72;font-weight:700>=</span>
+</span></span><span style=display:flex><span>      vk<span style=color:#ff7b72;font-weight:700>::</span>ShaderModuleCreateInfo()
+</span></span><span style=display:flex><span>          .setCodeSize(kernel_blob<span style=color:#ff7b72;font-weight:700>-&gt;</span>getBufferSize())
+</span></span><span style=display:flex><span>          .setPCode(<span style=color:#ff7b72>static_cast</span><span style=color:#ff7b72;font-weight:700>&lt;</span><span style=color:#ff7b72>const</span> std<span style=color:#ff7b72;font-weight:700>::</span><span style=color:#ff7b72>uint32_t</span><span style=color:#ff7b72;font-weight:700>*&gt;</span>(kernel_blob<span style=color:#ff7b72;font-weight:700>-&gt;</span>getBufferPointer()));
+</span></span><span style=display:flex><span>  shader_module_ <span style=color:#ff7b72;font-weight:700>=</span> std<span style=color:#ff7b72;font-weight:700>::</span>make_unique<span style=color:#ff7b72;font-weight:700>&lt;</span>vk<span style=color:#ff7b72;font-weight:700>::</span>raii<span style=color:#ff7b72;font-weight:700>::</span>ShaderModule<span style=color:#ff7b72;font-weight:700>&gt;</span>(device.createShaderModule(create_info));
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>Slangのオブジェクトは<code>ComPtr</code>を使って管理することが推奨されます。DirectXを触ったことがある方なら馴染み深いでしょうか。
+reflectionは<code>linked_program_->getLayout()</code>として取得することができます。以下のようにjson形式で取得することができるため、
+このjsonを参考にしながら様々なオブジェクトを作っていくのが良いでしょう。</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">5
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span>Slang<span style=color:#ff7b72;font-weight:700>::</span>ComPtr<span style=color:#ff7b72;font-weight:700>&lt;</span>ISlangBlob<span style=color:#ff7b72;font-weight:700>&gt;</span> blob;
+</span></span><span style=display:flex><span><span style=color:#ff7b72>if</span> (layout<span style=color:#ff7b72;font-weight:700>-&gt;</span>toJson(blob.writeRef()) <span style=color:#ff7b72;font-weight:700>!=</span> SLANG_OK) {
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>throw</span> std<span style=color:#ff7b72;font-weight:700>::</span>runtime_error(<span style=color:#a5d6ff>&#34;failed to convert layout to json&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>spdlog<span style=color:#ff7b72;font-weight:700>::</span>trace(<span style=color:#a5d6ff>&#34;layout: {}&#34;</span>, <span style=color:#ff7b72>static_cast</span><span style=color:#ff7b72;font-weight:700>&lt;</span><span style=color:#ff7b72>const</span> <span style=color:#ff7b72>char</span><span style=color:#ff7b72;font-weight:700>*&gt;</span>(blob<span style=color:#ff7b72;font-weight:700>-&gt;</span>getBufferPointer()));
+</span></span></code></pre></td></tr></table></div></div><h4 id=3-バッファの作成>3. バッファの作成
+<a class=heading-link href=#3-%e3%83%90%e3%83%83%e3%83%95%e3%82%a1%e3%81%ae%e4%bd%9c%e6%88%90><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h4><p>かなり省略しますが、glTFからTLAS, BLAS, テクスチャ, サンプラーなどを作成します。
+今回は<a href=https://github.com/syoyo/tinygltf class=external-link target=_blank rel=noopener>tinygltf</a>を使用しましたが、<a href=https://github.com/assimp/assimp class=external-link target=_blank rel=noopener>assimp</a>でも何でも良いです。
+また、Raytracingのためのパイプラインなどの様々なオブジェクトを作成します。
+先ほどのreflectionから、DescriptorSetLayout、DescriptorPoolとDescriptorSetの作成や、WriteDescriptorSetの作成はある程度自動化できそうです。
+他にもShaderBindingTableなども可能でしょうか。</p><h4 id=4-レンダリング>4. レンダリング
+<a class=heading-link href=#4-%e3%83%ac%e3%83%b3%e3%83%80%e3%83%aa%e3%83%b3%e3%82%b0><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h4><p>レンダリングの流れは以下のようになります。</p><ol><li>swapchainから画像を取得</li><li>ConstantBufferを更新</li><li>Pipelineをバインド</li><li>DescriptorSetをバインド</li><li>レイトレーシングを実行</li><li>swapchainに画像を書き込む</li><li>Fenceを待って次のフレームへ</li></ol><h3 id=結果>結果
+<a class=heading-link href=#%e7%b5%90%e6%9e%9c><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h3><p>みんなだいすきSponzaを描画した時の結果です。Base color textureのみなので何とも味気がないですが、
+Slang + Vulkanのレイトレーシングが動作していることがわかります。</p><p><img src=./sponza.jpeg alt=Sponza></p><h2 id=感想>感想
+<a class=heading-link href=#%e6%84%9f%e6%83%b3><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><ol><li>slangは書いててSAN値が削られにくいので良いです. デファクトになるかはわからないですがGLSL, HLSLは書いていてしんどいのでこういう試みがあるのはいいですね</li><li>asan使用するとraytracingのdevice extensionが有効にならないことに気づかず1週間くらい溶かしてしまいました。なぜ&mldr;</li><li>Slangの動画みていて<a href=https://github.com/shader-slang/slangpy class=external-link target=_blank rel=noopener>shader-slang/slangpy</a>なるプロジェクトがあるのを知りました。Slangをpythonで扱うためのライブラリで、compute shaderだけではなくgraphicsやhardware raytracingなども実行できて面白そうなので、一度試してみたいです</li><li>いつの間にかimguiがdynamic renderingに対応していて感動した (関係ない)</li></ol><h2 id=references>References
+<a class=heading-link href=#references><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><ul><li><a href=https://shader-slang.org/slang-playground/ class=external-link target=_blank rel=noopener>Slang Playground</a></li><li><a href=https://docs.shader-slang.org/en/latest/external/slang/docs/user-guide/ class=external-link target=_blank rel=noopener>Slang User’s Guide</a><ul><li>HLSL, GLSLからの移行ガイドなど</li></ul></li></ul><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p>&ldquo;Currently reflection information cannot be queried from code compiled via the command-line slangc tool.&rdquo; (<a href=https://shader-slang.org/slang/user-guide/reflection.html#compiling-a-program class=external-link target=_blank rel=noopener>https://shader-slang.org/slang/user-guide/reflection.html#compiling-a-program</a>)&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></div></div><footer><div id=disqus_thread></div><script>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//tsumli.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}(),document.addEventListener("themeChanged",function(){document.readyState=="complete"&&DISQUS.reset({reload:!0,config:disqus_config})})</script></footer></article><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css integrity=sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0 crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js integrity=sha384-PwRUT/YqbnEjkZO0zZxNqcxACrXe+j766U2amXcgMg5457rve2Y7I6ZJSm2A0mS4 crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js integrity=sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05 crossorigin=anonymous onload='renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})'></script></section></div><footer class=footer><section class=container>©
+2019 -
+2025
+·
+Powered by <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/ target=_blank rel=noopener>Coder</a>.</section></footer></main><script src=/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script></body></html>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Raytracing on tsumli pages</title><link>https://tsumli.github.io/tags/raytracing/</link><description>Recent content in Raytracing on tsumli pages</description><generator>Hugo</generator><language>en</language><lastBuildDate>Mon, 16 Jun 2025 10:01:52 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/raytracing/index.xml" rel="self" type="application/rss+xml"/><item><title>SlangとVulkanでのRaytracing</title><link>https://tsumli.github.io/posts/graphics/raytracing/vulkan_slang/</link><pubDate>Mon, 16 Jun 2025 10:01:52 +0000</pubDate><guid>https://tsumli.github.io/posts/graphics/raytracing/vulkan_slang/</guid><description>&lt;h2 id="はじめに">
+ はじめに
+ &lt;a class="heading-link" href="#%e3%81%af%e3%81%98%e3%82%81%e3%81%ab">
+ &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading">&lt;/i>
+ &lt;span class="sr-only">Link to heading&lt;/span>
+ &lt;/a>
+&lt;/h2>
+&lt;p>SlangとVulkanを用いてRaytracingを触ってみたメモ&lt;/p>
+&lt;h3 id="slangとは">
+ Slangとは?
+ &lt;a class="heading-link" href="#slang%e3%81%a8%e3%81%af">
+ &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading">&lt;/i>
+ &lt;span class="sr-only">Link to heading&lt;/span>
+ &lt;/a>
+&lt;/h3>
+&lt;p>最近話題の (?) シェーディング言語です。GLSLやHLSLと互換性を保ちつつ、Genericsやinterfaceなどのモダンなプログラミング機能を取り入れているのが特徴です。
+生成できるターゲットは幅広く、GLSL、HLSL、SPIR-V、Metal、CUDA、WGSLに加えて、CPU向けのC++コードの生成にも対応しており、クロスプラットフォームかつバックエンド非依存なシェーダー開発を可能にします。
+最近では、Sascha Willems 氏の &lt;a href="https://github.com/SaschaWillems/Vulkan" class="external-link" target="_blank" rel="noopener">Vulkan サンプル集&lt;/a>でも、&lt;a href="https://www.saschawillems.de/blog/2025/06/03/shaders-for-vulkan-samples-now-also-available-in-slang/" class="external-link" target="_blank" rel="noopener">GLSL/HLSL に加えて Slang が採用される&lt;/a>など、使用例が徐々に増えてきている印象です。
+少し触ってみて感じたのは、SlangはHLSLやGLSLに比べて書いていてストレスが少ないということです。VSCode向けの拡張機能によるシンタックスハイライトもサポートされており、開発体験が快適なのも大きなポイントでしょう。
+文法的にはHLSLに近く、GLSLに慣れていた自分としては最初は戸惑う部分もありましたが、慣れてくると書きやすく感じます。&lt;/p>
+&lt;p>Slang の特徴的な機能をいくつか紹介していきます。&lt;/p>
+&lt;h4 id="1-interface">
+ 1. Interface
+ &lt;a class="heading-link" href="#1-interface">
+ &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading">&lt;/i>
+ &lt;span class="sr-only">Link to heading&lt;/span>
+ &lt;/a>
+&lt;/h4>
+&lt;p>structにinterfaceを持たせることができます。例えば、Light interfaceを定義して、それを実装するPointLight, AreaLightなどを作るという例が紹介されています
+(&lt;a href="https://github.com/shader-slang/slang/blob/master/docs/design/interfaces.md" class="external-link" target="_blank" rel="noopener">Interfaces Design&lt;/a>.)&lt;/p>
+&lt;div class="highlight">&lt;div style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+&lt;table style="border-spacing:0;padding:0;margin:0;border:0;">&lt;tr>&lt;td style="vertical-align:top;padding:0;margin:0;border:0;">
+&lt;pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 1
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 2
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 3
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 4
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 5
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 6
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 7
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 8
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 9
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679">10
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679">11
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+&lt;pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>interface IFoo
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ff7b72">int&lt;/span> &lt;span style="color:#d2a8ff;font-weight:bold">MyMethod&lt;/span>(&lt;span style="color:#ff7b72">float&lt;/span> arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ff7b72">struct&lt;/span> &lt;span style="color:#f0883e;font-weight:bold">MyType&lt;/span> &lt;span style="color:#ff7b72;font-weight:bold">:&lt;/span> IFoo
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ff7b72">int&lt;/span> &lt;span style="color:#d2a8ff;font-weight:bold">MyMethod&lt;/span>(&lt;span style="color:#ff7b72">float&lt;/span> arg)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ff7b72">return&lt;/span> (&lt;span style="color:#ff7b72">int&lt;/span>)arg &lt;span style="color:#ff7b72;font-weight:bold">+&lt;/span> &lt;span style="color:#a5d6ff">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="2-generics">
+ 2. Generics
+ &lt;a class="heading-link" href="#2-generics">
+ &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading">&lt;/i>
+ &lt;span class="sr-only">Link to heading&lt;/span>
+ &lt;/a>
+&lt;/h4>
+&lt;p>GLSLには存在しなかった機能のひとつに、Genericsがあります。
+HLSLでは&lt;a href="https://devblogs.microsoft.com/directx/announcing-hlsl-2021/" class="external-link" target="_blank" rel="noopener">HLSL 2021&lt;/a>でtemplate機能が導入されており、これがそれに近い仕組みと言えるでしょう。&lt;/p></description></item></channel></rss>
