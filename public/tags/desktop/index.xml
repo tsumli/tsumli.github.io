@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Desktop on tsumli pages</title>
+    <link>http://localhost:1313/tags/desktop/</link>
+    <description>Recent content in Desktop on tsumli pages</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 01 Dec 2023 00:55:54 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/desktop/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>新しいPCを組んだので構成など</title>
+      <link>http://localhost:1313/posts/personal/desktop-20231201/</link>
+      <pubDate>Fri, 01 Dec 2023 00:55:54 +0000</pubDate>
+      <guid>http://localhost:1313/posts/personal/desktop-20231201/</guid>
+      <description>&lt;p&gt;新しいPCを組んだので構成などのメモです (自分用) 。&#xA;セールなど使ってちょこちょこ買ったのですが計50万円は超えました&amp;hellip;&lt;/p&gt;&#xA;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th&gt;&lt;/th&gt;&#xA;          &lt;th&gt;&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;CPU&lt;/td&gt;&#xA;          &lt;td&gt;intel Core i9-13900KF&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;CPUクーラー&lt;/td&gt;&#xA;          &lt;td&gt;MSI MEG CORELIQUID S360&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;GPU&lt;/td&gt;&#xA;          &lt;td&gt;MSI GeForce RTX 4090 GAMING X TRIO 24G&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;SSD&lt;/td&gt;&#xA;          &lt;td&gt;SAMSUNG 980 PRO 2TB&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;電源&lt;/td&gt;&#xA;          &lt;td&gt;Thermaltake TOUGHPOWER GF3 1200W&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;メモリ&lt;/td&gt;&#xA;          &lt;td&gt;Crucial CT2K32G4DFD832A x 2&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;マザーボード&lt;/td&gt;&#xA;          &lt;td&gt;MSI MAG Z790 TOMAHAWK WIFI&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;ケース&lt;/td&gt;&#xA;          &lt;td&gt;Fractal Design Define 7&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;OS&lt;/td&gt;&#xA;          &lt;td&gt;Ubuntu 22.04&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;グリス&lt;/td&gt;&#xA;          &lt;td&gt;ARCTIC MX-4&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;ケース&lt;/td&gt;&#xA;          &lt;td&gt;Fractal Design Define 7 Black Solid&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;ファン&lt;/td&gt;&#xA;          &lt;td&gt;Scythe KAZE FLEX 140 SQUARE PWM 1200rpm KF1425FD12S-P&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;ファン2&lt;/td&gt;&#xA;          &lt;td&gt;Noctua NF-A12X25 PWM&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;この構成で良かった所とダメだった所を考えてみます。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
