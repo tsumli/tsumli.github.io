@@ -14,9 +14,17 @@
 
 &lt;p>今までは&lt;code>__syncthreads()&lt;/code>を使わないと同期できませんでした。しかし、これよりも小さなグループで同期を取りたいことがあります。Cooperative GroupsはCUDA 9から導入された機能で、これを使うことによって柔軟な同期が可能になります。&lt;/p>
 &lt;p>&lt;code>cooperative_groups.h&lt;/code>をincludeするだけで使うことができます。そして、一般的に&lt;code>cg&lt;/code>とaliasされることが多いようです。&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8b949e;font-weight:bold;font-style:italic">#include&lt;/span> &lt;span style="color:#8b949e;font-weight:bold;font-style:italic">&amp;lt;cooperative_groups.h&amp;gt;&lt;/span>&lt;span style="color:#8b949e;font-weight:bold;font-style:italic">
+&lt;div class="highlight">&lt;div style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+&lt;table style="border-spacing:0;padding:0;margin:0;border:0;">&lt;tr>&lt;td style="vertical-align:top;padding:0;margin:0;border:0;">
+&lt;pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679">1
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+&lt;pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8b949e;font-weight:bold;font-style:italic">#include&lt;/span> &lt;span style="color:#8b949e;font-weight:bold;font-style:italic">&amp;lt;cooperative_groups.h&amp;gt;&lt;/span>&lt;span style="color:#8b949e;font-weight:bold;font-style:italic">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8b949e;font-weight:bold;font-style:italic">&lt;/span>&lt;span style="color:#ff7b72">namespace&lt;/span> cg &lt;span style="color:#ff7b72;font-weight:bold">=&lt;/span> cooperative_groups;
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>これより先のコードではこの定義を使うため注意してください。&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>これより先のコードではこの定義を使うため注意してください。&lt;/p>
 &lt;h2 id="thread-group">
  Thread Group
  &lt;a class="heading-link" href="#thread-group">
@@ -25,7 +33,21 @@
  &lt;/a>
 &lt;/h2>
 &lt;p>Cooperative Groupsの中でも最も基本の型は&lt;code>thread_group&lt;/code>です。threadの数やthreadのindex ([0, size - 1]) は次のように取得できます。&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>__global__ &lt;span style="color:#ff7b72">void&lt;/span> &lt;span style="color:#d2a8ff;font-weight:bold">my_kernel&lt;/span>() {
+&lt;div class="highlight">&lt;div style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+&lt;table style="border-spacing:0;padding:0;margin:0;border:0;">&lt;tr>&lt;td style="vertical-align:top;padding:0;margin:0;border:0;">
+&lt;pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 1
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 2
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 3
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 4
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 5
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 6
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 7
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 8
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679"> 9
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+&lt;pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>__global__ &lt;span style="color:#ff7b72">void&lt;/span> &lt;span style="color:#d2a8ff;font-weight:bold">my_kernel&lt;/span>() {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cg&lt;span style="color:#ff7b72;font-weight:bold">::&lt;/span>thread_block block &lt;span style="color:#ff7b72;font-weight:bold">=&lt;/span> cg&lt;span style="color:#ff7b72;font-weight:bold">::&lt;/span>this_thread_block();
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> printf(&lt;span style="color:#a5d6ff">&amp;#34;size: %d, thread_rank: %d&lt;/span>&lt;span style="color:#79c0ff">\n&lt;/span>&lt;span style="color:#a5d6ff">&amp;#34;&lt;/span>, block.size(), block.thread_rank());
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
@@ -35,4 +57,6 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> THROW_IF_FAILED(cudaDeviceSynchronize());
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ff7b72">return&lt;/span> &lt;span style="color:#a5d6ff">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>出力は以下になります&lt;/p></description></item></channel></rss>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>出力は以下になります&lt;/p></description></item></channel></rss>
