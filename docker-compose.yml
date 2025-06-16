@@ -9,16 +9,6 @@ services:
     command: hugo server -D -p 1313 --bind 0.0.0.0
     user: "${LOCALUID}:${LOCALGID}"
 
-  newpost:
-    image: "hugomods/hugo"
-    ports:
-      - 1313:1313
-    user: "${LOCALUID}:${LOCALGID}"
-    volumes:
-      - ./:/src
-    tty: true
-    command: hugo new ${NAME}
-
   build_pages:
     image: "hugomods/hugo"
     ports:
@@ -26,4 +16,4 @@ services:
     user: "${LOCALUID}:${LOCALGID}"
     volumes:
       - ./:/src
-    command: hugo --minify
+    command: hugo --minify -d docs
