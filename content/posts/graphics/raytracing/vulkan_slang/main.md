@@ -487,8 +487,16 @@ Slang + Vulkanのレイトレーシングが動作していることがわかり
 
 ![Sponza](./sponza.jpeg)
 
+Primitiveを表示するとこんな感じ
+
+![Sponza Primitive](./sponza_primitive.png)
+
+Instanceを表示するとこんな感じ
+
+![Sponza Instance](./sponza_instance.png)
+
 ## 感想
-1. slangは書いててSAN値が削られにくいので良いです. デファクトになるかはわからないですがGLSL, HLSLは書いていてしんどいのでこういう試みがあるのはいいですね
+1. slangは書いててSAN値が削られにくいので良いです. デファクトになるかはわからないですがGLSL, HLSLは書いていてしんどいのでこういう試みがあるのはいいですね (といっても2017年ごろから存在はしています...)
 2. asan使用するとraytracingのdevice extensionが有効にならないことに気づかず1週間くらい溶かしてしまいました。なぜ...
 3. Slangの動画みていて[shader-slang/slangpy](https://github.com/shader-slang/slangpy)なるプロジェクトがあるのを知りました。Slangをpythonで扱うためのライブラリで、compute shaderだけではなくgraphicsやhardware raytracingなども実行できて面白そうなので、一度試してみたいです
 4. いつの間にかimguiがdynamic renderingに対応していて感動した (関係ない)
