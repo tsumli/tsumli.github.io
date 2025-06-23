@@ -3,9 +3,9 @@ title: "SlangとVulkanでのRaytracing"
 date: 2025-06-16T10:01:52Z
 slug: "raytracing"
 description: ""
-keywords: ["raytracing", "graphics"]
+keywords: ["raytracing", "graphics", "vulkan"]
 draft: false
-tags: ["raytracing", "graphics"]
+tags: ["raytracing", "graphics", "vulkan"]
 url: "posts/graphics/raytracing/vulkan_slang"
 math: true
 toc: true

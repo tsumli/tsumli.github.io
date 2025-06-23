@@ -17,6 +17,9 @@ guessSyntax = true
 lineNos = true
 codeFences = true
 
+[markup.goldmark.parser.attribute]
+block = true
+
 [params]
 faviconSVG = "/img/favicon.svg"
 
@@ -28,7 +31,7 @@ colorScheme = "auto"
 hidecolorschemetoggle = true
 
 customCSS = ["css/custom.css"]
-# customSCSS = ["scss/custom.scss"]
+customSCSS = ["scss/custom.scss"]
 # customJS = ["js/custom.js"]
 
 [taxonomies]
