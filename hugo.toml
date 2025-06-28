@@ -10,6 +10,8 @@ pagerSize = 20
 [services]
 [services.disqus]
 shortname = "tsumli"
+[services.googleAnalytics]
+id = "G-HH27H8XR4Y"
 
 [markup.highlight]
 style = "github-dark"
