@@ -35,7 +35,7 @@ NRD の CMake スクリプトはビルド時にシェーダも自動コンパイ
 
 ## Usage
 ### LibraryDescの取得
-`nrd::GetLibraryDesc()`を用いて`LibraryDesc`を取得します。 まずライブラリのメタ情報を取得します。バージョン・対応フォーマット・バインディングのオフセットなどが含まれます。
+`nrd::GetLibraryDesc()`を用いて`LibraryDesc`を取得します。 バージョン・対応フォーマット・バインディングのオフセットなどが含まれます。
 
 ```cpp
 library_desc_ = nrd::GetLibraryDesc();
@@ -63,11 +63,12 @@ DEBUG_ASSERT(nrd::CreateInstance(instance_creation_desc, instance_) ==  nrd::Res
 返り値は `nrd::Result` なので、適当にチェックしておきましょう. (`[[nodiscard]]` が欲しくはあった)
 
 ### InstanceDescの取得
-`LibraryDesc`と同様に`InstanceDesc`を取得します
+`LibraryDesc`と同様に`InstanceDesc`を取得します。パイプラインや各種リソースの情報が含まれます。
 
 ```cpp
-const auto& instance_desc = nrd::GetInstanceDesc(*instance_);
+instance_desc_ = nrd::GetInstanceDesc(*instance_);
 ```
+
 
 ## References
 - [NRD](https://github.com/NVIDIA-RTX/NRD)
