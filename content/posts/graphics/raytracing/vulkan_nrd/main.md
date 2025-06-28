@@ -12,7 +12,7 @@ toc: true
 ---
 
 ## はじめに
-レイトレーシングを行う際のポストエフェクトとして、[NRD](https://github.com/NVIDIA-RTX/NRD) (NVIDIA Real-Time Denoisers) というライブラリが広く利用されています。ここでは Vulkan で NRD を組み込む方法を、各デノイザーのアルゴリズム詳細には立ち入らずに解説します。
+レイトレーシングを行う際のポストエフェクトとして、[NRD](https://github.com/NVIDIA-RTX/NRD) (NVIDIA Real-Time Denoisers) というライブラリが広く利用されています。ここでは Vulkan で NRD を組み込む方法を解説します (注: この記事では各デノイザーのアルゴリズム詳細には立ち入りません) 
 
 ### NRDとは
 NRD は NVIDIA が開発したリアルタイム向けデノイザーで、DX12 や Vulkan など API 非依存で設計されています。サポートされる主なデノイザーは次の3種類です。
@@ -68,6 +68,10 @@ DEBUG_ASSERT(nrd::CreateInstance(instance_creation_desc, instance_) ==  nrd::Res
 ```cpp
 instance_desc_ = nrd::GetInstanceDesc(*instance_);
 ```
+
+
+### TODO
+- Set == Spaceであること
 
 
 ## References
