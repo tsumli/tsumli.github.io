@@ -12,17 +12,16 @@ toc: true
 ---
 
 ## はじめに
-Raytracingを行うときのデノイザーとして、[NRD](https://github.com/NVIDIA-RTX/NRD) (NVIDIA Real-Time Denoisers) というライブラリが知られています。今回はこれをVulkanで使ってみることを目標に実装していきます (各デノイザーの詳細には踏み込みません) 。
+レイトレーシングを行う際のポストエフェクトとして、[NRD](https://github.com/NVIDIA-RTX/NRD) (NVIDIA Real-Time Denoisers) というライブラリが広く利用されています。ここでは Vulkan で NRD を組み込む方法を、各デノイザーのアルゴリズム詳細には立ち入らずに解説します。
 
 ### NRDとは
-NRDはNVIDIAが開発したdenoiserで、DX12やVulkanなどのAPIに依存しないように設計されています。
-使用できるDenoiserは以下の3種類です:
-1. REBLUR: 再帰的ブラーを用いたデノイザー
-2. RELAX: A-trousベースのデノイザー
-3. SIGMA: 影のノイズ除去に使用する
+NRD は NVIDIA が開発したリアルタイム向けデノイザーで、DX12 や Vulkan など API 非依存で設計されています。サポートされる主なデノイザーは次の3種類です。
+1. REBLUR: 再帰的ブラーを用いた汎用デノイザー
+2. RELAX: A-trous ウェーブレットを利用した高品質デノイザー
+3. SIGMA: シャドウ用ノイズ除去
 
 ## Build
-CMakeのFetchContentを使用して簡単にリンクすることができます. 今回使用するのはversion 4.15.1です。
+CMake の FetchContent を使うと簡単に取り込めます。今回は v4.15.1 を使用します。
 ```cmake
 message(STATUS "Setup NRD")
 FetchContent_Declare(
@@ -32,8 +31,43 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(nrd)
 target_link_libraries(my-library PUBLIC NRD)
 ```
-ビルド時にシェーダーのコンパイルも行われており、今回はそのSPIRV-V形式のデータを使用します。
+NRD の CMake スクリプトはビルド時にシェーダも自動コンパイルし、SPIR-V 形式で生成してくれます。
+
+## Usage
+### LibraryDescの取得
+`nrd::GetLibraryDesc()`を用いて`LibraryDesc`を取得します。 まずライブラリのメタ情報を取得します。バージョン・対応フォーマット・バインディングのオフセットなどが含まれます。
+
+```cpp
+library_desc_ = nrd::GetLibraryDesc();
+spdlog::debug("NRD version: {}.{}.{}", library_desc_.versionMajor, library_desc_.versionMinor,
+                library_desc_.versionBuild);
+```
+実行結果
+```bash
+[debug] NRD version: 4.15.1
+```
+
+### Instanceの作成
+利用したいデノイザーを指定してインスタンスを生成します。ここでは`REBLUR_DIFFUSE`を使います。
+```cpp
+auto denoisers = std::to_array({nrd::DenoiserDesc{
+    .identifier = std::to_underlying(NrdIdentifier::kReblurDiffuse),
+    .denoiser = nrd::Denoiser::REBLUR_DIFFUSE,
+}});
+auto instance_creation_desc = nrd::InstanceCreationDesc{
+    .denoisers = denoisers.data(),
+    .denoisersNum = static_cast<uint32_t>(denoisers.size()),
+};
+DEBUG_ASSERT(nrd::CreateInstance(instance_creation_desc, instance_) ==  nrd::Result::SUCCESS);
+```
+返り値は `nrd::Result` なので、適当にチェックしておきましょう. (`[[nodiscard]]` が欲しくはあった)
+
+### InstanceDescの取得
+`LibraryDesc`と同様に`InstanceDesc`を取得します
+
+```cpp
+const auto& instance_desc = nrd::GetInstanceDesc(*instance_);
+```
 
 ## References
 - [NRD](https://github.com/NVIDIA-RTX/NRD)
-- 
