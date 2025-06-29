@@ -73,9 +73,15 @@ instance_desc_ = nrd::GetInstanceDesc(*instance_);
 ### TODO
 - Set == Spaceであること
 
-## 感想
+## 注意
 - ビルド中に使用されるShaderMakeリポジトリは [FetchContent](https://github.com/NVIDIA-RTX/NRD/blob/b50c3cb575e3dfcc9bfe9933f511da1bf70a4f96/CMakeLists.txt#L126)によって常に最新の`main`ブランチを取得している
-  - 互換性のなさによりビルドできないことが起こりうる
+  - 古いNRD x 最新のShaderMakeでの互換性のなさによりビルドできないことが起こりうる
+  - (一応PRで指摘はしたが対応されず...)
+
+## 感想
+- API非依存のライブラリってこうやって作る方法もあるなあと勉強になった
+  - SPIR-Vさえあればなんとかなる
+- 
 
 ## References
 - [NVIDIA-RTX/NRD](https://github.com/NVIDIA-RTX/NRD) 
