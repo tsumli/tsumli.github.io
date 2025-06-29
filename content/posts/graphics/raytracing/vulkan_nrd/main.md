@@ -72,6 +72,7 @@ instance_desc_ = nrd::GetInstanceDesc(*instance_);
 
 ### TODO
 - Set == Spaceであること
+- それぞれのtextureのbinding
 
 ## 注意
 - ビルド中に使用されるShaderMakeリポジトリは [FetchContent](https://github.com/NVIDIA-RTX/NRD/blob/b50c3cb575e3dfcc9bfe9933f511da1bf70a4f96/CMakeLists.txt#L126)によって常に最新の`main`ブランチを取得している
