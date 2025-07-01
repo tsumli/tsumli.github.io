@@ -69,10 +69,71 @@ DEBUG_ASSERT(nrd::CreateInstance(instance_creation_desc, instance_) ==  nrd::Res
 instance_desc_ = nrd::GetInstanceDesc(*instance_);
 ```
 
+### テクスチャの生成
+NRDで使用されるテクスチャを生成します。`InstanceDesc`には2種類のテクスチャについての情報があります。
+
+- Permanent Pool: NRD専用のリソースで、他の用途には再利用できません
+- Transient Pool: 一般的にはデノイズ後に再利用可能なリソースです
+
+今回は、いずれも再利用しないNRD専用リソースとして構築します
+
+```cpp
+for (auto pool_i{0u}; i < pool_size; ++i) {
+  const auto& desc = pool[pool_i];
+  const auto format = ConvertToVulkanFormat(desc.format);
+  
+  const auto image_create_info =  vk::ImageCreateInfo()
+      .setExtent({utils::RoundDivUp(extent.width, desc.downsampleFactor),
+                  utils::RoundDivUp(extent.height, desc.downsampleFactor), 1})
+      .setFormat(format)
+      .setImageType(vk::ImageType::e2D)
+      .setArrayLayers(1)
+      .setMipLevels(1)
+      .setUsage(vk::ImageUsageFlagBits::eSampled | vk::ImageUsageFlagBits::eStorage);
+
+  // image, image_viewを生成し適当なcontainerに保存
+}
+```
+
+### サンプラーの生成
+InstanceDescには同様にサンプラーについての情報があります. これからVulkan用のサンプラーを構築します
+
+```cpp
+for (auto sampler_i{0u}; sampler_i < samplers_num; ++sampler_i) {
+  const auto& nrd_sampler = samplers[sampler_i];
+
+  const auto address_mode = [&]() {
+    switch (nrd_sampler) {
+      case nrd::Sampler::LINEAR_CLAMP:
+      case nrd::Sampler::NEAREST_CLAMP:
+        return vk::SamplerAddressMode::eClampToEdge;
+      default:
+        return vk::SamplerAddressMode::eMirroredRepeat;
+    }
+  }();
+
+  const auto filter_type = [&]() {
+    switch (nrd_sampler) {
+      case nrd::Sampler::LINEAR_CLAMP:
+        return vk::Filter::eLinear;
+      default:
+        return vk::Filter::eNearest;
+    }
+  }();
+
+  // samplerを生成し適当なcontainerに保存
+}
+```
+
+### ShaderObjectの作成
+
+### DescriptorSetの作成
+
 
 ### TODO
 - Set == Spaceであること
 - それぞれのtextureのbinding
+- packing/unpackingは`NRD.hlsli`をみる必要
 
 ## 注意
 - ビルド中に使用されるShaderMakeリポジトリは [FetchContent](https://github.com/NVIDIA-RTX/NRD/blob/b50c3cb575e3dfcc9bfe9933f511da1bf70a4f96/CMakeLists.txt#L126)によって常に最新の`main`ブランチを取得している
@@ -82,6 +143,7 @@ instance_desc_ = nrd::GetInstanceDesc(*instance_);
 ## 感想
 - API非依存のライブラリってこうやって作る方法もあるなあと勉強になった
   - SPIR-Vさえあればなんとかなる
+  - ~~HLSLに依存している気がしないでもない~~
 - 
 
 ## References
