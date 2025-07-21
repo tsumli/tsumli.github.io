@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Slang on tsumli pages</title><link>https://tsumli.github.io/tags/slang/</link><description>Recent content in Slang on tsumli pages</description><generator>Hugo</generator><language>en</language><lastBuildDate>Sun, 20 Jul 2025 10:01:52 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/slang/index.xml" rel="self" type="application/rss+xml"/><item><title>SlangでN-Bodyシミュレーション</title><link>https://tsumli.github.io/posts/graphics/shader/slang_particles/</link><pubDate>Sun, 20 Jul 2025 10:01:52 +0000</pubDate><guid>https://tsumli.github.io/posts/graphics/shader/slang_particles/</guid><description>&lt;p>&lt;img src="images/tiled_n100000.png" alt="tiled_n100000">&lt;/p>
+&lt;ul>
+&lt;li>100,000個についてのシミュレーションを行った例&lt;/li>
+&lt;/ul>
+&lt;h2 id="はじめに">
+ はじめに
+ &lt;a class="heading-link" href="#%e3%81%af%e3%81%98%e3%82%81%e3%81%ab">
+ &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading">&lt;/i>
+ &lt;span class="sr-only">Link to heading&lt;/span>
+ &lt;/a>
+&lt;/h2>
+&lt;p>N-bodyシミュレーションをslangで実装します. 今回は実装にslangpyというライブラリを使用します&lt;/p>
+&lt;p>実装は &lt;a href="https://developer.nvidia.com/gpugems/gpugems3/part-v-physics-simulation/chapter-31-fast-n-body-simulation-cuda" class="external-link" target="_blank" rel="noopener">Fast N-Body Simulation with CUDA | GPU Gems 3&lt;/a> を参考にしています。&lt;/p>
+&lt;h2 id="実装">
+ 実装
+ &lt;a class="heading-link" href="#%e5%ae%9f%e8%a3%85">
+ &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading">&lt;/i>
+ &lt;span class="sr-only">Link to heading&lt;/span>
+ &lt;/a>
+&lt;/h2>
+&lt;p>まず、各実装に共通する部分を見ていきましょう。まずはパーティクルの定義から:&lt;/p>
+&lt;div class="highlight">&lt;div style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+&lt;table style="border-spacing:0;padding:0;margin:0;border:0;">&lt;tr>&lt;td style="vertical-align:top;padding:0;margin:0;border:0;">
+&lt;pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679">1
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679">2
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679">3
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679">4
+&lt;/span>&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#737679">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+&lt;pre tabindex="0" style="color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ff7b72">struct&lt;/span> &lt;span style="color:#f0883e;font-weight:bold">Particle&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ff7b72">float&lt;/span> mass; &lt;span style="color:#8b949e;font-style:italic">// 質量
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8b949e;font-style:italic">&lt;/span> float3 position; &lt;span style="color:#8b949e;font-style:italic">// 位置
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8b949e;font-style:italic">&lt;/span> float3 velocity; &lt;span style="color:#8b949e;font-style:italic">// 速度
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#8b949e;font-style:italic">&lt;/span>};
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>次に、パーティクル間の作用を計算する関数を実装します。
+particle_iに対するparticle_jからの作用 $f_{ij}$ をparticle_iの質量$m_i$で割ったものは以下のように表されます。&lt;/p></description></item></channel></rss>

@@ -19,6 +19,12 @@ guessSyntax = true
 lineNos = true
 codeFences = true
 
+[privacy]
+[privacy.vimeo]
+disable = false
+enableDNT = false
+simple = false
+
 [params]
 faviconSVG = "/img/favicon.svg"
 
