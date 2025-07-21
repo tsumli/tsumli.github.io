@@ -1,0 +1,289 @@
+<!doctype html><html lang=en><head><title>SlangでN-Bodyシミュレーション · tsumli pages</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=color-scheme content="light dark"><meta name=description content="
+
+100,000個についてのシミュレーションを行った例
+
+
+  はじめに
+  
+    
+    Link to heading
+  
+
+N-bodyシミュレーションをslangで実装します. 今回は実装にslangpyというライブラリを使用します
+実装は Fast N-Body Simulation with CUDA | GPU Gems 3 を参考にしています。
+
+  実装
+  
+    
+    Link to heading
+  
+
+まず、各実装に共通する部分を見ていきましょう。まずはパーティクルの定義から:
+
+
+1
+2
+3
+4
+5
+
+
+struct Particle {
+  float mass;       // 質量
+  float3 position;  // 位置
+  float3 velocity;  // 速度
+};
+
+
+次に、パーティクル間の作用を計算する関数を実装します。
+particle_iに対するparticle_jからの作用 $f_{ij}$ をparticle_iの質量$m_i$で割ったものは以下のように表されます。"><meta name=keywords content="slang,graphics"><meta name=twitter:card content="summary"><meta name=twitter:title content="SlangでN-Bodyシミュレーション"><meta name=twitter:description content="100,000個についてのシミュレーションを行った例 はじめに Link to heading N-bodyシミュレーションをslangで実装します. 今回は実装にslangpyというライブラリを使用します
+実装は Fast N-Body Simulation with CUDA | GPU Gems 3 を参考にしています。
+実装 Link to heading まず、各実装に共通する部分を見ていきましょう。まずはパーティクルの定義から:
+1 2 3 4 5 struct Particle { float mass; // 質量 float3 position; // 位置 float3 velocity; // 速度 }; 次に、パーティクル間の作用を計算する関数を実装します。 particle_iに対するparticle_jからの作用 $f_{ij}$ をparticle_iの質量$m_i$で割ったものは以下のように表されます。"><meta property="og:url" content="https://tsumli.github.io/posts/graphics/shader/slang_particles/"><meta property="og:site_name" content="tsumli pages"><meta property="og:title" content="SlangでN-Bodyシミュレーション"><meta property="og:description" content="100,000個についてのシミュレーションを行った例 はじめに Link to heading N-bodyシミュレーションをslangで実装します. 今回は実装にslangpyというライブラリを使用します
+実装は Fast N-Body Simulation with CUDA | GPU Gems 3 を参考にしています。
+実装 Link to heading まず、各実装に共通する部分を見ていきましょう。まずはパーティクルの定義から:
+1 2 3 4 5 struct Particle { float mass; // 質量 float3 position; // 位置 float3 velocity; // 速度 }; 次に、パーティクル間の作用を計算する関数を実装します。 particle_iに対するparticle_jからの作用 $f_{ij}$ をparticle_iの質量$m_i$で割ったものは以下のように表されます。"><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-07-20T10:01:52+00:00"><meta property="article:modified_time" content="2025-07-20T10:01:52+00:00"><meta property="article:tag" content="Slang"><meta property="article:tag" content="Graphics"><link rel=canonical href=https://tsumli.github.io/posts/graphics/shader/slang_particles/><link rel=preload href=/fonts/fa-brands-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=/fonts/fa-regular-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=/fonts/fa-solid-900.woff2 as=font type=font/woff2 crossorigin><link rel=stylesheet href=/css/coder.min.6445a802b9389c9660e1b07b724dcf5718b1065ed2d71b4eeaf981cc7cc5fc46.css integrity="sha256-ZEWoArk4nJZg4bB7ck3PVxixBl7S1xtO6vmBzHzF/EY=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/coder-dark.min.a00e6364bacbc8266ad1cc81230774a1397198f8cfb7bcba29b7d6fcb54ce57f.css integrity="sha256-oA5jZLrLyCZq0cyBIwd0oTlxmPjPt7y6KbfW/LVM5X8=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/custom.min.5fc0bca9f2f250cd2f46d1b47b5d85a80c0780e2de59f0ed76ac61a21e33e26a.css integrity="sha256-X8C8qfLyUM0vRtG0e12FqAwHgOLeWfDtdqxhoh4z4mo=" crossorigin=anonymous media=screen><link rel=icon type=image/svg+xml href=/img/favicon.svg sizes=any><link rel=icon type=image/png href=/images/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/images/favicon-16x16.png sizes=16x16><link rel=apple-touch-icon href=/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/images/safari-pinned-tab.svg color=#5bbad5></head><body class="preload-transitions colorscheme-auto"><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=https://tsumli.github.io/>tsumli pages
+</a><input type=checkbox id=menu-toggle>
+<label class="menu-button float-right" for=menu-toggle><i class="fa-solid fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=/posts/>Blog</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://tsumli.github.io/posts/graphics/shader/slang_particles/>SlangでN-Bodyシミュレーション</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa-solid fa-calendar" aria-hidden=true></i>
+<time datetime=2025-07-20T10:01:52Z>July 20, 2025
+</time></span><span class=reading-time><i class="fa-solid fa-clock" aria-hidden=true></i>
+3-minute read</span></div><div class=tags><i class="fa-solid fa-tag" aria-hidden=true></i>
+<span class=tag><a href=/tags/slang/>Slang</a>
+</span><span class=separator>•</span>
+<span class=tag><a href=/tags/graphics/>Graphics</a></span></div></div></header><div class=post-content><p><img src=images/tiled_n100000.png alt=tiled_n100000></p><ul><li>100,000個についてのシミュレーションを行った例</li></ul><h2 id=はじめに>はじめに
+<a class=heading-link href=#%e3%81%af%e3%81%98%e3%82%81%e3%81%ab><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p>N-bodyシミュレーションをslangで実装します. 今回は実装にslangpyというライブラリを使用します</p><p>実装は <a href=https://developer.nvidia.com/gpugems/gpugems3/part-v-physics-simulation/chapter-31-fast-n-body-simulation-cuda class=external-link target=_blank rel=noopener>Fast N-Body Simulation with CUDA | GPU Gems 3</a> を参考にしています。</p><h2 id=実装>実装
+<a class=heading-link href=#%e5%ae%9f%e8%a3%85><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p>まず、各実装に共通する部分を見ていきましょう。まずはパーティクルの定義から:</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">5
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#ff7b72>struct</span> <span style=color:#f0883e;font-weight:700>Particle</span> {
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>float</span> mass;       <span style=color:#8b949e;font-style:italic>// 質量
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  float3 position;  <span style=color:#8b949e;font-style:italic>// 位置
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  float3 velocity;  <span style=color:#8b949e;font-style:italic>// 速度
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>};
+</span></span></code></pre></td></tr></table></div></div><p>次に、パーティクル間の作用を計算する関数を実装します。
+particle_iに対するparticle_jからの作用 $f_{ij}$ をparticle_iの質量$m_i$で割ったものは以下のように表されます。</p><p>$$
+\frac{f_{ij}}{m_i} = \frac{G m_j}{||r_{ij}||^2} \frac{r_{ij}}{||r_{ij}||}
+$$</p><p>ここで、$G$は重力定数、$m_i$はparticle_iの質量、$m_j$はparticle_jの質量、$r_{ij}$はparticle_iとparticle_jの距離です。</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">14
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#8b949e;font-style:italic>// 重力定数: 今回は1.0にしている
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span><span style=color:#ff7b72>static</span> <span style=color:#ff7b72>const</span> <span style=color:#ff7b72>float</span> kGravityStrength <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#a5d6ff>1.0</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff7b72>void</span> <span style=color:#d2a8ff;font-weight:700>ParticleInteraction</span>(Particle particle, Particle other_particle, inout float3 forces) {
+</span></span><span style=display:flex><span>  let r <span style=color:#ff7b72;font-weight:700>=</span> other_particle.position <span style=color:#ff7b72;font-weight:700>-</span> particle.position;
+</span></span><span style=display:flex><span>  let dist_squared <span style=color:#ff7b72;font-weight:700>=</span> dot(r, r) <span style=color:#ff7b72;font-weight:700>+</span> <span style=color:#a5d6ff>1.0</span>;  <span style=color:#8b949e;font-style:italic>// 定数1.0は0除算を防ぐためのもの
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  let dist <span style=color:#ff7b72;font-weight:700>=</span> sqrt(dist_squared);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>if</span> (dist <span style=color:#ff7b72;font-weight:700>&gt;</span> <span style=color:#a5d6ff>0.1</span>) {
+</span></span><span style=display:flex><span>    let inv_dist_cube <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#a5d6ff>1.0</span> <span style=color:#ff7b72;font-weight:700>/</span> (dist_squared <span style=color:#ff7b72;font-weight:700>*</span> dist);
+</span></span><span style=display:flex><span>    let s <span style=color:#ff7b72;font-weight:700>=</span> kGravityStrength <span style=color:#ff7b72;font-weight:700>*</span> other_particle.mass <span style=color:#ff7b72;font-weight:700>*</span> inv_dist_cube;
+</span></span><span style=display:flex><span>    forces <span style=color:#ff7b72;font-weight:700>+=</span> r <span style=color:#ff7b72;font-weight:700>*</span> s;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>次に、各パーティクルからの作用を求めたあとに、自身のアトリビュートを更新を行うための関数を実装します。求められた加速度から、位置と速度を更新します。</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">5
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#ff7b72>void</span> <span style=color:#d2a8ff;font-weight:700>UpdateParticle</span>(inout Particle particle, float3 forces, <span style=color:#ff7b72>float</span> dt) {
+</span></span><span style=display:flex><span>  let acceleration <span style=color:#ff7b72;font-weight:700>=</span> forces <span style=color:#ff7b72;font-weight:700>/</span> particle.mass;
+</span></span><span style=display:flex><span>  particle.velocity <span style=color:#ff7b72;font-weight:700>+=</span> acceleration <span style=color:#ff7b72;font-weight:700>*</span> dt;
+</span></span><span style=display:flex><span>  particle.position <span style=color:#ff7b72;font-weight:700>+=</span> particle.velocity <span style=color:#ff7b72;font-weight:700>*</span> dt;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>以上で共通部分の実装は終わりです</p><h3 id=1-貪欲に相互作用を計算する>1. 貪欲に相互作用を計算する
+<a class=heading-link href=#1-%e8%b2%aa%e6%ac%b2%e3%81%ab%e7%9b%b8%e4%ba%92%e4%bd%9c%e7%94%a8%e3%82%92%e8%a8%88%e7%ae%97%e3%81%99%e3%82%8b><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h3><p>GPUの各スレッドが1つのパーティクルに対する作用を計算します.</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">27
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span>[shader(<span style=color:#a5d6ff>&#34;compute&#34;</span>)]
+</span></span><span style=display:flex><span>[numthreads(<span style=color:#a5d6ff>16</span>, <span style=color:#a5d6ff>1</span>, <span style=color:#a5d6ff>1</span>)]
+</span></span><span style=display:flex><span><span style=color:#ff7b72>void</span> compute_main(uint3 <span style=color:#79c0ff;font-weight:700>tid</span>: SV_DispatchThreadID) {
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// 1. 対応するパーティクルの取得
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  let index <span style=color:#ff7b72;font-weight:700>=</span> tid.x;
+</span></span><span style=display:flex><span>  let num_particles <span style=color:#ff7b72;font-weight:700>=</span> particles.getCount();
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>if</span> (index <span style=color:#ff7b72;font-weight:700>&gt;=</span> num_particles) {
+</span></span><span style=display:flex><span>    <span style=color:#8b949e;font-style:italic>// 対応するパーティクルが存在しない場合は処理を終了
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>    <span style=color:#ff7b72>return</span>;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  var particle <span style=color:#ff7b72;font-weight:700>=</span> particles[index];
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// 2. 相互作用を計算
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  var forces <span style=color:#ff7b72;font-weight:700>=</span> float3(<span style=color:#a5d6ff>0.0</span>);
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>for</span> (<span style=color:#ff7b72>int</span> i <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#a5d6ff>0</span>; i <span style=color:#ff7b72;font-weight:700>&lt;</span> num_particles; <span style=color:#ff7b72;font-weight:700>++</span>i) {
+</span></span><span style=display:flex><span>    <span style=color:#ff7b72>if</span> (i <span style=color:#ff7b72;font-weight:700>==</span> index) {
+</span></span><span style=display:flex><span>      <span style=color:#8b949e;font-style:italic>// 自身に対する作用は計算しない
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>      <span style=color:#ff7b72>continue</span>;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    let other_particle <span style=color:#ff7b72;font-weight:700>=</span> particles[i];
+</span></span><span style=display:flex><span>    ParticleInteraction(particle, other_particle, forces);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// 3. パーティクルの更新
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  UpdateParticle(particle, forces, dt);
+</span></span><span style=display:flex><span>  particles[index] <span style=color:#ff7b72;font-weight:700>=</span> particle;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>とても単純ですが、1つのスレッドがforループを通じてすべてのパーティクルに別々にアクセスを行い計算するため低速です。</p><p>少し解説をしておくと、今回はcompute shaderをスレッドグループ = (16, 1, 1)で実行しています。
+<code>SV_DispatchThreadID</code>は現在のスレッドがディスパッチ全体の中で何番目かを表しています。
+例えば、これをgroup = (8, 1, 1) で実行した場合、(16 * 8, 1, 1) -> 128個のスレッドが起動しその中の一意の値が<code>SV_DispatchThreadID</code>に入るというわけです。
+このコードでは実行時にパーティクル数以上のスレッドが起動することを前提としています。</p><p>他にも似たようなセマンティクスとしていくつか紹介しておくと、</p><ul><li><code>SV_GroupThreadID</code>: スレッドグループの中で何番目のスレッドか<ul><li>今回だと (0, 0, 0) から (15, 0, 0) までの値を取る</li></ul></li><li><code>SV_GroupIndex</code>: 現在のスレッドがグループの中で何番目かを表しています。<ul><li><code>SV_GroupThreadID</code>について一意の値を取る</li><li>今回だと 0 - 15</li></ul></li><li><code>SV_GroupID</code>: 現在のスレッドがグループの中で何番目かを表しています。<ul><li>今回だと 0 - 7 の値を取る (groupを(8, 1, 1)にした場合)</li></ul></li></ul><p>まとめとしては<a href=https://learn.microsoft.com/ja-jp/windows/win32/direct3dhlsl/sv-dispatchthreadid class=external-link target=_blank rel=noopener>こちら</a> の図がわかりやすいです。</p><h3 id=2-タイルごとに相互作用を計算する>2. タイルごとに相互作用を計算する
+<a class=heading-link href=#2-%e3%82%bf%e3%82%a4%e3%83%ab%e3%81%94%e3%81%a8%e3%81%ab%e7%9b%b8%e4%ba%92%e4%bd%9c%e7%94%a8%e3%82%92%e8%a8%88%e7%ae%97%e3%81%99%e3%82%8b><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h3><p>タイルごとに計算することで高速化が期待できます。まずはコード全体を見てみましょう。</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">38
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">39
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">40
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">41
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">42
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">43
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">44
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">45
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">46
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">47
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">48
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">49
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">50
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">51
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">52
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">53
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">54
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679">55
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic>// タイルのサイズ: 今回は256個で決め打ち
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span><span style=color:#ff7b72>static</span> <span style=color:#ff7b72>const</span> uint kTileSize <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#a5d6ff>256</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic>// タイル内のパーティクルを格納する共有メモリ
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>groupshared Particle tile_particles[kTileSize];
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>[shader(<span style=color:#a5d6ff>&#34;compute&#34;</span>)]
+</span></span><span style=display:flex><span>[numthreads(kTileSize, <span style=color:#a5d6ff>1</span>, <span style=color:#a5d6ff>1</span>)]
+</span></span><span style=display:flex><span><span style=color:#ff7b72>void</span> compute_main(uint3 <span style=color:#79c0ff;font-weight:700>tid</span>: SV_DispatchThreadID, uint3 <span style=color:#79c0ff;font-weight:700>gtid</span>: SV_GroupThreadID) {
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// 1. 対応するパーティクルの取得
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// 対応するパーティクルのインデックス. x は [0, num_particles - 1] の値を取る
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  let index <span style=color:#ff7b72;font-weight:700>=</span> tid.x;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// thread groupの中で何番目のスレッドか. x は [0, kTileSize - 1] の値を取る
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  let group_thread_id <span style=color:#ff7b72;font-weight:700>=</span> gtid.x;
+</span></span><span style=display:flex><span>  let num_particles <span style=color:#ff7b72;font-weight:700>=</span> particles.getCount();
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>if</span> (index <span style=color:#ff7b72;font-weight:700>&gt;=</span> num_particles) {
+</span></span><span style=display:flex><span>    <span style=color:#ff7b72>return</span>;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  var particle <span style=color:#ff7b72;font-weight:700>=</span> particles[index];
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// 2. タイルの読み込み
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  var forces <span style=color:#ff7b72;font-weight:700>=</span> float3(<span style=color:#a5d6ff>0.0</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// 3. タイルごとに相互作用を計算するためのループ
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  [unroll]
+</span></span><span style=display:flex><span>  <span style=color:#ff7b72>for</span> (uint tile_start <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#a5d6ff>0</span>; tile_start <span style=color:#ff7b72;font-weight:700>&lt;</span> num_particles; tile_start <span style=color:#ff7b72;font-weight:700>+=</span> kTileSize) {
+</span></span><span style=display:flex><span>    uint load_index <span style=color:#ff7b72;font-weight:700>=</span> tile_start <span style=color:#ff7b72;font-weight:700>+</span> group_thread_id;
+</span></span><span style=display:flex><span>    <span style=color:#ff7b72>if</span> (load_index <span style=color:#ff7b72;font-weight:700>&lt;</span> num_particles) {
+</span></span><span style=display:flex><span>      <span style=color:#8b949e;font-style:italic>// 共有メモリに読み込み
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>      tile_particles[group_thread_id] <span style=color:#ff7b72;font-weight:700>=</span> particles[load_index];
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#8b949e;font-style:italic>// アクセスする前に同期を取る
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>    GroupMemoryBarrierWithGroupSync();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#8b949e;font-style:italic>// 3.1. タイル内のパーティクルについて計算
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>    [unroll]
+</span></span><span style=display:flex><span>    <span style=color:#ff7b72>for</span> (uint tile_offset <span style=color:#ff7b72;font-weight:700>=</span> <span style=color:#a5d6ff>0</span>;
+</span></span><span style=display:flex><span>         tile_offset <span style=color:#ff7b72;font-weight:700>&lt;</span> kTileSize <span style=color:#ff7b72;font-weight:700>&amp;&amp;</span> (tile_start <span style=color:#ff7b72;font-weight:700>+</span> tile_offset) <span style=color:#ff7b72;font-weight:700>&lt;</span> num_particles; <span style=color:#ff7b72;font-weight:700>++</span>tile_offset) {
+</span></span><span style=display:flex><span>      <span style=color:#ff7b72>if</span> (tile_start <span style=color:#ff7b72;font-weight:700>+</span> tile_offset <span style=color:#ff7b72;font-weight:700>!=</span> index) {  <span style=color:#8b949e;font-style:italic>// 自身に対する作用は計算しない
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>        ParticleInteraction(particle, tile_particles[tile_offset], forces);
+</span></span><span style=display:flex><span>      }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#8b949e;font-style:italic>// ここに到達する前に次のループに行くのを防ぐ
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>    GroupMemoryBarrierWithGroupSync();
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#8b949e;font-style:italic>// 4. パーティクルの更新
+</span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  UpdateParticle(particle, forces, dt);
+</span></span><span style=display:flex><span>  particles[index] <span style=color:#ff7b72;font-weight:700>=</span> particle;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>注意するところは <code>GroupMemoryBarrierWithGroupSync()</code> でしょうか。似たような関数がいくつかあるので混乱しないようにしたいです</p><ul><li><code>DeviceMemoryBarrierWithGroupSync</code>: デバイスメモリ (!= 共有メモリ) へのアクセスに対する同期</li><li><code>AllMemoryBarrierWithGroupSync</code>: すべてのメモリへのアクセスに対する同期</li><li><code>GroupMemoryBarrierWithWaveMaskSyncMask</code>: Waveについての共有メモリへのマスク付きの同期 (CUDAの<code>__syncwarp</code>に相当するもの)</li></ul><p>などなど&mldr; 使い分けたいですね</p><p>さて、このコードで高速化が可能なのは3.1で行っている共有メモリアクセスのおかげです。一度共有メモリに読み込んでおくことで、あとの複数回のアクセスを速くすることができるという仕組みになっています。</p><h2 id=結果>結果
+<a class=heading-link href=#%e7%b5%90%e6%9e%9c><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p>まずは20個ほど出してみてどんな軌道を描くか見てみましょう<div style=position:relative;padding-bottom:56.25%;height:0;overflow:hidden><iframe src="https://player.vimeo.com/video/1103080316?dnt=0" style=position:absolute;top:0;left:0;width:100%;height:100%;border:0 allow=fullscreen></iframe></div></p><p>とても高速に計算・描画できていることがわかりますね。さて、パーティクルを増やしていったときのそれぞれのfpsを見ていきましょう。</p><p><img src=plot/output/fps.png alt=fps></p><ul><li>パーティクル数が大きくなればなるほど共有メモリによる高速化の影響が大きくなる</li><li>パーティクル数が小さい時は愚直にやったほうが高速<ul><li>これは、パーティクル数がkTiledSizeよりも小さい場合にオーバーヘッドが出ているものと考えられます</li></ul></li></ul><h2 id=感想>感想
+<a class=heading-link href=#%e6%84%9f%e6%83%b3><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><ul><li>N-bodyシミュレーション、愚直にやるよりも共有メモリを使用したほうが高速に演算できることを実装を通して確認できた</li><li>slangを簡単に試せるフレームワークとしてのslangpyはとても便利<ul><li>抽象化されすぎていないのが良い方向に働いている. グラフィクスに全く触ったことのない人の入門にもなりそう</li><li>reflectionが強力</li></ul></li></ul><p>今回のレポジトリは<a href=https://github.com/tsumli/slang-particles class=external-link target=_blank rel=noopener>tsumli/slang-particles</a>にあります。ぜひ覗いてみてください</p><h2 id=references>References
+<a class=heading-link href=#references><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><ul><li><a href=https://developer.nvidia.com/gpugems/gpugems3/part-v-physics-simulation/chapter-31-fast-n-body-simulation-cuda class=external-link target=_blank rel=noopener>Fast N-Body Simulation with CUDA | GPU Gems 3</a></li></ul></div><footer><div id=disqus_thread></div><script>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//tsumli.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}(),document.addEventListener("themeChanged",function(){document.readyState=="complete"&&DISQUS.reset({reload:!0,config:disqus_config})})</script></footer></article><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css integrity=sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0 crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js integrity=sha384-PwRUT/YqbnEjkZO0zZxNqcxACrXe+j766U2amXcgMg5457rve2Y7I6ZJSm2A0mS4 crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js integrity=sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05 crossorigin=anonymous onload='renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})'></script></section></div><footer class=footer><section class=container>©
+2019 -
+2025
+·
+Powered by <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/ target=_blank rel=noopener>Coder</a>.</section></footer></main><script src=/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-HH27H8XR4Y"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-HH27H8XR4Y")}</script></body></html>
