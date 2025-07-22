@@ -19,6 +19,15 @@ guessSyntax = true
 lineNos = true
 codeFences = true
 
+[markup]
+[markup.goldmark]
+[markup.goldmark.extensions]
+[markup.goldmark.extensions.passthrough]
+enable = true
+[markup.goldmark.extensions.passthrough.delimiters]
+block = [['\[', '\]'], ['$$', '$$']]
+inline = [['\(', '\)']]
+
 [privacy]
 [privacy.vimeo]
 disable = false
