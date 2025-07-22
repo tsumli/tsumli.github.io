@@ -266,8 +266,8 @@ HLSLでは&lt;a href="https://devblogs.microsoft.com/directx/announcing-hlsl-202
 &lt;/div>
 &lt;/div>&lt;p>このshellscriptを次のように実行します．&lt;/p></description></item><item><title>Optimal Transport 03. Unbalanced Optimal Transport</title><link>https://tsumli.github.io/posts/optimal-transport/03-unbalanced/</link><pubDate>Thu, 11 Mar 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/posts/optimal-transport/03-unbalanced/</guid><description>&lt;p>&lt;a href="https://tsumli.github.io/posts/optimal-transport/01-introduction/" >01. はじめ&lt;/a>&lt;br>
 &lt;a href="https://tsumli.github.io/posts/optimal-transport/02-entropy/" >02. エントロピー正則化&lt;/a>&lt;br>
-&lt;a href="https://tsumli.github.io/posts/optimal-transport/03-unbalanced/" >03. Unbalanced Optimal Transport&lt;/a>&lt;br>
-Optimal Transportの拡張系である&lt;strong>Unbalanced Optimal Transport&lt;/strong>について紹介します。&lt;/p>
+&lt;a href="https://tsumli.github.io/posts/optimal-transport/03-unbalanced/" >03. Unbalanced Optimal Transport&lt;/a>&lt;/p>
+&lt;p>Optimal Transportの拡張系である&lt;strong>Unbalanced Optimal Transport&lt;/strong>について紹介します。&lt;/p>
 &lt;h2 id="unbalanced-optimal-transport-unbalanced-ot">
  Unbalanced Optimal Transport (Unbalanced OT)
  &lt;a class="heading-link" href="#unbalanced-optimal-transport-unbalanced-ot">
@@ -281,9 +281,10 @@ $$
 L_\mathbf{C}^\tau (\mathbf{a}, \mathbf{b}) = \min_{\mathbf{P}\in\mathbb{R}_+^{n\times m}} \langle \mathbf{C}, \mathbf{P} \rangle
 +\tau_1\mathbf{D}_\varphi(\mathbf{P}\mathbb{1}_m|\mathbf{a}) + 
 \tau_2\mathbf{D}_\varphi(\mathbf{P}^\mathsf{T}\mathbb{1}_n|\mathbf{b})
-$$&lt;p>
-第1項は通常のoptimal transportでの最小化目標です。そして、この第2, 3項が追加されたものとなります。$\mathbf{D}&lt;em>\varphi(\cdot|\cdot)$ はズレを表す関数で、例えば、euclideanだったりKL距離だったりが考えられます。そして、$\tau_1, \tau_2$はそれらのズレに対するペナルティの大きさを表しています。つまり、$\tau_1 = \tau_2 \rightarrow +\infty$のときズレを許さない、つまり、&amp;ldquo;balanced&amp;quot;な (通常の) optimal transportとなります。また、$\mathbf{D}&lt;/em>\varphi = \mathbf{KL}$ で、$\tau_1 = \tau_2 \rightarrow 0$ のときHellinger距離と呼ばれる距離となります。
+$$&lt;p>第1項は通常のoptimal transportでの最小化目標です。そして、この第2, 3項が追加されたものとなります。
 &lt;/p>
+$$ \mathbf{D}_\varphi(\cdot|\cdot) $$&lt;p> はズレを表す関数で、
+例えば、euclideanだったりKL距離だったりが考えられます。そして、 $ \tau_1, \tau_2 $ はそれらのズレに対するペナルティの大きさを表しています。つまり、$\tau_1 = \tau_2 \rightarrow +\infty$のときズレを許さない、つまり、&amp;ldquo;balanced&amp;quot;な (通常の) optimal transportとなります。また、$\mathbf{D}_\varphi = \mathbf{KL}$ で、$\tau_1 = \tau_2 \rightarrow 0$ のときHellinger距離と呼ばれる距離となります&lt;/p>
 $$
 \mathrm{L}(\mathbf{a}, \mathbf{b}) = \sum_i(\sqrt{\mathbf{a}_i} - \sqrt{\mathbf{b}_i})^2 
 $$&lt;p>Unbalanced OTの計算にもSinkhorn&amp;rsquo;s iterationを使うことができます。更新は次の式を順番に行うことで行われます:
