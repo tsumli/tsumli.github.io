@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Optimal-Transport on tsumli pages</title><link>https://tsumli.github.io/tags/optimal-transport/</link><description>Recent content in Optimal-Transport on tsumli pages</description><generator>Hugo</generator><language>en</language><lastBuildDate>Thu, 11 Mar 2021 13:55:54 +0000</lastBuildDate><atom:link href="https://tsumli.github.io/tags/optimal-transport/index.xml" rel="self" type="application/rss+xml"/><item><title>Optimal Transport 03. Unbalanced Optimal Transport</title><link>https://tsumli.github.io/posts/optimal-transport/03-unbalanced/</link><pubDate>Thu, 11 Mar 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/posts/optimal-transport/03-unbalanced/</guid><description>&lt;p>&lt;a href="https://tsumli.github.io/posts/optimal-transport/01-introduction/" >01. はじめ&lt;/a>&lt;br>
+&lt;a href="https://tsumli.github.io/posts/optimal-transport/02-entropy/" >02. エントロピー正則化&lt;/a>&lt;br>
+&lt;a href="https://tsumli.github.io/posts/optimal-transport/03-unbalanced/" >03. Unbalanced Optimal Transport&lt;/a>&lt;br>
+Optimal Transportの拡張系である&lt;strong>Unbalanced Optimal Transport&lt;/strong>について紹介します。&lt;/p>
+&lt;h2 id="unbalanced-optimal-transport-unbalanced-ot">
+ Unbalanced Optimal Transport (Unbalanced OT)
+ &lt;a class="heading-link" href="#unbalanced-optimal-transport-unbalanced-ot">
+ &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading">&lt;/i>
+ &lt;span class="sr-only">Link to heading&lt;/span>
+ &lt;/a>
+&lt;/h2>
+&lt;p>まず，式を見ていきましょう。
+&lt;/p>
+$$
+L_\mathbf{C}^\tau (\mathbf{a}, \mathbf{b}) = \min_{\mathbf{P}\in\mathbb{R}_+^{n\times m}} \langle \mathbf{C}, \mathbf{P} \rangle
++\tau_1\mathbf{D}_\varphi(\mathbf{P}\mathbb{1}_m|\mathbf{a}) + 
+\tau_2\mathbf{D}_\varphi(\mathbf{P}^\mathsf{T}\mathbb{1}_n|\mathbf{b})
+$$&lt;p>
+第1項は通常のoptimal transportでの最小化目標です。そして、この第2, 3項が追加されたものとなります。$\mathbf{D}&lt;em>\varphi(\cdot|\cdot)$ はズレを表す関数で、例えば、euclideanだったりKL距離だったりが考えられます。そして、$\tau_1, \tau_2$はそれらのズレに対するペナルティの大きさを表しています。つまり、$\tau_1 = \tau_2 \rightarrow +\infty$のときズレを許さない、つまり、&amp;ldquo;balanced&amp;quot;な (通常の) optimal transportとなります。また、$\mathbf{D}&lt;/em>\varphi = \mathbf{KL}$ で、$\tau_1 = \tau_2 \rightarrow 0$ のときHellinger距離と呼ばれる距離となります。
+&lt;/p>
+$$
+\mathrm{L}(\mathbf{a}, \mathbf{b}) = \sum_i(\sqrt{\mathbf{a}_i} - \sqrt{\mathbf{b}_i})^2 
+$$&lt;p>Unbalanced OTの計算にもSinkhorn&amp;rsquo;s iterationを使うことができます。更新は次の式を順番に行うことで行われます:
+&lt;/p></description></item><item><title>Optimal Transport 02. エントロピー正則化</title><link>https://tsumli.github.io/posts/optimal-transport/02-entropy/</link><pubDate>Sat, 13 Feb 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/posts/optimal-transport/02-entropy/</guid><description>&lt;p>&lt;a href="https://tsumli.github.io/posts/optimal-transport/01-introduction/" >01. はじめ&lt;/a>&lt;br>
+&lt;a href="https://tsumli.github.io/posts/optimal-transport/02-entropy/" >02. エントロピー正則化&lt;/a>&lt;br>
+&lt;a href="https://tsumli.github.io/posts/optimal-transport/03-unbalanced/" >03. Unbalanced Optimal Transport&lt;/a>&lt;/p>
+&lt;p>Cuturi&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup> の論文をもとに、Optimal Transportのエントロピー正則化について考えていきましょう。&lt;/p>
+&lt;h2 id="計算量">
+ 計算量
+ &lt;a class="heading-link" href="#%e8%a8%88%e7%ae%97%e9%87%8f">
+ &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading">&lt;/i>
+ &lt;span class="sr-only">Link to heading&lt;/span>
+ &lt;/a>
+&lt;/h2>
+&lt;p>$r$ から $c$ へのOptimal Transportは次のようになります
+&lt;/p>
+$$
+\large
+d_\mathbf{M}(r, c) \triangleq \min_{\mathbf{P}\in\mathbf{U}(r, c)} \langle \mathbf{P}, \mathbf{M} \rangle
+$$&lt;p>
+ここで、$\mathbf{M} \in \mathbb{R}^{d\times d}$ はcost matrixです&lt;br>
+計算量について考えると、どのような行列$\mathbf{M}$に対しても最悪のケースで $O(d^3 \log d)$となります。&lt;/p>
+&lt;h2 id="エントロピー正則化">
+ エントロピー正則化
+ &lt;a class="heading-link" href="#%e3%82%a8%e3%83%b3%e3%83%88%e3%83%ad%e3%83%94%e3%83%bc%e6%ad%a3%e5%89%87%e5%8c%96">
+ &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading">&lt;/i>
+ &lt;span class="sr-only">Link to heading&lt;/span>
+ &lt;/a>
+&lt;/h2>
+&lt;p>ここで、Optimal Transportにエントロピー正則化を導入します。&lt;br>
+まず、同時確率分布に対する次の不等式が成り立ちます
+&lt;/p>
+$$
+\forall r, c \in \Sigma_d, \forall \mathbf{P} \in \mathbf{U} (r, c), h(\mathbf{P}) \leq h(r) + h(c)
+$$&lt;p>
+また、$h(rc^\mathsf{T}) = h(r) + h(c)$ より次式が成り立ちます&lt;/p></description></item><item><title>Optimal Transport 01. はじめ</title><link>https://tsumli.github.io/posts/optimal-transport/01-introduction/</link><pubDate>Tue, 02 Feb 2021 13:55:54 +0000</pubDate><guid>https://tsumli.github.io/posts/optimal-transport/01-introduction/</guid><description>&lt;p>&lt;a href="https://tsumli.github.io/posts/optimal-transport/01-introduction/" >01. はじめ&lt;/a>&lt;br>
+&lt;a href="https://tsumli.github.io/posts/optimal-transport/02-entropy/" >02. エントロピー正則化&lt;/a>&lt;br>
+&lt;a href="https://tsumli.github.io/posts/optimal-transport/03-unbalanced/" >03. Unbalanced Optimal Transport&lt;/a>&lt;/p>
+&lt;h2 id="optimal-transport-とは">
+ Optimal Transport とは
+ &lt;a class="heading-link" href="#optimal-transport-%e3%81%a8%e3%81%af">
+ &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading">&lt;/i>
+ &lt;span class="sr-only">Link to heading&lt;/span>
+ &lt;/a>
+&lt;/h2>
+&lt;p>&lt;strong>Optimal Transport&lt;/strong>は、日本語で&lt;strong>最適輸送&lt;/strong> (問題) と訳されます。
+和訳が表しているように、ある物体をある地点から別の地点に移したときの最小コスト、そしてその輸送方法を求めるという問題です。そこから、確率分布の比較に使われるようになりました。&lt;/p>
+&lt;h2 id="歴史">
+ 歴史
+ &lt;a class="heading-link" href="#%e6%ad%b4%e5%8f%b2">
+ &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading">&lt;/i>
+ &lt;span class="sr-only">Link to heading&lt;/span>
+ &lt;/a>
+&lt;/h2>
+&lt;p>歴史は古く、1781年にGaspard Mongeが提案しました&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>。問題の発想は簡単で、
+&lt;strong>ある場所から別の場所に土砂を運ぶとき、どのように運べばよいのか&lt;/strong>
+というものです。&lt;br>
+もっと具体的に考えてみましょう。ある場所 (場所Aとします) には $n$ 地点に土砂があったとします。そして、移動先の場所 (場所Bとします) の $n$ 地点に土砂を移したいとします。
+Aの $i$ 地点とBの $j$ 地点の間の距離=コストが $\mathbf C_{i,j}$ と表されるとき、
+平均の輸送コストはどのようになるか。という問題です。&lt;br>
+これを数式で表すと次のようになります。
+&lt;/p>
+$$
+\min_{\sigma \in \mathrm{Perm}(n)} \frac{1}{n} \sum_{i=1}^{n} \mathbf{C}_{i, \sigma(i)}
+$$&lt;p>
+ここで、$\mathrm{Perm}(n)$は$n$の順列の集合。&lt;br>
+では、これを貪欲に解こうと思うと、$O(n!)$ 回計算しなければなりません ($n\geq 10$ だとつらいというイメージ) 。
+そこで、この問題をもとに現在に至るまで様々なアルゴリズムが開発されてきました。&lt;/p></description></item></channel></rss>

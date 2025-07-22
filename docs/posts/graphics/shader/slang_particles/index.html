@@ -65,9 +65,9 @@ particle_iに対するparticle_jからの作用 $f_{ij}$ をparticle_iの質量$
 </span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>  float3 velocity;  <span style=color:#8b949e;font-style:italic>// 速度
 </span></span></span><span style=display:flex><span><span style=color:#8b949e;font-style:italic></span>};
 </span></span></code></pre></td></tr></table></div></div><p>次に、パーティクル間の作用を計算する関数を実装します。
-particle_iに対するparticle_jからの作用 $f_{ij}$ をparticle_iの質量$m_i$で割ったものは以下のように表されます。</p><p>$$
-\frac{f_{ij}}{m_i} = \frac{G m_j}{||r_{ij}||^2} \frac{r_{ij}}{||r_{ij}||}
-$$</p><p>ここで、$G$は重力定数、$m_i$はparticle_iの質量、$m_j$はparticle_jの質量、$r_{ij}$はparticle_iとparticle_jの距離です。</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 1
+particle_iに対するparticle_jからの作用 $f_{ij}$ をparticle_iの質量$m_i$で割ったものは以下のように表されます。</p>$$
+\frac{f_{ij}}{m_i} = \frac{G m_j}{\||r_{ij}\||^2} \frac{r_{ij}}{\||r_{ij}\||}
+$$<p>ここで、$G$は重力定数、$m_i$はparticle_iの質量、$m_j$はparticle_jの質量、$r_{ij}$はparticle_iとparticle_jの距離です。</p><div class=highlight><div style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e6edf3;background-color:#0d1117;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#737679"> 4

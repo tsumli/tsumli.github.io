@@ -1,0 +1,82 @@
+<!doctype html><html lang=en><head><title>Optimal Transport 01. はじめ · tsumli pages</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=color-scheme content="light dark"><meta name=description content="01. はじめ
+02. エントロピー正則化
+03. Unbalanced Optimal Transport
+
+  Optimal Transport とは
+  
+    
+    Link to heading
+  
+
+Optimal Transportは、日本語で最適輸送 (問題) と訳されます。
+和訳が表しているように、ある物体をある地点から別の地点に移したときの最小コスト、そしてその輸送方法を求めるという問題です。そこから、確率分布の比較に使われるようになりました。
+
+  歴史
+  
+    
+    Link to heading
+  
+
+歴史は古く、1781年にGaspard Mongeが提案しました1。問題の発想は簡単で、
+ある場所から別の場所に土砂を運ぶとき、どのように運べばよいのか
+というものです。
+もっと具体的に考えてみましょう。ある場所 (場所Aとします) には $n$ 地点に土砂があったとします。そして、移動先の場所 (場所Bとします) の $n$ 地点に土砂を移したいとします。
+Aの $i$ 地点とBの $j$ 地点の間の距離=コストが $\mathbf C_{i,j}$ と表されるとき、
+平均の輸送コストはどのようになるか。という問題です。
+これを数式で表すと次のようになります。
+
+$$
+\min_{\sigma \in \mathrm{Perm}(n)} \frac{1}{n} \sum_{i=1}^{n} \mathbf{C}_{i, \sigma(i)}
+$$
+ここで、$\mathrm{Perm}(n)$は$n$の順列の集合。
+では、これを貪欲に解こうと思うと、$O(n!)$ 回計算しなければなりません ($n\geq 10$ だとつらいというイメージ) 。
+そこで、この問題をもとに現在に至るまで様々なアルゴリズムが開発されてきました。"><meta name=keywords content="optimal-transport,最適輸送理論,最適輸送問題"><meta name=twitter:card content="summary"><meta name=twitter:title content="Optimal Transport 01. はじめ"><meta name=twitter:description content="01. はじめ
+02. エントロピー正則化
+03. Unbalanced Optimal Transport
+Optimal Transport とは Link to heading Optimal Transportは、日本語で最適輸送 (問題) と訳されます。 和訳が表しているように、ある物体をある地点から別の地点に移したときの最小コスト、そしてその輸送方法を求めるという問題です。そこから、確率分布の比較に使われるようになりました。
+歴史 Link to heading 歴史は古く、1781年にGaspard Mongeが提案しました1。問題の発想は簡単で、 ある場所から別の場所に土砂を運ぶとき、どのように運べばよいのか というものです。
+もっと具体的に考えてみましょう。ある場所 (場所Aとします) には $n$ 地点に土砂があったとします。そして、移動先の場所 (場所Bとします) の $n$ 地点に土砂を移したいとします。 Aの $i$ 地点とBの $j$ 地点の間の距離=コストが $\mathbf C_{i,j}$ と表されるとき、 平均の輸送コストはどのようになるか。という問題です。
+これを数式で表すと次のようになります。 $$ \min_{\sigma \in \mathrm{Perm}(n)} \frac{1}{n} \sum_{i=1}^{n} \mathbf{C}_{i, \sigma(i)} $$ ここで、$\mathrm{Perm}(n)$は$n$の順列の集合。
+では、これを貪欲に解こうと思うと、$O(n!)$ 回計算しなければなりません ($n\geq 10$ だとつらいというイメージ) 。 そこで、この問題をもとに現在に至るまで様々なアルゴリズムが開発されてきました。"><meta property="og:url" content="https://tsumli.github.io/posts/optimal-transport/01-introduction/"><meta property="og:site_name" content="tsumli pages"><meta property="og:title" content="Optimal Transport 01. はじめ"><meta property="og:description" content="01. はじめ
+02. エントロピー正則化
+03. Unbalanced Optimal Transport
+Optimal Transport とは Link to heading Optimal Transportは、日本語で最適輸送 (問題) と訳されます。 和訳が表しているように、ある物体をある地点から別の地点に移したときの最小コスト、そしてその輸送方法を求めるという問題です。そこから、確率分布の比較に使われるようになりました。
+歴史 Link to heading 歴史は古く、1781年にGaspard Mongeが提案しました1。問題の発想は簡単で、 ある場所から別の場所に土砂を運ぶとき、どのように運べばよいのか というものです。
+もっと具体的に考えてみましょう。ある場所 (場所Aとします) には $n$ 地点に土砂があったとします。そして、移動先の場所 (場所Bとします) の $n$ 地点に土砂を移したいとします。 Aの $i$ 地点とBの $j$ 地点の間の距離=コストが $\mathbf C_{i,j}$ と表されるとき、 平均の輸送コストはどのようになるか。という問題です。
+これを数式で表すと次のようになります。 $$ \min_{\sigma \in \mathrm{Perm}(n)} \frac{1}{n} \sum_{i=1}^{n} \mathbf{C}_{i, \sigma(i)} $$ ここで、$\mathrm{Perm}(n)$は$n$の順列の集合。
+では、これを貪欲に解こうと思うと、$O(n!)$ 回計算しなければなりません ($n\geq 10$ だとつらいというイメージ) 。 そこで、この問題をもとに現在に至るまで様々なアルゴリズムが開発されてきました。"><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-02-02T13:55:54+00:00"><meta property="article:modified_time" content="2021-02-02T13:55:54+00:00"><meta property="article:tag" content="Optimal-Transport"><link rel=canonical href=https://tsumli.github.io/posts/optimal-transport/01-introduction/><link rel=preload href=/fonts/fa-brands-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=/fonts/fa-regular-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=/fonts/fa-solid-900.woff2 as=font type=font/woff2 crossorigin><link rel=stylesheet href=/css/coder.min.6445a802b9389c9660e1b07b724dcf5718b1065ed2d71b4eeaf981cc7cc5fc46.css integrity="sha256-ZEWoArk4nJZg4bB7ck3PVxixBl7S1xtO6vmBzHzF/EY=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/coder-dark.min.a00e6364bacbc8266ad1cc81230774a1397198f8cfb7bcba29b7d6fcb54ce57f.css integrity="sha256-oA5jZLrLyCZq0cyBIwd0oTlxmPjPt7y6KbfW/LVM5X8=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/custom.min.5fc0bca9f2f250cd2f46d1b47b5d85a80c0780e2de59f0ed76ac61a21e33e26a.css integrity="sha256-X8C8qfLyUM0vRtG0e12FqAwHgOLeWfDtdqxhoh4z4mo=" crossorigin=anonymous media=screen><link rel=icon type=image/svg+xml href=/img/favicon.svg sizes=any><link rel=icon type=image/png href=/images/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/images/favicon-16x16.png sizes=16x16><link rel=apple-touch-icon href=/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/images/safari-pinned-tab.svg color=#5bbad5></head><body class="preload-transitions colorscheme-auto"><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=https://tsumli.github.io/>tsumli pages
+</a><input type=checkbox id=menu-toggle>
+<label class="menu-button float-right" for=menu-toggle><i class="fa-solid fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=/posts/>Blog</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://tsumli.github.io/posts/optimal-transport/01-introduction/>Optimal Transport 01. はじめ</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa-solid fa-calendar" aria-hidden=true></i>
+<time datetime=2021-02-02T13:55:54Z>February 2, 2021
+</time></span><span class=reading-time><i class="fa-solid fa-clock" aria-hidden=true></i>
+One-minute read</span></div><div class=tags><i class="fa-solid fa-tag" aria-hidden=true></i>
+<span class=tag><a href=/tags/optimal-transport/>Optimal-Transport</a></span></div></div></header><div class=post-content><p><a href=https://tsumli.github.io/posts/optimal-transport/01-introduction/>01. はじめ</a><br><a href=https://tsumli.github.io/posts/optimal-transport/02-entropy/>02. エントロピー正則化</a><br><a href=https://tsumli.github.io/posts/optimal-transport/03-unbalanced/>03. Unbalanced Optimal Transport</a></p><h2 id=optimal-transport-とは>Optimal Transport とは
+<a class=heading-link href=#optimal-transport-%e3%81%a8%e3%81%af><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p><strong>Optimal Transport</strong>は、日本語で<strong>最適輸送</strong> (問題) と訳されます。
+和訳が表しているように、ある物体をある地点から別の地点に移したときの最小コスト、そしてその輸送方法を求めるという問題です。そこから、確率分布の比較に使われるようになりました。</p><h2 id=歴史>歴史
+<a class=heading-link href=#%e6%ad%b4%e5%8f%b2><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p>歴史は古く、1781年にGaspard Mongeが提案しました<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>。問題の発想は簡単で、
+<strong>ある場所から別の場所に土砂を運ぶとき、どのように運べばよいのか</strong>
+というものです。<br>もっと具体的に考えてみましょう。ある場所 (場所Aとします) には $n$ 地点に土砂があったとします。そして、移動先の場所 (場所Bとします) の $n$ 地点に土砂を移したいとします。
+Aの $i$ 地点とBの $j$ 地点の間の距離=コストが $\mathbf C_{i,j}$ と表されるとき、
+平均の輸送コストはどのようになるか。という問題です。<br>これを数式で表すと次のようになります。</p>$$
+\min_{\sigma \in \mathrm{Perm}(n)} \frac{1}{n} \sum_{i=1}^{n} \mathbf{C}_{i, \sigma(i)}
+$$<p>ここで、$\mathrm{Perm}(n)$は$n$の順列の集合。<br>では、これを貪欲に解こうと思うと、$O(n!)$ 回計算しなければなりません ($n\geq 10$ だとつらいというイメージ) 。
+そこで、この問題をもとに現在に至るまで様々なアルゴリズムが開発されてきました。</p><h2 id=kantorovichの一般化>Kantorovichの一般化
+<a class=heading-link href=#kantorovich%e3%81%ae%e4%b8%80%e8%88%ac%e5%8c%96><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p>Kantorovichはこの輸送問題を確率分布間に適用しました。
+距離を求めたい確率分布を $\mathbf{a}\in \mathbb{R}^n, \mathbf{b}\in \mathbb{R}^m$ とします。
+ここで、$\mathbf{a}$ と $\mathbf{b}$ の同時分布 $\mathbf{U}$ を考えます。</p>$$
+\mathbf{U}(\mathbf{a}, \mathbf{b}) \triangleq \lbrace \mathbf{P}\in\mathbb{R}^{n\times m}_+: \mathbf{P}\mathbf{1}_m = \mathbf{a} \mathrm{\ and\ } \mathbf{P}^\mathsf{T}\mathbf{1}_n = \mathbf{b} \rbrace
+$$<p>このとき、$\mathbf{1}_n$ は $1$ が $n$ 個並んだベクトル。また、$\mathbf{P}$ を輸送計画行列と呼び、$(i, j)$ 要素は $i$ 地点から $j$ 地点まで移動させる量を表します。<br>この集合の制約条件 ( $\mathbf{P}\mathbf{1}_m = \mathbf{a}$ ) について考えます。
+$\mathbf{P}\mathbf{1}_m$ は、行列 $\mathbf{P}$ に対しdim=0でsumを取ったときと同等の結果になります (shapeが違うという意味です) 。
+つまり、$\mathbf{P}$ の $i$ 行の要素の合計が $\mathbf{a}_i$ と一致するということです。
+同様に、$\mathbf{P}^\mathsf{T} \mathbf{1}_n = \mathbf{b}$ とは、$\mathbf{P}$ の $j$ 列の要素の合計が $\mathbf{b}_j$ と一致するという意味です。</p><p>すると、輸送問題はこの制約付きの同時分布を考えた上での、次のような最小化問題になります。</p>$$
+\mathrm{L_{\mathbf{C}}} (\mathbf{a}, \mathbf{b}) \triangleq \min_{\mathbf{P}\in\mathbf{U}(\mathbf{a}, \mathbf{b})} \langle \mathbf{C}, \mathbf{P} \rangle \triangleq \min \sum_{i, j} \mathbf{C}_{i,j} \mathbf{P}_{i, j}
+$$<p>ここで、$\langle \cdot, \cdot \rangle$はフロベニウス積。</p><p><a href=https://tsumli.github.io/posts/optimal-transport/02-entropy/>つづく</a></p><h2 id=参考文献>参考文献
+<a class=heading-link href=#%e5%8f%82%e8%80%83%e6%96%87%e7%8c%ae><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><ul><li><a href=https://arxiv.org/abs/1803.00567 class=external-link target=_blank rel=noopener>Computational optimal transport</a></li></ul><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p>Gaspard Monge. Mémoire sur la théorie des déblais et des remblais. De l’Imprimerie Royale, 1781.&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></div></div><footer><div id=disqus_thread></div><script>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//tsumli.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}(),document.addEventListener("themeChanged",function(){document.readyState=="complete"&&DISQUS.reset({reload:!0,config:disqus_config})})</script></footer></article><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css integrity=sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0 crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js integrity=sha384-PwRUT/YqbnEjkZO0zZxNqcxACrXe+j766U2amXcgMg5457rve2Y7I6ZJSm2A0mS4 crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js integrity=sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05 crossorigin=anonymous onload='renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})'></script></section></div><footer class=footer><section class=container>©
+2019 -
+2025
+·
+Powered by <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/ target=_blank rel=noopener>Coder</a>.</section></footer></main><script src=/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-HH27H8XR4Y"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-HH27H8XR4Y")}</script></body></html>

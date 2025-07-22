@@ -1,0 +1,102 @@
+<!doctype html><html lang=en><head><title>Optimal Transport 02. エントロピー正則化 · tsumli pages</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=color-scheme content="light dark"><meta name=description content="01. はじめ
+02. エントロピー正則化
+03. Unbalanced Optimal Transport
+Cuturi1 の論文をもとに、Optimal Transportのエントロピー正則化について考えていきましょう。
+
+  計算量
+  
+    
+    Link to heading
+  
+
+$r$ から $c$ へのOptimal Transportは次のようになります
+
+$$
+\large
+d_\mathbf{M}(r, c) \triangleq \min_{\mathbf{P}\in\mathbf{U}(r, c)} \langle \mathbf{P}, \mathbf{M} \rangle
+$$
+ここで、$\mathbf{M} \in \mathbb{R}^{d\times d}$ はcost matrixです
+計算量について考えると、どのような行列$\mathbf{M}$に対しても最悪のケースで $O(d^3 \log d)$となります。
+
+  エントロピー正則化
+  
+    
+    Link to heading
+  
+
+ここで、Optimal Transportにエントロピー正則化を導入します。
+まず、同時確率分布に対する次の不等式が成り立ちます
+
+$$
+\forall r, c \in \Sigma_d, \forall \mathbf{P} \in \mathbf{U} (r, c), h(\mathbf{P}) \leq h(r) + h(c)
+$$
+また、$h(rc^\mathsf{T}) = h(r) + h(c)$ より次式が成り立ちます"><meta name=keywords content="optimal-transport,最適輸送理論,最適輸送問題"><meta name=twitter:card content="summary"><meta name=twitter:title content="Optimal Transport 02. エントロピー正則化"><meta name=twitter:description content="01. はじめ
+02. エントロピー正則化
+03. Unbalanced Optimal Transport
+Cuturi1 の論文をもとに、Optimal Transportのエントロピー正則化について考えていきましょう。
+計算量 Link to heading $r$ から $c$ へのOptimal Transportは次のようになります $$ \large d_\mathbf{M}(r, c) \triangleq \min_{\mathbf{P}\in\mathbf{U}(r, c)} \langle \mathbf{P}, \mathbf{M} \rangle $$ ここで、$\mathbf{M} \in \mathbb{R}^{d\times d}$ はcost matrixです
+計算量について考えると、どのような行列$\mathbf{M}$に対しても最悪のケースで $O(d^3 \log d)$となります。
+エントロピー正則化 Link to heading ここで、Optimal Transportにエントロピー正則化を導入します。
+まず、同時確率分布に対する次の不等式が成り立ちます $$ \forall r, c \in \Sigma_d, \forall \mathbf{P} \in \mathbf{U} (r, c), h(\mathbf{P}) \leq h(r) + h(c) $$ また、$h(rc^\mathsf{T}) = h(r) + h(c)$ より次式が成り立ちます"><meta property="og:url" content="https://tsumli.github.io/posts/optimal-transport/02-entropy/"><meta property="og:site_name" content="tsumli pages"><meta property="og:title" content="Optimal Transport 02. エントロピー正則化"><meta property="og:description" content="01. はじめ
+02. エントロピー正則化
+03. Unbalanced Optimal Transport
+Cuturi1 の論文をもとに、Optimal Transportのエントロピー正則化について考えていきましょう。
+計算量 Link to heading $r$ から $c$ へのOptimal Transportは次のようになります $$ \large d_\mathbf{M}(r, c) \triangleq \min_{\mathbf{P}\in\mathbf{U}(r, c)} \langle \mathbf{P}, \mathbf{M} \rangle $$ ここで、$\mathbf{M} \in \mathbb{R}^{d\times d}$ はcost matrixです
+計算量について考えると、どのような行列$\mathbf{M}$に対しても最悪のケースで $O(d^3 \log d)$となります。
+エントロピー正則化 Link to heading ここで、Optimal Transportにエントロピー正則化を導入します。
+まず、同時確率分布に対する次の不等式が成り立ちます $$ \forall r, c \in \Sigma_d, \forall \mathbf{P} \in \mathbf{U} (r, c), h(\mathbf{P}) \leq h(r) + h(c) $$ また、$h(rc^\mathsf{T}) = h(r) + h(c)$ より次式が成り立ちます"><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-02-13T13:55:54+00:00"><meta property="article:modified_time" content="2021-02-13T13:55:54+00:00"><meta property="article:tag" content="Optimal-Transport"><link rel=canonical href=https://tsumli.github.io/posts/optimal-transport/02-entropy/><link rel=preload href=/fonts/fa-brands-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=/fonts/fa-regular-400.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=/fonts/fa-solid-900.woff2 as=font type=font/woff2 crossorigin><link rel=stylesheet href=/css/coder.min.6445a802b9389c9660e1b07b724dcf5718b1065ed2d71b4eeaf981cc7cc5fc46.css integrity="sha256-ZEWoArk4nJZg4bB7ck3PVxixBl7S1xtO6vmBzHzF/EY=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/coder-dark.min.a00e6364bacbc8266ad1cc81230774a1397198f8cfb7bcba29b7d6fcb54ce57f.css integrity="sha256-oA5jZLrLyCZq0cyBIwd0oTlxmPjPt7y6KbfW/LVM5X8=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/custom.min.5fc0bca9f2f250cd2f46d1b47b5d85a80c0780e2de59f0ed76ac61a21e33e26a.css integrity="sha256-X8C8qfLyUM0vRtG0e12FqAwHgOLeWfDtdqxhoh4z4mo=" crossorigin=anonymous media=screen><link rel=icon type=image/svg+xml href=/img/favicon.svg sizes=any><link rel=icon type=image/png href=/images/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/images/favicon-16x16.png sizes=16x16><link rel=apple-touch-icon href=/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/images/safari-pinned-tab.svg color=#5bbad5></head><body class="preload-transitions colorscheme-auto"><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=https://tsumli.github.io/>tsumli pages
+</a><input type=checkbox id=menu-toggle>
+<label class="menu-button float-right" for=menu-toggle><i class="fa-solid fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=/posts/>Blog</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://tsumli.github.io/posts/optimal-transport/02-entropy/>Optimal Transport 02. エントロピー正則化</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa-solid fa-calendar" aria-hidden=true></i>
+<time datetime=2021-02-13T13:55:54Z>February 13, 2021
+</time></span><span class=reading-time><i class="fa-solid fa-clock" aria-hidden=true></i>
+2-minute read</span></div><div class=tags><i class="fa-solid fa-tag" aria-hidden=true></i>
+<span class=tag><a href=/tags/optimal-transport/>Optimal-Transport</a></span></div></div></header><div class=post-content><p><a href=https://tsumli.github.io/posts/optimal-transport/01-introduction/>01. はじめ</a><br><a href=https://tsumli.github.io/posts/optimal-transport/02-entropy/>02. エントロピー正則化</a><br><a href=https://tsumli.github.io/posts/optimal-transport/03-unbalanced/>03. Unbalanced Optimal Transport</a></p><p>Cuturi<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup> の論文をもとに、Optimal Transportのエントロピー正則化について考えていきましょう。</p><h2 id=計算量>計算量
+<a class=heading-link href=#%e8%a8%88%e7%ae%97%e9%87%8f><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p>$r$ から $c$ へのOptimal Transportは次のようになります</p>$$
+\large
+d_\mathbf{M}(r, c) \triangleq \min_{\mathbf{P}\in\mathbf{U}(r, c)} \langle \mathbf{P}, \mathbf{M} \rangle
+$$<p>ここで、$\mathbf{M} \in \mathbb{R}^{d\times d}$ はcost matrixです<br>計算量について考えると、どのような行列$\mathbf{M}$に対しても最悪のケースで $O(d^3 \log d)$となります。</p><h2 id=エントロピー正則化>エントロピー正則化
+<a class=heading-link href=#%e3%82%a8%e3%83%b3%e3%83%88%e3%83%ad%e3%83%94%e3%83%bc%e6%ad%a3%e5%89%87%e5%8c%96><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p>ここで、Optimal Transportにエントロピー正則化を導入します。<br>まず、同時確率分布に対する次の不等式が成り立ちます</p>$$
+\forall r, c \in \Sigma_d, \forall \mathbf{P} \in \mathbf{U} (r, c), h(\mathbf{P}) \leq h(r) + h(c)
+$$<p>また、$h(rc^\mathsf{T}) = h(r) + h(c)$ より次式が成り立ちます</p>$$
+\begin{align*}
+\mathbf{U}_\alpha(r, c)
+&\triangleq \left\{ \mathbf{P} \in \mathbf{U}(r, c) \,\middle|\, \mathrm{KL}(\mathbf{P} \,\Vert\, r c^\mathsf{T}) \leq \alpha \right\} \\[1ex]
+&= \left\{ \mathbf{P} \in \mathbf{U}(r, c) \,\middle|\, h(\mathbf{P}) \geq h(r) + h(c) - \alpha \right\} \\[1ex]
+&\subset \mathbf{U}(r, c)
+\end{align*}
+$$<p>ここで、$\mathrm{\bf KL}(\mathbf{P} \Vert rc^\mathsf{T}) = h(r) + h(c) - h(\mathbf{P})$</p><p>このように定義した同時分布に対して、Optimal Transportを解きます (得られた値を &ldquo;Sinkhorn Distance&rdquo; と呼びます)</p>$$
+\large
+d_{\mathbf{M}, \alpha} (r, c) \triangleq \min_{\mathbf{P}\in \mathbf{U}_{\alpha}(r, c)}\langle \mathbf{P}, \mathbf{M} \rangle
+$$<p>このようにエントロピーを考える理由は2つ</p><ol><li>計算量的な問題</li><li>解をより"スムーズ"にしたい</li></ol><p>1については後で説明するとして、まず2について説明します。<a href=https://tsumli.github.io/posts/optimal-transport/01-introduction/>前回</a>説明したように、
+輸送計画行列 $\mathbf{P}$ は次の制約条件に従います</p>$$
+\mathbf{P}\mathbf{1}_d = r \mathrm{\quad and\quad } \mathbf{P}^\mathsf{T}\mathbf{1}_d = c
+$$<p>つまり、制約の個数は $2d$ 個となり、$\mathbf{P}$ は $0$ でない要素が $2d-1$ 個だけあって、それ以外は $0$ であるようなスパースな行列で制約を満たせるということです。
+そこで、これを防ぐ (=行列をスムーズにする) ためにエントロピー正則化が必要となってくる。というわけです</p><h2 id=sinkhorns-algorithm>Sinkhorn&rsquo;s Algorithm
+<a class=heading-link href=#sinkhorns-algorithm><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><p>エントロピーで制限されたSinkhorn Distanceを考えます</p>$$
+d_\mathbf{M}^\lambda(r, c) \triangleq \left\langle \mathbf{P}^\lambda, \mathbf{M} \right\rangle \\[1ex]
+\text{where } \lambda > 0, \quad
+\mathbf{P}^\lambda = \argmin_{\mathbf{P} \in \mathbf{U}(r, c)} \left\langle \mathbf{P}, \mathbf{M} \right\rangle - \frac{1}{\lambda} h(\mathbf{P})
+$$<p>ここで、それぞれの $\alpha$ はある $\lambda\in [0, \infty]$に対応します</p>$$
+d_{\mathbf{M}, \alpha} (r, c) = d_\mathbf{M}^\lambda (r, c)
+$$<p>そして、この $d_\mathbf{M}^\lambda$ はもとの問題 ($=d_\mathbf{M}$) よりもはるかに低コストで計算できるのです。</p><h3 id=d_mathbfmlambdaの計算>$d_\mathbf{M}^\lambda$の計算
+<a class=heading-link href=#d_mathbfmlambda%e3%81%ae%e8%a8%88%e7%ae%97><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h3><p>$\lambda > 0$ に対して、$\mathbf{P}^\lambda$ はuniqueで、また、次の形式で表されます<sup id=fnref:2><a href=#fn:2 class=footnote-ref role=doc-noteref>2</a></sup></p>$$
+\mathbf{P}^\lambda = \mathrm{diag}{(u)} \mathbf{K} \mathrm{diag}(v) \\\\\\
+\mathrm{where}\ u, v \in \mathbb{R}^d \mathrm{\ and\ non--negative}\\\\\\
+\mathbf{K} \triangleq \exp(-\lambda \mathbf{M})\quad \mathrm{(element--wise\ calculation)}
+$$<p>そして、このとき$u, v$は解にiterativeに近づけていくことができます</p>$$
+(u, v) \leftarrow (r_\cdot/\mathbf{K}v, c_\cdot/\mathbf{K}'u)
+$$<h3 id=empirical-complexity>Empirical Complexity
+<a class=heading-link href=#empirical-complexity><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h3><p>histgramの次元数に対する収束までに必要なiteration数は下図 (画像は元論文<sup id=fnref1:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup> 引用)<figure><img src=images/empirical.png></figure>次元数が増えると収束に必要なiteration数が増える。という訳ではなく、$\lambda$ の値がiteration数を決めます。
+傾向として、$\lambda$ が大きくなるほど収束にかかるiterationも増えるようです。</p><h2 id=参考文献>参考文献
+<a class=heading-link href=#%e5%8f%82%e8%80%83%e6%96%87%e7%8c%ae><i class="fa-solid fa-link" aria-hidden=true title="Link to heading"></i>
+<span class=sr-only>Link to heading</span></a></h2><ul><li><a href=https://arxiv.org/abs/1803.00567 class=external-link target=_blank rel=noopener>Computational optimal transport</a></li></ul><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p><a href=https://papers.nips.cc/paper/2013/hash/af21d0c97db2e27e13572cbf59eb343d-Abstract.html class=external-link target=_blank rel=noopener>Sinkhorn Distances:
+Lightspeed Computation of Optimal Transport</a>&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a>&#160;<a href=#fnref1:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li><li id=fn:2><p><a href=https://projecteuclid.org/euclid.pjm/1102992505 class=external-link target=_blank rel=noopener>Concerning nonnegative matrices and doubly stochastic matrices</a>&#160;<a href=#fnref:2 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></div></div><footer><div id=disqus_thread></div><script>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//tsumli.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}(),document.addEventListener("themeChanged",function(){document.readyState=="complete"&&DISQUS.reset({reload:!0,config:disqus_config})})</script></footer></article><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css integrity=sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0 crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js integrity=sha384-PwRUT/YqbnEjkZO0zZxNqcxACrXe+j766U2amXcgMg5457rve2Y7I6ZJSm2A0mS4 crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js integrity=sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05 crossorigin=anonymous onload='renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})'></script></section></div><footer class=footer><section class=container>©
+2019 -
+2025
+·
+Powered by <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/ target=_blank rel=noopener>Coder</a>.</section></footer></main><script src=/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-HH27H8XR4Y"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-HH27H8XR4Y")}</script></body></html>
