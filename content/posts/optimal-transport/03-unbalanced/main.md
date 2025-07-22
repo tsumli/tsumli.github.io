@@ -13,6 +13,7 @@ toc: true
 [01. はじめ]({{< ref"/posts/optimal-transport/01-introduction/main.md">}})  
 [02. エントロピー正則化]({{< ref"/posts/optimal-transport/02-entropy/main.md">}})  
 [03. Unbalanced Optimal Transport]({{< ref"/posts/optimal-transport/03-unbalanced/main.md">}})  
+
 Optimal Transportの拡張系である**Unbalanced Optimal Transport**について紹介します。
 ## Unbalanced Optimal Transport (Unbalanced OT)
 まず，式を見ていきましょう。
@@ -21,7 +22,11 @@ L_\mathbf{C}^\tau (\mathbf{a}, \mathbf{b}) = \min_{\mathbf{P}\in\mathbb{R}_+^{n\
 +\tau_1\mathbf{D}_\varphi(\mathbf{P}\mathbb{1}_m|\mathbf{a}) + 
 \tau_2\mathbf{D}_\varphi(\mathbf{P}^\mathsf{T}\mathbb{1}_n|\mathbf{b})
 $$
-第1項は通常のoptimal transportでの最小化目標です。そして、この第2, 3項が追加されたものとなります。$\mathbf{D}_\varphi(\cdot|\cdot)$ はズレを表す関数で、例えば、euclideanだったりKL距離だったりが考えられます。そして、$\tau_1, \tau_2$はそれらのズレに対するペナルティの大きさを表しています。つまり、$\tau_1 = \tau_2 \rightarrow +\infty$のときズレを許さない、つまり、"balanced"な (通常の) optimal transportとなります。また、$\mathbf{D}_\varphi = \mathbf{KL}$ で、$\tau_1 = \tau_2 \rightarrow 0$ のときHellinger距離と呼ばれる距離となります。
+
+第1項は通常のoptimal transportでの最小化目標です。そして、この第2, 3項が追加されたものとなります。
+$$ \mathbf{D}_\varphi(\cdot|\cdot) $$ はズレを表す関数で、
+例えば、euclideanだったりKL距離だったりが考えられます。そして、 $ \tau_1, \tau_2 $ はそれらのズレに対するペナルティの大きさを表しています。つまり、$\tau_1 = \tau_2 \rightarrow +\infty$のときズレを許さない、つまり、"balanced"な (通常の) optimal transportとなります。また、$\mathbf{D}_\varphi = \mathbf{KL}$ で、$\tau_1 = \tau_2 \rightarrow 0$ のときHellinger距離と呼ばれる距離となります
+
 $$
 \mathrm{L}(\mathbf{a}, \mathbf{b}) = \sum_i(\sqrt{\mathbf{a}_i} - \sqrt{\mathbf{b}_i})^2 
 $$
