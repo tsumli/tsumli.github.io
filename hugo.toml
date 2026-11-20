@@ -1,7 +1,7 @@
 baseurl = "https://tsumli.github.io"
 title = "tsumli pages"
 theme = "hugo-coder"
-languagecode = "en"
+locale = "en"
 defaultcontentlanguage = "en"
 
 [pagination]
@@ -71,3 +71,7 @@ url = "https://github.com/tsumli"
 name = "Blog"
 weight = 1
 url = "posts/"
+[[menu.main]]
+name = "Graphics"
+weight = 2
+url = "graphics/"
