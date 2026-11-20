@@ -1,5 +1,5 @@
 [tools]
-"aqua:sass/dart-sass" = "1.108.2"
+"github:sass/dart-sass" = "1.108.2"
 hugo-extended = "0.169.0"
 just = "1.59.0"
 node = "26.13.1"
